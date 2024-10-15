@@ -1,6 +1,6 @@
 export const metadata = {
-  title: 'Home - Creative',
-  description: 'Page description',
+  title: 'AI Dovednosti - Ovládni umělou inteligenci',
+  description: 'Kurz AI Dovednosti ti pomůže ovládnout umělou inteligenci a strojové učení. Získej nové dovednosti a získej lepší práci.',
 }
 
 import Hero from '@/components/hero'
