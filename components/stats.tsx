@@ -2,6 +2,7 @@ import Counter from '@/components/counter'
 
 interface StatProps {
   number: number
+  prefix?: string
   suffix: string
   text: string
 }
@@ -10,24 +11,25 @@ export default function Stats() {
 
   const stats: StatProps[] = [
     {
-      number: 476,
-      suffix: 'K',
-      text: 'Assets packed with power beyond your imagination.',
+      number: 5,
+      suffix: 'h+',
+      text: 'Ušetřených týdně díky práci s ChatGPT a AI nástroji.',
     },
     {
-      number: 1.44,
-      suffix: 'K',
-      text: 'Assets packed with power beyond your imagination.',
+      number: 16,
+      suffix: 'h',
+      text: 'Během kterých zjistíš, co vše dnes AI umí a čím ti může pomoci.',
     },
     {
-      number: 1.5,
-      suffix: 'M+',
-      text: 'Assets packed with power beyond your imagination.',
+      number: 20,
+      suffix: '',
+      text: 'Nástrojů, které ti nejen ukážeme, ale naučíme tě s nimi pracovat.',
     },
     {
-      number: 192,
-      suffix: 'K',
-      text: 'Assets packed with power beyond your imagination.',
+      number: 20,
+      prefix: 'až ',
+      suffix: '%',
+      text: 'Nárůst tvojí hodnoty na trhu práce díky získaným dovednostem a certifikátu.',
     },
   ]
 
@@ -38,6 +40,7 @@ export default function Stats() {
         {stats.map((stat, index) => (
           <div key={index} className="relative text-center md:px-5">
             <h4 className="font-inter-tight text-2xl md:text-3xl font-bold tabular-nums mb-2">
+                {stat.prefix && <span className="">{stat.prefix}</span>}
               <Counter number={stat.number} />
               {stat.suffix}
             </h4>

@@ -10,7 +10,6 @@ export default function DefaultLayout({
 }) {  
   return (
     <>
-      <Header />
       
       <main className="grow">
 
@@ -18,7 +17,6 @@ export default function DefaultLayout({
 
       </main>
 
-      <Footer />
     </>
   )
 }
