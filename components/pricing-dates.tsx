@@ -17,16 +17,20 @@ const PricingDates = () => {
     { date: new Date('2023-12-15'), deadline: new Date('2023-11-15'), city: 'Ostrava', cityLocative: 'Ostravě' },
     { date: new Date('2024-01-10'), deadline: new Date('2023-12-10'), city: 'Plzeň', cityLocative: 'Plzni' },
     { date: new Date('2024-02-05'), deadline: new Date('2024-01-05'), city: 'Olomouc', cityLocative: 'Olomouci' },
+    {date: new Date('2024-12-01'), deadline: new Date('2024-12-11'), city: 'České Budějovice', cityLocative: 'Českých Budějovicích'},
   ]
 
   const [closestCourse, setClosestCourse] = useState<CourseDate | null>(null)
   const [daysLeft, setDaysLeft] = useState<number>(0)
+  const [upcomingCourses, setUpcomingCourses] = useState<CourseDate[]>([])
 
   useEffect(() => {
     const now = new Date()
-    const upcomingCourses = dates.filter(course => course.deadline > now)
-    if (upcomingCourses.length > 0) {
-      const closest = upcomingCourses.reduce((prev, curr) => 
+    const filteredCourses = dates.filter(course => course.deadline > now)
+    setUpcomingCourses(filteredCourses)
+
+    if (filteredCourses.length > 0) {
+      const closest = filteredCourses.reduce((prev, curr) => 
         (Math.abs(curr.deadline.getTime() - now.getTime()) < Math.abs(prev.deadline.getTime() - now.getTime()) ? curr : prev)
       )
       setClosestCourse(closest)
@@ -69,7 +73,7 @@ const PricingDates = () => {
                 className="border border-transparent [background:linear-gradient(theme(colors.white),theme(colors.zinc.50))_padding-box,linear-gradient(120deg,theme(colors.zinc.300),theme(colors.zinc.100),theme(colors.zinc.300))_border-box] rounded-lg p-6">
               <h3 className="font-inter-tight text-xl font-semibold text-zinc-900 mb-4">Nadcházející termíny</h3>
               <ul className="space-y-4">
-                {dates.map((item, index) => (
+                {upcomingCourses.map((item, index) => (
                     <li key={index} className="border-b border-zinc-200 pb-4 last:border-b-0 last:pb-0">
                       <div className="flex justify-between items-center">
                         <div>
