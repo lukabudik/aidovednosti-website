@@ -14,9 +14,9 @@ const SignInInstructions = () => {
   ]
 
   return (
-    <section className="bg-zinc-50 py-12 md:py-20">
+    <section className="bg-zinc-50 py-8 md:py-12">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
-        <div className="max-w-3xl mx-auto text-center pb-12 md:pb-20">
+        <div className="max-w-3xl mx-auto text-center pb-8 md:pb-12">
           <h2 className="font-inter-tight text-3xl md:text-4xl font-bold text-zinc-900 mb-4">Jak se přihlásit na workshop?</h2>
           <p className="text-lg text-zinc-500">Následujte tyto jednoduché kroky pro úspěšnou registraci</p>
         </div>
@@ -56,14 +56,14 @@ const SignInInstructions = () => {
           <div className="max-w-xs mx-auto sm:max-w-none sm:flex sm:justify-center space-y-4 sm:space-y-0 sm:space-x-4">
             <div className="relative">
               <a className="btn text-white bg-black hover:bg-gray-800 w-full shadow-lg text-lg py-3 px-6"
-                 href="https://www.aiinstitute.cz/ai-dovednosti-registrace">Koupit s podporou
+                 href="#pricing-dates">Koupit s podporou
                 <span
                     className="absolute -top-3 -right-3 bg-black text-white text-xs font-bold px-2 py-1 rounded-full transform rotate-12 shadow-md">-82%</span>
               </a>
             </div>
             <div className="relative">
               <a className="btn text-gray-800 bg-white hover:text-black w-full shadow-lg text-lg py-3 px-6"
-                 href="https://www.aiinstitute.cz/ai-dovednosti-registrace">
+                 href="#pricing-dates">
                 Koupit bez podpory
               </a>
             </div>

@@ -1,52 +1,74 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
-import Link from "next/link";
-
-interface CourseDate {
-  date: Date;
-  deadline: Date;
-  city: string;
-  cityLocative?: string;
-}
+import Link from "next/link"
+import { CourseDate, parseCourseDates } from '@/utils/csvParser'
+import { motion, AnimatePresence } from 'framer-motion'
 
 const PricingDates = () => {
-  const dates: CourseDate[] = [
-    { date: new Date('2024-11-15'), deadline: new Date('2024-10-18'), city: 'Praha', cityLocative: 'Praze' },
-    { date: new Date('2023-12-01'), deadline: new Date('2023-11-01'), city: 'Brno', cityLocative: 'Brně' },
-    { date: new Date('2023-12-15'), deadline: new Date('2023-11-15'), city: 'Ostrava', cityLocative: 'Ostravě' },
-    { date: new Date('2024-01-10'), deadline: new Date('2023-12-10'), city: 'Plzeň', cityLocative: 'Plzni' },
-    { date: new Date('2024-02-05'), deadline: new Date('2024-01-05'), city: 'Olomouc', cityLocative: 'Olomouci' },
-    {date: new Date('2024-12-01'), deadline: new Date('2024-12-11'), city: 'České Budějovice', cityLocative: 'Českých Budějovicích'},
-  ]
+  const [dates, setDates] = useState<CourseDate[]>([])
+  const [selectedFocus, setSelectedFocus] = useState<string>('all')
+  const [focusOptions, setFocusOptions] = useState<string[]>([])
 
   const [closestCourse, setClosestCourse] = useState<CourseDate | null>(null)
   const [daysLeft, setDaysLeft] = useState<number>(0)
-  const [upcomingCourses, setUpcomingCourses] = useState<CourseDate[]>([])
+  const [filteredCourses, setFilteredCourses] = useState<CourseDate[]>([])
 
   useEffect(() => {
-    const now = new Date()
-    const filteredCourses = dates.filter(course => course.deadline > now)
-    setUpcomingCourses(filteredCourses)
+    const loadData = async () => {
+      const courseDates = await parseCourseDates()
+      setDates(courseDates)
+      
+      // Get unique focus options
+      const uniqueFocus = Array.from(new Set(courseDates.map(course => course.focus)))
+      setFocusOptions(['all', ...uniqueFocus])
+      
+      // Initial filtering
+      updateFilteredCourses(courseDates, 'all')
+    }
+    
+    loadData()
+  }, [])
 
-    if (filteredCourses.length > 0) {
-      const closest = filteredCourses.reduce((prev, curr) => 
-        (Math.abs(curr.deadline.getTime() - now.getTime()) < Math.abs(prev.deadline.getTime() - now.getTime()) ? curr : prev)
+  const updateFilteredCourses = (courses: CourseDate[], focus: string) => {
+    const now = new Date()
+    const filtered = courses
+      .filter(course => 
+        course.date > now && 
+        course.deadline > now &&
+        (focus === 'all' || course.focus === focus)
+      )
+      .slice(0, 4) // Only show the closest 4 courses
+    
+    setFilteredCourses(filtered)
+
+    if (filtered.length > 0) {
+      // Find course with closest deadline
+      const closest = filtered.reduce((prev, curr) =>
+        (curr.deadline.getTime() < prev.deadline.getTime() ? curr : prev)
       )
       setClosestCourse(closest)
       const timeDiff = closest.deadline.getTime() - now.getTime()
       setDaysLeft(Math.ceil(timeDiff / (1000 * 3600 * 24)))
     }
-  }, [])
+  }
+
+  useEffect(() => {
+    updateFilteredCourses(dates, selectedFocus)
+  }, [dates, selectedFocus])
 
   const formatDate = (date: Date) => {
     return date.toLocaleDateString('cs-CZ', { day: 'numeric', month: 'long', year: 'numeric' })
   }
 
   return (
-      <section className="bg-zinc-50 py-12 md:py-20">
+      <section id="pricing-dates" className="bg-zinc-50 py-8 md:py-10">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          <div className="grid md:grid-cols-2 gap-8 items-center">
+          <div className="max-w-3xl mx-auto text-center pb-6">
+            <h2 className="font-inter-tight text-2xl md:text-3xl font-bold text-zinc-900 mb-2">Termíny kurzů</h2>
+            <p className="text-base text-zinc-500">Vyberte si termín, který vám nejvíce vyhovuje</p>
+          </div>
+          <div className="grid md:grid-cols-2 gap-8 items-start">
             {/* Left column - Pricing and Closest Course */}
             <div className="text-center md:text-left">
               <h2 className="font-inter-tight text-3xl md:text-4xl font-bold text-zinc-900 mb-4">Cena 20 000 Kč</h2>
@@ -68,48 +90,77 @@ const PricingDates = () => {
               )}
             </div>
 
-            {/* Right column - Dates */}
-            <div
-                className="border border-transparent [background:linear-gradient(theme(colors.white),theme(colors.zinc.50))_padding-box,linear-gradient(120deg,theme(colors.zinc.300),theme(colors.zinc.100),theme(colors.zinc.300))_border-box] rounded-lg p-6">
-              <h3 className="font-inter-tight text-xl font-semibold text-zinc-900 mb-4">Nadcházející termíny</h3>
-              <ul className="space-y-4">
-                {upcomingCourses.map((item, index) => (
-                    <li key={index} className="border-b border-zinc-200 pb-4 last:border-b-0 last:pb-0">
-                      <div className="flex justify-between items-center">
-                        <div>
-                          <p className="font-semibold text-zinc-900">{formatDate(item.date)}</p>
-                          <p className="text-sm text-zinc-600">Město: {item.city}</p>
+            {/* Right column - Filter and Dates */}
+            <div className="space-y-6">
+              <div className="border border-transparent [background:linear-gradient(theme(colors.white),theme(colors.zinc.50))_padding-box,linear-gradient(120deg,theme(colors.zinc.300),theme(colors.zinc.100),theme(colors.zinc.300))_border-box] rounded-lg p-6">
+                <div className="flex justify-between items-center mb-4">
+                  <h3 className="font-inter-tight text-xl font-semibold text-zinc-900">Nadcházející termíny</h3>
+                  <div className="flex items-center space-x-2">
+                    <select
+                      id="focus-filter"
+                      value={selectedFocus}
+                      onChange={(e) => setSelectedFocus(e.target.value)}
+                      className="text-sm border border-zinc-200 rounded-md py-1 px-2 focus:border-zinc-500 focus:outline-none focus:ring-zinc-500"
+                    >
+                      {focusOptions.map((focus) => (
+                        <option key={focus} value={focus}>
+                          {focus === 'all' ? 'Všechna zaměření' : focus}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+              <motion.div
+                className="overflow-hidden"
+                initial={false}
+                animate={{ height: "auto" }}
+                transition={{ duration: 0.4, ease: "easeOut" }}
+              >
+                <AnimatePresence initial={false} mode="popLayout">
+                  <motion.ul 
+                    key={selectedFocus}
+                    className="space-y-4"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    {filteredCourses.map((item, index) => (
+                      <motion.li
+                        key={index}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -20 }}
+                        transition={{ 
+                          duration: 0.3,
+                          delay: index * 0.05,
+                          ease: "easeOut"
+                        }}
+                        layout
+                        className="border-b border-zinc-200 pb-4 last:border-b-0 last:pb-0"
+                      >
+                        <div className="flex justify-between items-center">
+                          <div>
+                            <p className="font-semibold text-zinc-900">{formatDate(item.date)}</p>
+                            <p className="text-sm text-zinc-600">Město: {item.location}</p>
+                            <p className="text-sm text-zinc-600">Zaměření: {item.focus}</p>
+                          </div>
+                          <div className="text-right">
+                            <p className="text-sm text-zinc-600">Deadline registrace:</p>
+                            <p className="font-semibold text-zinc-900">{formatDate(item.deadline)}</p>
+                          </div>
                         </div>
-                        <div className="text-right">
-                          <p className="text-sm text-zinc-600">Deadline registrace:</p>
-                          <p className="font-semibold text-zinc-900">{formatDate(item.deadline)}</p>
-                        </div>
-                      </div>
-                    </li>
-                ))}
-              </ul>
+                      </motion.li>
+                    ))}
+                  </motion.ul>
+                </AnimatePresence>
+              </motion.div>
             </div>
           </div>
-        </div>
-        <div className="flex justify-center mt-12">
-          <div className="max-w-xs mx-auto sm:max-w-none sm:flex sm:justify-center space-y-4 sm:space-y-0 sm:space-x-4">
-
-            <div className="relative">
-              <a className="btn text-white bg-black hover:bg-gray-800 w-full shadow-lg text-lg py-3 px-6"
-                    href="https://www.aiinstitute.cz/ai-dovednosti-registrace">Koupit s podporou
-                <span
-                    className="absolute -top-3 -right-3 bg-black text-white text-xs font-bold px-2 py-1 rounded-full transform rotate-12 shadow-md">-82%</span></a>
-            </div>
-            <div className="relative">
-              <a className="btn text-gray-800 bg-white hover:text-black w-full shadow-lg text-lg py-3 px-6"
-                 href="https://www.aiinstitute.cz/ai-dovednosti-registrace">
-                Koupit bez podpory
-              </a>
-            </div>
           </div>
         </div>
       </section>
-  )
+    )
 }
 
-export default PricingDates
+export default PricingDates;

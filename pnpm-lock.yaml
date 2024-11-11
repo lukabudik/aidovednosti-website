@@ -20,9 +20,15 @@ dependencies:
   '@types/react-dom':
     specifier: ^18.2.17
     version: 18.3.1
+  csv-parse:
+    specifier: ^5.5.6
+    version: 5.5.6
   framer-motion:
     specifier: ^11.11.8
     version: 11.11.8(react-dom@18.3.1)(react@18.3.1)
+  fs:
+    specifier: 0.0.1-security
+    version: 0.0.1-security
   next:
     specifier: ^14.0.3
     version: 14.2.15(react-dom@18.3.1)(react@18.3.1)
@@ -540,6 +546,10 @@ packages:
     resolution: {integrity: sha512-M1uQkMl8rQK/szD0LNhtqxIPLpimGm8sOBwU7lLnCpSbTyY3yeU1Vc7l4KT5zT4s/yOxHH5O7tIuuLOCnLADRw==}
     dev: false
 
+  /csv-parse@5.5.6:
+    resolution: {integrity: sha512-uNpm30m/AGSkLxxy7d9yRXpJQFrZzVWLFBkS+6ngPcZkw/5k3L/jjFuj7tVnEpRn+QgmiXr21nDlhCiUK4ij2A==}
+    dev: false
+
   /didyoumean@1.2.2:
     resolution: {integrity: sha512-gxtyfqMg7GKyhQmb056K7M3xszy/myH8w+B4RT+QXBQsvAOdc3XymqDDPHx1BgPgsdAA5SIifona89YtRATDzw==}
 
@@ -613,6 +623,10 @@ packages:
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
       tslib: 2.7.0
+    dev: false
+
+  /fs@0.0.1-security:
+    resolution: {integrity: sha512-3XY9e1pP0CVEUCdj5BmfIZxRBTSDycnbqhIOGec9QYtmVH2fbLpj86CFWkrNOkt/Fvty4KZG5lTglL9j/gJ87w==}
     dev: false
 
   /fsevents@2.3.3:

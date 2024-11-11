@@ -22,16 +22,17 @@ export default function Home() {
   return (
     <>
       <Hero />
-      <WhatWillYouLearn />
-      <IsItForMe />
-      <PricingDates />
-      <MeetTrainers />
+        <MeetTrainers />
+        <PricingDates />
+        <FinancingOptions />
+
+        <CourseProgramme />
+        <WhatWillYouLearn />
+
       <Bonuses />
-      <CourseProgramme />
       <Testimonials />
-      <FinancingOptions />
       <SignInInstructions />
-      <PartnerLogos />
+      {/* <PartnerLogos /> */}
     </>
   )
 }

@@ -5,7 +5,7 @@ import Logo from '@/public/images/logo-02.png'
 export default function Features02() {
   return (
     <section>
-      <div className="py-12 md:py-20">
+      <div className="py-8 md:py-12">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <div className="relative max-w-3xl mx-auto text-center pb-12 md:pb-16">
             <div className="inline-flex items-center justify-center w-20 h-20 bg-white rounded-xl shadow-md mb-8 relative before:absolute before:-top-12 before:w-52 before:h-52 before:bg-zinc-900 before:opacity-[.08] before:rounded-full before:blur-3xl before:-z-10">

@@ -4,15 +4,15 @@ import React from 'react'
 
 const FinancingOptions = () => {
   return (
-    <section className="bg-zinc-50 py-12 md:py-20">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6">
-        <div className="max-w-3xl mx-auto text-center pb-12 md:pb-20">
+    <section className="bg-zinc-50 py-6 md:py-8" id={"koupit"}>
+      <div className="max-w-5xl mx-auto px-4 sm:px-6">
+        <div className="max-w-2xl mx-auto text-center pb-6 md:pb-8">
           <h2 className="font-inter-tight text-3xl md:text-4xl font-bold text-zinc-900 mb-4">Možnosti financování</h2>
           <p className="text-lg text-zinc-500">Vyberte si variantu, která vám nejlépe vyhovuje</p>
         </div>
-        <div className="max-w-sm mx-auto grid gap-8 lg:grid-cols-2 lg:gap-6 items-start lg:max-w-none">
+        <div className="max-w-sm mx-auto grid gap-6 lg:grid-cols-2 lg:gap-12 items-start lg:max-w-none">
           {/* Option 1 - Cheaper Option */}
-          <div className="relative flex flex-col h-full p-6 bg-white rounded-lg border border-zinc-200 shadow-sm">
+          <div className="relative flex flex-col h-full p-4 bg-white rounded-lg border border-zinc-200 shadow-sm">
             <div className="absolute -top-3 -right-3 bg-zinc-900 text-white text-xs font-bold py-1 px-3 rounded-full">
               NEJLEPŠÍ VOLBA
             </div>

@@ -12,9 +12,9 @@ export default function DefaultLayout({
     <>
       
       <main className="grow">
-
+        <Header />
         {children}
-
+        <Footer />
       </main>
 
     </>

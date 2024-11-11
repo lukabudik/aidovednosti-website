@@ -18,9 +18,9 @@ const PartnerLogos = () => {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
 
   return (
-    <section className="bg-zinc-50 py-12 md:py-20">
+    <section className="bg-zinc-50 py-8 md:py-12">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
-        <div className="max-w-3xl mx-auto text-center pb-12 md:pb-20">
+        <div className="max-w-3xl mx-auto text-center pb-8 md:pb-12">
           <h2 className="font-inter-tight text-3xl md:text-4xl font-bold text-zinc-900 mb-4">Kdo s námi spolupracuje</h2>
           <p className="text-lg text-zinc-500">Své vzdělání v oblasti AI nám svěřují přední společnosti</p>
         </div>

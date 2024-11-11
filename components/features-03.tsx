@@ -22,7 +22,7 @@ export default function Features03() {
 
   return (
     <section className="relative bg-zinc-800 after:absolute after:top-0 after:right-0 after:h-full after:w-96 after:pointer-events-none after:bg-gradient-to-l after:from-zinc-800 max-lg:after:hidden">
-      <div className="py-12 md:py-20">
+      <div className="py-8 md:py-12">
 
         {/* Carousel */}
         <div className="max-w-xl lg:max-w-6xl mx-auto px-4 sm:px-6">

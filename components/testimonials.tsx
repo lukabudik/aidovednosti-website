@@ -11,82 +11,51 @@ import TestimonialImg08 from '@/public/images/testimonial-08.jpg'
 
 export default function Testimonials() {
 
-  const testimonials01 = [
+  const testimonials = [
     {
       image: TestimonialImg01,
-      name: 'Lina James',
-      user: '@linaj87',
+      name: 'Jan Novák',
+      user: 'Realitní makléř',
       link: '#0',
-      content: 'Extremely thoughtful approaches to business. I highly recommend this product to anyone wanting to jump into something new.',
+      content: 'Díky AI workshopu jsem schopen zpracovat dvojnásobek nabídek nemovitostí za polovinu času. Skvělá investice do vzdělání!',
     },
     {
       image: TestimonialImg02,
-      name: 'Lina James',
-      user: '@linaj87',
+      name: 'Marie Svobodová',
+      user: 'Marketing Manager',
       link: '#0',
-      content: 'Extremely thoughtful approaches to business. I highly recommend this product to anyone wanting to jump into something new.',
+      content: 'Konečně rozumím AI a dokážu ji efektivně využívat. Ušetřím spoustu času na rutinních úkolech a můžu se věnovat strategii.',
     },
     {
       image: TestimonialImg03,
-      name: 'Lina James',
-      user: '@linaj87',
+      name: 'Petr Dvořák',
+      user: 'Podnikatel',
       link: '#0',
-      content: 'Extremely thoughtful approaches to business. I highly recommend this product to anyone wanting to jump into something new.',
+      content: 'Workshop mi otevřel oči. Teď využívám AI pro automatizaci procesů a tvorbu obsahu. Moje produktivita se zdvojnásobila.',
     },
     {
       image: TestimonialImg04,
-      name: 'Mary Kahl',
-      user: '@marykahl',
+      name: 'Lucie Černá',
+      user: 'Grafička',
       link: '#0',
-      content: 'Extremely thoughtful approaches to business. I highly recommend this product to anyone wanting to jump into something new.',
-    },
-  ]
-
-  const testimonials02 = [
-    {
-      image: TestimonialImg05,
-      name: 'Katy Dragán',
-      user: '@katyd',
-      link: '#0',
-      content: 'Extremely thoughtful approaches to business. I highly recommend this product to anyone wanting to jump into something new.',
-    },
-    {
-      image: TestimonialImg06,
-      name: 'Karl Ahmed',
-      user: '@karl87',
-      link: '#0',
-      content: 'Extremely thoughtful approaches to business. I highly recommend this product to anyone wanting to jump into something new.',
-    },
-    {
-      image: TestimonialImg07,
-      name: 'Carlotta Grech',
-      user: '@carlagrech',
-      link: '#0',
-      content: 'Extremely thoughtful approaches to business. I highly recommend this product to anyone wanting to jump into something new.',
-    },
-    {
-      image: TestimonialImg08,
-      name: 'Alejandra Gok',
-      user: '@alejandraIT',
-      link: '#0',
-      content: 'Extremely thoughtful approaches to business. I highly recommend this product to anyone wanting to jump into something new.',
+      content: 'Díky AI nástrojům, které jsem se naučila na workshopu, zvládám vytvořit profesionální grafiku v rekordním čase.',
     },
   ]
 
   return (
     <section className="bg-zinc-800">
-      <div className="py-12 md:py-20">
+      <div className="py-8 md:py-12">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          <div className="max-w-3xl mx-auto text-center pb-12 md:pb-20">
+          <div className="max-w-3xl mx-auto text-center pb-8 md:pb-12">
             <h2 className="font-inter-tight text-3xl md:text-4xl font-bold text-zinc-200">Nevěřte nám. Věřte jim!</h2>
           </div>
         </div>
         <div className="max-w-[94rem] mx-auto space-y-6">
-          {/* Row #1 */}
+          {/* Single Row */}
           <div className="w-full inline-flex flex-nowrap overflow-hidden [mask-image:_linear-gradient(to_right,transparent_0,_black_28%,_black_calc(100%-28%),transparent_100%)] group">
             <div className="flex items-start justify-center md:justify-start [&>div]:mx-3 animate-infinite-scroll group-hover:[animation-play-state:paused]">
               {/* Items */}
-              {testimonials01.map((testimonial, index) => (
+              {testimonials.map((testimonial, index) => (
                 <Testimonial key={index} testimonial={testimonial}>
                   {testimonial.content}
                 </Testimonial>
@@ -95,33 +64,13 @@ export default function Testimonials() {
             {/* Duplicated element for infinite scroll */}
             <div className="flex items-start justify-center md:justify-start [&>div]:mx-3 animate-infinite-scroll group-hover:[animation-play-state:paused]" aria-hidden="true">
               {/* Items */}
-              {testimonials01.map((testimonial, index) => (
+              {testimonials.map((testimonial, index) => (
                 <Testimonial key={index} testimonial={testimonial}>
                   {testimonial.content}
                 </Testimonial>
               ))}
             </div>
           </div>
-          {/* Row #2 */}
-          <div className="w-full inline-flex flex-nowrap overflow-hidden [mask-image:_linear-gradient(to_right,transparent_0,_black_28%,_black_calc(100%-28%),transparent_100%)] group">
-            <div className="flex items-start justify-center md:justify-start [&>div]:mx-3 animate-infinite-scroll-inverse group-hover:[animation-play-state:paused] [animation-delay:-7.5s]">
-              {/* Items */}
-              {testimonials02.map((testimonial, index) => (
-                <Testimonial key={index} testimonial={testimonial}>
-                  {testimonial.content}
-                </Testimonial>
-              ))}
-            </div>
-            {/* Duplicated element for infinite scroll */}
-            <div className="flex items-start justify-center md:justify-start [&>div]:mx-3 animate-infinite-scroll-inverse group-hover:[animation-play-state:paused] [animation-delay:-7.5s]" aria-hidden="true">
-              {/* Items */}
-              {testimonials02.map((testimonial, index) => (
-                <Testimonial key={index} testimonial={testimonial}>
-                  {testimonial.content}
-                </Testimonial>
-              ))}
-            </div>
-          </div >
         </div >
       </div >
     </section >

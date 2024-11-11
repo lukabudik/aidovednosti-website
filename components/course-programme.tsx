@@ -2,6 +2,7 @@
 import React, { useState } from 'react'
 import { FiChevronDown, FiCoffee } from "react-icons/fi";
 import { motion, AnimatePresence } from 'framer-motion'
+import Stats from "@/components/stats";
 
 interface ProgrammeBlock {
   time: string
@@ -154,17 +155,17 @@ export default function CourseProgramme() {
   }
 
   return (
-      <section className="bg-zinc-50 py-12 md:py-20">
+      <section className=" py-6 md:py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          <div className="max-w-3xl mx-auto text-center pb-12 md:pb-20">
-            <h2 className="font-inter-tight text-3xl md:text-4xl font-bold text-zinc-900 mb-4">Program kurzu</h2>
-            <p className="text-lg text-zinc-500">Podrobný přehled toho, co se naučíte během našeho dvoudenního
+          <div className="max-w-3xl mx-auto text-center pb-6">
+            <h2 className="font-inter-tight text-2xl md:text-3xl font-bold text-zinc-900 mb-2">Program kurzu</h2>
+            <p className="text-base text-zinc-500">Podrobný přehled toho, co se naučíte během našeho dvoudenního
               intenzivního kurzu.</p>
           </div>
           <div className="grid md:grid-cols-2 gap-8">
             {programme.map((day, dayIndex) => (
                 <div key={dayIndex} className="mb-8">
-                  <h3 className="font-inter-tight text-2xl font-semibold text-zinc-900 mb-6 bg-zinc-100 p-4 rounded-lg">{day.day}</h3>
+                  <h3 className="font-inter-tight text-xl font-semibold text-zinc-900 mb-4 bg-zinc-100 p-3 rounded-lg">{day.day}</h3>
                   <div className="space-y-4">
                     {day.blocks.map((block, blockIndex) => (
                         <motion.div
@@ -175,7 +176,7 @@ export default function CourseProgramme() {
                             transition={{duration: 0.3}}
                         >
                           <div
-                              className={`w-full text-left px-6 py-4 flex justify-between items-center ${block.content.length > 0 ? 'cursor-pointer' : ''}`}
+                              className={`w-full text-left px-4 py-3 flex justify-between items-center ${block.content.length > 0 ? 'cursor-pointer' : ''}`}
                               onClick={() => block.content.length > 0 && toggleBlock(day.day, blockIndex)}
                           >
                             <div className="flex items-center space-x-4">
@@ -206,8 +207,8 @@ export default function CourseProgramme() {
                                     }}
                                     transition={{duration: 0.3, ease: [0.04, 0.62, 0.23, 0.98]}}
                                 >
-                                  <div className="px-6 pb-4">
-                                    <ul className="list-none text-zinc-600 space-y-4">
+                                  <div className="px-4 pb-3">
+                                    <ul className="list-none text-zinc-600 space-y-2">
                                       {block.content.reduce((acc: JSX.Element[], item: string, itemIndex: number) => {
                                         if (!item.startsWith('-')) {
                                           acc.push(
@@ -245,23 +246,24 @@ export default function CourseProgramme() {
             ))}
           </div>
         </div>
-        <div className="flex justify-center mt-12">
+        <div className="flex justify-center mt-8">
           <div className="max-w-xs mx-auto sm:max-w-none sm:flex sm:justify-center space-y-4 sm:space-y-0 sm:space-x-4">
             <div className="relative">
               <a className="btn text-white bg-black hover:bg-gray-800 w-full shadow-lg text-lg py-3 px-6"
-                 href="https://www.aiinstitute.cz/ai-dovednosti-registrace">Koupit s podporou
+                 href="#pricing-dates">Koupit s podporou
                 <span
                     className="absolute -top-3 -right-3 bg-black text-white text-xs font-bold px-2 py-1 rounded-full transform rotate-12 shadow-md">-82%</span>
               </a>
             </div>
             <div className="relative">
               <a className="btn text-gray-800 bg-white hover:text-black w-full shadow-lg text-lg py-3 px-6"
-                 href="https://www.aiinstitute.cz/ai-dovednosti-registrace">
+                 href="#pricing-dates">
                 Koupit bez podpory
               </a>
             </div>
           </div>
         </div>
+
       </section>
   )
 }

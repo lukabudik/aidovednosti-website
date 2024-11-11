@@ -22,9 +22,9 @@ export default function Bonuses() {
 
   return (
     <section>
-      <div className="py-12 md:py-20">
+      <div className=" py-12 md:py-12">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          <div className="relative max-w-3xl mx-auto text-center pb-12 md:pb-20">
+          <div className="relative max-w-3xl mx-auto text-center pb-8 md:pb-12">
             <h2 className="font-inter-tight text-3xl md:text-4xl font-bold text-zinc-900 mb-4">Bonusy, které získáte po absolvování workshopu</h2>
             <p className="text-lg text-zinc-500">Připravili jsme pro vás exkluzivní bonusy k rozšíření vašich znalostí</p>
           </div>

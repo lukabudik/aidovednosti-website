@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import Logo from '@/public/images/logo.png'
+import Logo from '@/public/images/Logo.webp'
 
 export default function Footer() {
   return (
@@ -18,8 +18,8 @@ export default function Footer() {
                 <Image src={Logo} width={24} height={24} alt="Logo" />
               </Link>
             </div>
-            <div className="grow text-sm text-zinc-500">&copy; Cruip.com. All rights reserved.</div>
-            {/* Social links */}
+            <div className="grow text-sm text-zinc-500">&copy; AI Institute s.r.o. - všechna práva vyhrazena.</div>
+            {/* Social links
             <ul className="flex space-x-4 mt-4 mb-1">
               <li>
                 <a className="flex justify-center items-center text-zinc-700 hover:text-zinc-900 transition" href="#0" aria-label="Twitter">
@@ -42,62 +42,37 @@ export default function Footer() {
                   </svg>
                 </a>
               </li>
-            </ul>
+            </ul>*/}
           </div>
 
           {/* 2nd block */}
           <div className="sm:col-span-6 md:col-span-3 lg:col-span-2">
-            <h6 className="text-sm text-zinc-800 font-medium mb-2">Company</h6>
+            <h6 className="text-sm text-zinc-800 font-medium mb-2">Společnost</h6>
             <ul className="text-sm space-y-2">
               <li>
-                <a className="text-zinc-500 hover:text-zinc-900 transition" href="#0">About us</a>
+                <a className="text-zinc-500 hover:text-zinc-900 transition" href="#0">O nás</a>
               </li>
               <li>
-                <a className="text-zinc-500 hover:text-zinc-900 transition" href="#0">Diversity & Inclusion</a>
+                <a className="text-zinc-500 hover:text-zinc-900 transition" href="#0">Produkty</a>
               </li>
               <li>
-                <a className="text-zinc-500 hover:text-zinc-900 transition" href="#0">Blog</a>
-              </li>
-              <li>
-                <a className="text-zinc-500 hover:text-zinc-900 transition" href="#0">Careers</a>
-              </li>
-              <li>
-                <a className="text-zinc-500 hover:text-zinc-900 transition" href="#0">Financial statements</a>
-              </li>
-            </ul>
-          </div>
-
-          {/* 3rd block */}
-          <div className="sm:col-span-6 md:col-span-3 lg:col-span-2">
-            <h6 className="text-sm text-zinc-800 font-medium mb-2">Resources</h6>
-            <ul className="text-sm space-y-2">
-              <li>
-                <a className="text-zinc-500 hover:text-zinc-900 transition" href="#0">Community</a>
-              </li>
-              <li>
-                <a className="text-zinc-500 hover:text-zinc-900 transition" href="#0">Terms of service</a>
-              </li>
-              <li>
-                <a className="text-zinc-500 hover:text-zinc-900 transition" href="#0">Collaboration features</a>
+                <a className="text-zinc-500 hover:text-zinc-900 transition" href="#0">Kontakt</a>
               </li>
             </ul>
           </div>
 
           {/* 4th block */}
           <div className="sm:col-span-6 md:col-span-3 lg:col-span-2">
-            <h6 className="text-sm text-zinc-800 font-medium mb-2">Legals</h6>
+            <h6 className="text-sm text-zinc-800 font-medium mb-2">Informace</h6>
             <ul className="text-sm space-y-2">
               <li>
-                <a className="text-zinc-500 hover:text-zinc-900 transition" href="#0">Refund policy</a>
+                <a className="text-zinc-500 hover:text-zinc-900 transition" href="https://www.aiinstitute.cz/oou">Ochrana osobních údajů</a>
               </li>
               <li>
-                <a className="text-zinc-500 hover:text-zinc-900 transition" href="#0">Terms & Conditions</a>
+                <a className="text-zinc-500 hover:text-zinc-900 transition" href="https://www.aiinstitute.cz/obchodni-podminky">Obchodní podmínky</a>
               </li>
               <li>
-                <a className="text-zinc-500 hover:text-zinc-900 transition" href="#0">Privacy policy</a>
-              </li>
-              <li>
-                <a className="text-zinc-500 hover:text-zinc-900 transition" href="#0">Brand Kit</a>
+                <a className="text-zinc-500 hover:text-zinc-900 transition" href="https://www.aiinstitute.cz/affiliate">Affiliate</a>
               </li>
             </ul>
           </div>

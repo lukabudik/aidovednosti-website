@@ -1,8 +1,12 @@
+'use client'
+
 import Link from 'next/link'
 import Image from 'next/image'
-import Logo from '@/public/images/logo.png'
+import Logo from '@/public/images/Logo.webp'
+import { useState } from 'react'
 
 export default function Header() {
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false)
   return (
     <header className="absolute top-2 md:top-6 w-full z-30">
       <div className="px-4 sm:px-6">
@@ -19,17 +23,55 @@ export default function Header() {
 
             {/* Desktop navigation */}
             <nav className="flex grow">
-
-              {/* Desktop sign in links */}
               <ul className="flex grow justify-end flex-wrap items-center">
-                <li>
-                  <Link className="text-sm font-medium text-zinc-500 hover:text-zinc-900 px-3 lg:px-5 py-2 flex items-center transition" href="/login">Log in</Link>
+                {/* Pro koho dropdown */}
+                <li className="relative">
+                  <button
+                    onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                    className="text-sm font-medium text-zinc-500 hover:text-zinc-900 px-3 lg:px-5 py-2 flex items-center transition"
+                  >
+                    Pro koho
+                    <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </button>
+
+                  {isDropdownOpen && (
+                    <div className="absolute right-0 mt-2 py-2 w-48 bg-white rounded-lg shadow-xl">
+                      <Link
+                        href="/pro/realitaky"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        onClick={() => setIsDropdownOpen(false)}
+                      >
+                        Realiťáky
+                      </Link>
+                      <Link
+                        href="/pro/studenty"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        onClick={() => setIsDropdownOpen(false)}
+                      >
+                        Studenty
+                      </Link>
+                      <Link
+                        href="/pro/podnikatele"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        onClick={() => setIsDropdownOpen(false)}
+                      >
+                        Podnikatele
+                      </Link>
+                    </div>
+                  )}
                 </li>
+
                 <li className="ml-1">
-                  <Link className="btn-sm text-zinc-100 bg-zinc-900 hover:bg-zinc-800 w-full shadow" href="/request-demo">Request Demo</Link>
+                  <Link
+                    className="btn-sm text-zinc-100 bg-zinc-900 hover:bg-zinc-800 w-full shadow"
+                    href="#pricing-dates"
+                  >
+                    Koupit s podporou
+                  </Link>
                 </li>
               </ul>
-
             </nav>
 
           </div>

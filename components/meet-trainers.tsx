@@ -2,6 +2,7 @@ import Image from 'next/image'
 
 interface Trainer {
   name: string;
+  role: string;
   bio: string;
   image: string;
 }
@@ -9,42 +10,61 @@ interface Trainer {
 const trainers: Trainer[] = [
   {
     name: "Daniel Kosec",
-    bio: "\n" +
-        "Specialista na AI produktivitu Je podnikatel, který založil velmi ziskové firmy v kryptu, biohackingu, nemovitostech i AI. I AI Institutu. Je specialistou na zvyšování produktivity díky biohackingu i AI.",
+    role: "Zakladatel AI Institute",
+    bio: "Specialista na AI produktivitu a podnikatel s úspěšnými projekty v oblastech krypta, biohackingu a nemovitostí. Expert na zvyšování produktivity pomocí AI a biohackingu.",
     image: "/images/dan.jpg"
   },
   {
     name: "Ondřej Hlaváč",
-    bio: "Borec který vás i vaši firmu naučí AI. Je spoluzakladatel AI Institute a odškolil a zauditoval ve 2023 desítky firem a stovky jednotlivců online i offline.",
+    role: "Expert na AI vzdělávání",
+    bio: "Spoluzakladatel AI Institute s rozsáhlými zkušenostmi ve vzdělávání. V roce 2023 vedl školení pro desítky firem a stovky jednotlivců v oblasti AI.",
     image: "/images/ondra.jpeg"
   },
   {
     name: "Luka Budík",
-    bio: "Specialista na vývoj AI a automatizace. Je spoluzakladatel AI Institute a hlavní vývojář nejlepšího AI nástroje pro právníky v ČR Advomate.",
+    role: "Technický ředitel",
+    bio: "Specialista na vývoj AI a automatizaci. Spoluzakladatel AI Institute a hlavní vývojář Advomate - předního AI nástroje pro právníky v ČR.",
     image: "/images/luka.jpg"
   },
 ];
 
 export default function MeetTrainers() {
   return (
-    <section className="py-12 md:py-20">
+    <section className=" py-12 md:py-16">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
-        <h2 className="font-inter-tight text-3xl md:text-4xl font-bold text-zinc-900 mb-8 text-center">Poznejte své školitele</h2>
+        <div className="max-w-3xl mx-auto text-center pb-12">
+          <h2 className="font-inter-tight text-3xl md:text-4xl font-bold text-zinc-900 mb-4">Poznejte své školitele</h2>
+          <p className="text-lg text-zinc-500">Učit vás budou zkušení odborníci s praxí v oboru</p>
+        </div>
         
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {trainers.map((trainer, index) => (
-            <div key={index} className="flex flex-col h-full p-6 bg-white rounded-lg border border-transparent [background:linear-gradient(theme(colors.white),theme(colors.white))_padding-box,linear-gradient(120deg,theme(colors.zinc.300),theme(colors.zinc.100),theme(colors.zinc.300))_border-box]">
-              <div className="relative w-full aspect-square mb-4">
-                <Image
-                  src={trainer.image}
-                  alt={trainer.name}
-                  layout="fill"
-                  objectFit="cover"
-                  className="rounded-lg"
-                />
+            <div 
+              key={index} 
+              className="group relative bg-white rounded-lg shadow-sm transition duration-300 hover:shadow-lg"
+            >
+              <div className="absolute inset-0 border border-transparent rounded-lg [background:linear-gradient(theme(colors.white),theme(colors.white))_padding-box,linear-gradient(120deg,theme(colors.zinc.300),theme(colors.zinc.100),theme(colors.zinc.300))_border-box]"></div>
+              <div className="relative p-6">
+                <div className="flex items-center space-x-4 mb-4">
+                  <div className="relative h-16 w-16 shrink-0">
+                    <Image
+                      src={trainer.image}
+                      alt={trainer.name}
+                      fill
+                      className="object-cover rounded-lg"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      priority
+                    />
+                  </div>
+                  <div>
+                    <h3 className="font-inter-tight text-lg font-semibold text-zinc-900">{trainer.name}</h3>
+                    <p className="text-sm font-medium text-zinc-500">{trainer.role}</p>
+                  </div>
+                </div>
+                <div className="border-t border-zinc-100 pt-4">
+                  <p className="text-sm text-zinc-600 leading-relaxed">{trainer.bio}</p>
+                </div>
               </div>
-              <h3 className="font-inter-tight text-xl font-semibold text-zinc-900 mb-2">{trainer.name}</h3>
-              <p className="text-sm text-zinc-500 grow">{trainer.bio}</p>
             </div>
           ))}
         </div>

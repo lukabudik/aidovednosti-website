@@ -8,9 +8,9 @@ import FeatureImage05 from '@/public/images/feature-post-05.png'
 export default function Features02() {
   return (
     <section>
-      <div className="py-12 md:py-20">
+      <div className="py-8 md:py-12">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          <div className="relative max-w-3xl mx-auto text-center pb-12 md:pb-20">
+          <div className="relative max-w-3xl mx-auto text-center pb-8 md:pb-12">
             <h2 className="font-inter-tight text-3xl md:text-4xl font-bold text-zinc-900 mb-4">AI-powered features and effects</h2>
             <p className="text-lg text-zinc-500">Whenever you are ready, just hit publish to turn your site sketches into an actual designs. No creating, no skills, no reshaping.</p>
           </div>
