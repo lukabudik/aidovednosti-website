@@ -6,7 +6,7 @@ export interface CourseDate {
   location: string;
   cityLocative: string;
   focus: string;
-  deadline?: Date;
+  deadline: Date | null;
 }
 
 function parseDate(dateStr: string): Date {
@@ -50,11 +50,14 @@ export async function parseCourseDates(): Promise<CourseDate[]> {
           location: record['Lokalita'],
           cityLocative: record['Locative'],
           focus: record['Zaměření'],
-          deadline: new Date(startDate.getTime() - 30 * 24 * 60 * 60 * 1000)
+          deadline: startDate instanceof Date ? new Date(startDate.getTime() - 30 * 24 * 60 * 60 * 1000) : null
         };
       })
-      .filter(record => record.date > now && record.deadline > now)
-      .sort((a, b) => a.deadline.getTime() - b.deadline.getTime());
+      .filter((record: CourseDate) => record.date > now && (record.deadline ? record.deadline > now : true))
+      .sort((a: CourseDate, b: CourseDate) => {
+        if (!a.deadline || !b.deadline) return 0;
+        return a.deadline.getTime() - b.deadline.getTime();
+      });
   } catch (error) {
     console.error('Error parsing CSV file:', error);
     return [];

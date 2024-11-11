@@ -35,7 +35,7 @@ const PricingDates = () => {
     const filtered = courses
       .filter(course => 
         course.date > now && 
-        course.deadline > now &&
+        (course.deadline ? course.deadline > now : true) &&
         (focus === 'all' || course.focus === focus)
       )
       .slice(0, 4) // Only show the closest 4 courses
@@ -45,10 +45,10 @@ const PricingDates = () => {
     if (filtered.length > 0) {
       // Find course with closest deadline
       const closest = filtered.reduce((prev, curr) =>
-        (curr.deadline.getTime() < prev.deadline.getTime() ? curr : prev)
+        (curr.deadline && prev.deadline && curr.deadline.getTime() < prev.deadline.getTime() ? curr : prev)
       )
       setClosestCourse(closest)
-      const timeDiff = closest.deadline.getTime() - now.getTime()
+      const timeDiff = closest.deadline ? closest.deadline.getTime() - now.getTime() : 0
       setDaysLeft(Math.ceil(timeDiff / (1000 * 3600 * 24)))
     }
   }
@@ -147,7 +147,7 @@ const PricingDates = () => {
                           </div>
                           <div className="text-right">
                             <p className="text-sm text-zinc-600">Deadline registrace:</p>
-                            <p className="font-semibold text-zinc-900">{formatDate(item.deadline)}</p>
+                            <p className="font-semibold text-zinc-900">{item.deadline ? formatDate(item.deadline) : 'N/A'}</p>
                           </div>
                         </div>
                       </motion.li>
