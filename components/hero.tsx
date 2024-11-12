@@ -26,16 +26,21 @@ export default function Hero() {
                   Ušetřený čas pak věnuj sobě a své rodině, zvyš své příjmy a zvyš svoji hodnotu na trhu práce.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 mb-8">
-                  <div className="relative">
-                    <a className="btn text-white bg-black hover:bg-gray-800 w-full shadow-lg text-lg py-3 px-6"
-                       href="#pricing-dates">Koupit s podporou
-                      <span className="absolute -top-3 -right-3 bg-black text-white text-xs font-bold px-2 py-1 rounded-full transform rotate-12 shadow-md">-82%</span>
-                    </a>
+                  <div className="relative group">
+                    <div className="relative">
+                      <span className="absolute -top-3 -right-3 bg-black text-white text-xs font-bold px-3 py-1.5 rounded-full transform rotate-12 shadow-lg group-hover:rotate-6 transition-all duration-300 z-20 border-2 border-white">-82%</span>
+                      <a className="btn text-white bg-black group-hover:bg-gray-800 w-full shadow-lg text-lg py-3 px-6 transition-all duration-300 ease-in-out transform group-hover:translate-y-[-2px] group-hover:shadow-xl relative overflow-hidden"
+                         href="#pricing-dates">
+                        <span className="relative z-10">Koupit s podporou</span>
+                        <div className="absolute inset-0 bg-gradient-to-r from-gray-800 to-black opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out"></div>
+                      </a>
+                    </div>
                   </div>
-                  <div className="relative">
-                    <a className="btn text-gray-800 bg-white hover:text-black w-full shadow-lg text-lg py-3 px-6"
+                  <div className="relative group">
+                    <a className="btn text-gray-800 bg-white group-hover:text-black w-full shadow-lg text-lg py-3 px-6 transition-all duration-300 ease-in-out transform group-hover:translate-y-[-2px] group-hover:shadow-xl relative overflow-hidden"
                        href="#pricing-dates">
-                      Koupit bez podpory
+                      <span className="relative z-10">Koupit bez podpory</span>
+                      <div className="absolute inset-0 bg-gradient-to-r from-gray-100 to-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out"></div>
                     </a>
                   </div>
                 </div>
