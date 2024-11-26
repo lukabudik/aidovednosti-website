@@ -7,34 +7,21 @@ interface Trainer {
   image: string;
 }
 
-const trainers: Trainer[] = [
-  {
-    name: "Daniel Kosec",
-    role: "Zakladatel AI Institute",
-    bio: "Specialista na AI produktivitu a podnikatel s úspěšnými projekty v oblastech krypta, biohackingu a nemovitostí. Expert na zvyšování produktivity pomocí AI a biohackingu.",
-    image: "/images/dan.jpg"
-  },
-  {
-    name: "Ondřej Hlaváč",
-    role: "Expert na AI vzdělávání",
-    bio: "Spoluzakladatel AI Institute s rozsáhlými zkušenostmi ve vzdělávání. V roce 2023 vedl školení pro desítky firem a stovky jednotlivců v oblasti AI.",
-    image: "/images/ondra.jpeg"
-  },
-  {
-    name: "Luka Budík",
-    role: "Technický ředitel",
-    bio: "Specialista na vývoj AI a automatizaci. Spoluzakladatel AI Institute a hlavní vývojář Advomate - předního AI nástroje pro právníky v ČR.",
-    image: "/images/luka.jpg"
-  },
-];
+interface MeetTrainersProps {
+  heading: {
+    title: string;
+    subtitle: string;
+  };
+  trainers: Trainer[];
+}
 
-export default function MeetTrainers() {
+export default function MeetTrainers({ heading, trainers }: MeetTrainersProps) {
   return (
     <section className=" py-12 md:py-16">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <div className="max-w-3xl mx-auto text-center pb-12">
-          <h2 className="font-inter-tight text-3xl md:text-4xl font-bold text-zinc-900 mb-4">Poznejte své školitele</h2>
-          <p className="text-lg text-zinc-500">Učit vás budou zkušení odborníci s praxí v oboru</p>
+          <h2 className="font-inter-tight text-3xl md:text-4xl font-bold text-zinc-900 mb-4">{heading.title}</h2>
+          <p className="text-lg text-zinc-500">{heading.subtitle}</p>
         </div>
         
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">

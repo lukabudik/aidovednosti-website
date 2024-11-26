@@ -1,53 +1,38 @@
 'use client'
 import Testimonial from '@/components/testimonial'
+import { StaticImageData } from 'next/image'
 import TestimonialImg01 from '@/public/images/testimonial-01.jpg'
 import TestimonialImg02 from '@/public/images/testimonial-02.jpg'
 import TestimonialImg03 from '@/public/images/testimonial-03.jpg'
 import TestimonialImg04 from '@/public/images/testimonial-04.jpg'
-import TestimonialImg05 from '@/public/images/testimonial-05.jpg'
-import TestimonialImg06 from '@/public/images/testimonial-06.jpg'
-import TestimonialImg07 from '@/public/images/testimonial-07.jpg'
-import TestimonialImg08 from '@/public/images/testimonial-08.jpg'
 
-export default function Testimonials() {
+interface TestimonialItem {
+  image: StaticImageData
+  name: string
+  user: string
+  link: string
+  content: string
+}
 
-  const testimonials = [
-    {
-      image: TestimonialImg01,
-      name: 'Jan Novák',
-      user: 'Realitní makléř',
-      link: '#0',
-      content: 'Díky AI workshopu jsem schopen zpracovat dvojnásobek nabídek nemovitostí za polovinu času. Skvělá investice do vzdělání!',
-    },
-    {
-      image: TestimonialImg02,
-      name: 'Marie Svobodová',
-      user: 'Marketing Manager',
-      link: '#0',
-      content: 'Konečně rozumím AI a dokážu ji efektivně využívat. Ušetřím spoustu času na rutinních úkolech a můžu se věnovat strategii.',
-    },
-    {
-      image: TestimonialImg03,
-      name: 'Petr Dvořák',
-      user: 'Podnikatel',
-      link: '#0',
-      content: 'Workshop mi otevřel oči. Teď využívám AI pro automatizaci procesů a tvorbu obsahu. Moje produktivita se zdvojnásobila.',
-    },
-    {
-      image: TestimonialImg04,
-      name: 'Lucie Černá',
-      user: 'Grafička',
-      link: '#0',
-      content: 'Díky AI nástrojům, které jsem se naučila na workshopu, zvládám vytvořit profesionální grafiku v rekordním čase.',
-    },
-  ]
+interface TestimonialsProps {
+  heading: {
+    title: string
+    subtitle?: string
+  }
+  testimonials: TestimonialItem[]
+}
+
+export default function Testimonials({ heading, testimonials }: TestimonialsProps) {
 
   return (
     <section className="bg-zinc-800">
       <div className="py-8 md:py-12">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <div className="max-w-3xl mx-auto text-center pb-8 md:pb-12">
-            <h2 className="font-inter-tight text-3xl md:text-4xl font-bold text-zinc-200">Nevěřte nám. Věřte jim!</h2>
+            <h2 className="font-inter-tight text-3xl md:text-4xl font-bold text-zinc-200">{heading.title}</h2>
+            {heading.subtitle && (
+              <p className="text-lg text-zinc-400 mt-2">{heading.subtitle}</p>
+            )}
           </div>
         </div>
         <div className="max-w-[94rem] mx-auto space-y-6">

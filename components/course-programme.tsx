@@ -8,7 +8,7 @@ interface ProgrammeBlock {
   time: string
   title: string
   content: string[]
-  icon?: React.ElementType
+  icon?: React.ReactNode
 }
 
 interface ProgrammeDay {
@@ -16,135 +16,26 @@ interface ProgrammeDay {
   blocks: ProgrammeBlock[]
 }
 
-const programme: ProgrammeDay[] = [
-  {
-    day: 'Den 1',
-    blocks: [
-      {
-        time: '9:00',
-        title: 'Úvod: „Ukradne mi AI práci?"',
-        content: [
-          'Přehled vlivu AI na trh práce a efektivitu.',
-          'Rozlišení mezi mýty a realitou AI v pracovním procesu',
-          'Diskuze o potenciálu AI ve zvyšování produktivity',
-          'Jak na správný prompting pro jazykové modely'
-        ]
-      },
-      {
-        time: '10:00',
-        title: 'Základy práce s ChatGPT',
-        content: [
-          'Naučení se základům práce s ChatGPT od A-Z',
-          'Případové studie využití ChatGPT a průlet nástrojem',
-          'Jak naučit ChatGPT, aby psal jako já',
-          'Multimodalita a její využití',
-          'Jak donutit ChatGPT, aby si nevymýšlel',
-          'Jak analyzovat dokumenty, měnit formáty a tvořit data aneb pokročilá analýza v ChatGPT',
-          'Jak pracovat s vyhledáváním na internetu a vytěžit z toho maximum?'
-        ]
-      },
-      {
-        time: '12:00',
-        title: 'ZNALOSTNÍ KVÍZ S ODMĚNOU + pauza',
-        icon: FiCoffee,
-        content: []
-      },
-      {
-        time: '13:00',
-        title: 'Úvod do generování obrázků pomocí AI',
-        content: [
-          'V čem je Dalle nejlepší a na co ho použít?',
-          'Jak vytvořit Logo a další vizuální prvky pomocí Dalle 3',
-          'Využití generovaných obrázků pro marketing a prezentace'
-        ]
-      },
-      {
-        time: '15:00',
-        title: 'GPT a asistenti',
-        content: [
-          'Co jsou to GPTs a jak se v nich vyznat',
-          'Přehled TOP 7 nejlepších GPT uvnitř ChatGPT',
-          'Jak vytvořit vlastního asistenta pro jakoukoliv činnost?'
-        ]
-      },
-      {
-        time: '16:30',
-        title: 'Q&A a vyhodnocení prvního dne',
-        content: []
-      }
-    ]
-  },
-  {
-    day: 'Den 2',
-    blocks: [
-      {
-        time: '9:00 - 11:45',
-        title: 'Pokročilé AI nástroje a vizuální tvorba',
-        content: [
-          'Rozšiřování možností s AI:',
-          '- Výběr a využití AI nástrojů pro zvýšení produktivity',
-          '- Nejnovější trendy v AI a jejich aplikace',
-          'Midjourney:',
-          '- Tvorba profesionálního vizuálního obsahu',
-          '- Efektivní promptování pro nejlepší výsledky',
-          'Adobe FireFly:',
-          '- Realistické generování a úprava obrázků',
-          '- Pokročilé techniky editace grafiky',
-          'IdeoGram:',
-          '- Rychlá tvorba vizuálního obsahu s textem',
-          '- Efektivní vizuální marketing'
-        ]
-      },
-      {
-        time: '11:45',
-        title: 'SOUBOJ TÝMŮ S ODMĚNOU + pauza',
-        icon: FiCoffee,
-        content: []
-      },
-      {
-        time: '13:00 - 14:00',
-        title: 'Audio a video tvorba s AI',
-        content: [
-          'Elevenlabs:',
-          '- Realistický převod textu na mluvené slovo',
-          '- Tvorba voiceoverů pro podcasty a marketing',
-          'HeyGen:',
-          '- Vytváření videoobsahu s AI avatarem',
-          '- Efektivní produkce video materiálů pro sociální média'
-        ]
-      },
-      {
-        time: '14:00',
-        title: 'Úkol a interaktivní zadání + 5 minut rychlo pauza',
-        icon: FiCoffee,
-        content: []
-      },
-      {
-        time: '14:45 - 16:45',
-        title: 'Produktivita a praktické aplikace AI',
-        content: [
-          'Fireflies:',
-          '- Automatické zpracování a analýza schůzek',
-          '- Efektivní správa poznámek a úkolů',
-          'Rows AI:',
-          '- Intuitivní práce s daty pomocí AI',
-          '- Rychlá analýza a vizualizace dat',
-          'Looka & Aragon:',
-          '- AI-asistovaná tvorba brandingu a profesionálních fotek',
-          'AI studium:',
-          '- Efektivní nástroje pro rychlé učení a ověřování informací'
-        ]
-      },
-      {
-        time: '16:45',
-        title: 'Zakončení kurzu a vyhodnocení úkolů',
-        content: []
-      }
-    ]
+interface CourseProgrammeProps {
+  heading: {
+    title: string
+    subtitle: string
   }
-]
+  programme: ProgrammeDay[]
+  cta: {
+    primary: {
+      text: string
+      href: string
+      discount?: string
+    }
+    secondary: {
+      text: string
+      href: string
+    }
+  }
+}
 
-export default function CourseProgramme() {
+export default function CourseProgramme({ heading, programme, cta }: CourseProgrammeProps) {
   const [openBlocks, setOpenBlocks] = useState<{ [key: string]: boolean }>({})
 
   const toggleBlock = (day: string, blockIndex: number) => {
@@ -158,9 +49,8 @@ export default function CourseProgramme() {
       <section className=" py-6 md:py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <div className="max-w-3xl mx-auto text-center pb-6">
-            <h2 className="font-inter-tight text-2xl md:text-3xl font-bold text-zinc-900 mb-2">Program kurzu</h2>
-            <p className="text-base text-zinc-500">Podrobný přehled toho, co se naučíte během našeho dvoudenního
-              intenzivního kurzu.</p>
+            <h2 className="font-inter-tight text-2xl md:text-3xl font-bold text-zinc-900 mb-2">{heading.title}</h2>
+            <p className="text-base text-zinc-500">{heading.subtitle}</p>
           </div>
           <div className="grid md:grid-cols-2 gap-8">
             {programme.map((day, dayIndex) => (
@@ -184,7 +74,7 @@ export default function CourseProgramme() {
                               <span className="font-inter-tight font-semibold text-zinc-900">{block.title}</span>
                             </div>
                             <div className="flex items-center space-x-2">
-                              {block.icon && <block.icon className="text-zinc-400"/>}
+                              {block.icon && <div className="text-zinc-400">{block.icon}</div>}
                               {block.content.length > 0 && (
                                   <motion.div
                                       animate={{rotate: openBlocks[`${day.day}-${blockIndex}`] ? 180 : 0}}
@@ -250,20 +140,21 @@ export default function CourseProgramme() {
           <div className="flex flex-col sm:flex-row gap-4 mb-8">
             <div className="relative group">
               <div className="relative">
-                <span
-                    className="absolute -top-3 -right-3 bg-black text-white text-xs font-bold px-3 py-1.5 rounded-full transform rotate-12 shadow-lg group-hover:rotate-6 transition-all duration-300 z-20 border-2 border-white">-82%</span>
-                <a className="btn text-white bg-black group-hover:bg-gray-800 w-full shadow-lg text-lg py-3 px-6 transition-all duration-300 ease-in-out transform group-hover:translate-y-[-2px] group-hover:shadow-xl relative overflow-hidden"
-                   href="#pricing-dates">
-                  <span className="relative z-10">Koupit s podporou</span>
+                {cta.primary.discount && (
+                  <span className="absolute -top-3 -right-3 bg-black text-white text-xs font-bold px-3 py-1.5 rounded-full transform rotate-12 shadow-lg group-hover:rotate-6 transition-all duration-300 z-20 border-2 border-white">{cta.primary.discount}</span>
+                )}
+                <a className="btn text-white bg-blue-700 hover:bg-blue-800 w-full shadow-lg text-lg py-3 px-6 transition-all duration-300 ease-in-out transform group-hover:translate-y-[-2px] group-hover:shadow-xl relative overflow-hidden"
+                   href={cta.primary.href}>
+                  <span className="relative z-10">{cta.primary.text}</span>
                   <div
-                      className="absolute inset-0 bg-gradient-to-r from-gray-800 to-black opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out"></div>
+                      className="absolute inset-0 bg-gradient-to-r from-blue-800 to-blue-900 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out"></div>
                 </a>
               </div>
             </div>
             <div className="relative group">
               <a className="btn text-gray-800 bg-white group-hover:text-black w-full shadow-lg text-lg py-3 px-6 transition-all duration-300 ease-in-out transform group-hover:translate-y-[-2px] group-hover:shadow-xl relative overflow-hidden"
-                 href="#pricing-dates">
-                <span className="relative z-10">Koupit bez podpory</span>
+                 href={cta.secondary.href}>
+                <span className="relative z-10">{cta.secondary.text}</span>
                 <div
                     className="absolute inset-0 bg-gradient-to-r from-gray-100 to-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out"></div>
               </a>

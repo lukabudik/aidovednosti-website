@@ -5,7 +5,37 @@ import Link from "next/link"
 import { CourseDate, parseCourseDates } from '@/utils/csvParser'
 import { motion, AnimatePresence } from 'framer-motion'
 
-const PricingDates = () => {
+interface PricingDatesProps {
+  heading: {
+    title: string;
+    subtitle: string;
+  };
+  pricing: {
+    amount: string;
+    earlyBirdDiscount: {
+      amount: string;
+      text: string;
+      label: string;
+    };
+  };
+  upcomingDates: {
+    title: string;
+    filterLabel: string;
+    allCoursesLabel: string;
+    nextCourseLabel: string;
+    daysLeftText: string;
+    courseDateLabel: string;
+    registrationDeadlineLabel: string;
+    cityLabel: string;
+    focusLabel: string;
+  };
+}
+
+const PricingDates = ({
+  heading,
+  pricing,
+  upcomingDates
+}: PricingDatesProps) => {
   const [dates, setDates] = useState<CourseDate[]>([])
   const [selectedFocus, setSelectedFocus] = useState<string>('all')
   const [focusOptions, setFocusOptions] = useState<string[]>([])
@@ -65,27 +95,27 @@ const PricingDates = () => {
       <section id="pricing-dates" className="bg-zinc-50 py-8 md:py-10">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <div className="max-w-3xl mx-auto text-center pb-6">
-            <h2 className="font-inter-tight text-2xl md:text-3xl font-bold text-zinc-900 mb-2">Termíny kurzů</h2>
-            <p className="text-base text-zinc-500">Vyberte si termín, který vám nejvíce vyhovuje</p>
+            <h2 className="font-inter-tight text-2xl md:text-3xl font-bold text-zinc-900 mb-2">{heading.title}</h2>
+            <p className="text-base text-zinc-500">{heading.subtitle}</p>
           </div>
           <div className="grid md:grid-cols-2 gap-8 items-start">
             {/* Left column - Pricing and Closest Course */}
             <div className="text-center md:text-left">
-              <h2 className="font-inter-tight text-3xl md:text-4xl font-bold text-zinc-900 mb-4">Cena 20 000 Kč</h2>
+              <h2 className="font-inter-tight text-3xl md:text-4xl font-bold text-zinc-900 mb-4">{pricing.amount}</h2>
               <div className="relative inline-block mb-6">
                 <div className="bg-black text-white text-lg font-semibold py-2 px-4 rounded-lg">
-                  3600 Kč pokud se registrujete 1 měsíc předem
+                  {pricing.earlyBirdDiscount.amount} {pricing.earlyBirdDiscount.text}
                 </div>
                 <div
                     className="absolute -top-2 -right-2 transform translate-x-1/4 -translate-y-1/4 bg-blue-500 text-white text-xs font-bold py-1 px-2 rounded-full">
-                  SLEVA!
+                  {pricing.earlyBirdDiscount.label}
                 </div>
               </div>
               {closestCourse && (
                   <div className="border-l-4 p-4 mb-6" role="alert">
-                    <p className="font-bold">Nejbližší kurz:</p>
-                    <p>Do kurzu v {closestCourse.cityLocative} zbývá jen {daysLeft} dní na registraci!</p>
-                    <p className="text-sm mt-2">Datum kurzu: {formatDate(closestCourse.date)}</p>
+                    <p className="font-bold">{upcomingDates.nextCourseLabel}</p>
+                    <p>{upcomingDates.daysLeftText.replace('{city}', closestCourse.cityLocative).replace('{days}', daysLeft.toString())}</p>
+                    <p className="text-sm mt-2">{upcomingDates.courseDateLabel} {formatDate(closestCourse.date)}</p>
                   </div>
               )}
             </div>
@@ -94,7 +124,7 @@ const PricingDates = () => {
             <div className="space-y-6">
               <div className="border border-transparent [background:linear-gradient(theme(colors.white),theme(colors.zinc.50))_padding-box,linear-gradient(120deg,theme(colors.zinc.300),theme(colors.zinc.100),theme(colors.zinc.300))_border-box] rounded-lg p-6">
                 <div className="flex justify-between items-center mb-4">
-                  <h3 className="font-inter-tight text-xl font-semibold text-zinc-900">Nadcházející termíny</h3>
+                  <h3 className="font-inter-tight text-xl font-semibold text-zinc-900">{upcomingDates.title}</h3>
                   <div className="flex items-center space-x-2">
                     <select
                       id="focus-filter"
@@ -104,7 +134,7 @@ const PricingDates = () => {
                     >
                       {focusOptions.map((focus) => (
                         <option key={focus} value={focus}>
-                          {focus === 'all' ? 'Všechna zaměření' : focus}
+                          {focus === 'all' ? upcomingDates.allCoursesLabel : focus}
                         </option>
                       ))}
                     </select>
@@ -142,11 +172,11 @@ const PricingDates = () => {
                         <div className="flex justify-between items-center">
                           <div>
                             <p className="font-semibold text-zinc-900">{formatDate(item.date)}</p>
-                            <p className="text-sm text-zinc-600">Město: {item.location}</p>
-                            <p className="text-sm text-zinc-600">Zaměření: {item.focus}</p>
+                            <p className="text-sm text-zinc-600">{upcomingDates.cityLabel} {item.location}</p>
+                            <p className="text-sm text-zinc-600">{upcomingDates.focusLabel} {item.focus}</p>
                           </div>
                           <div className="text-right">
-                            <p className="text-sm text-zinc-600">Deadline registrace:</p>
+                            <p className="text-sm text-zinc-600">{upcomingDates.registrationDeadlineLabel}</p>
                             <p className="font-semibold text-zinc-900">{item.deadline ? formatDate(item.deadline) : 'N/A'}</p>
                           </div>
                         </div>

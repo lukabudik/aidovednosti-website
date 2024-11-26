@@ -5,77 +5,33 @@ import Image from 'next/image'
 import FeatureIllustration from '@/public/images/feature-illustration.png'
 import FeatureImage01 from '@/public/images/feature-01.png'
 
-export default function WhatWillYouLearn() {
-  const [tab, setTab] = useState<number>(1)
+interface Tab {
+  id: number
+  title: string
+  description: string
+  content: {
+    title: string
+    list: string[]
+  }
+}
 
-  const tabs = [
-    {
-      id: 1,
-      title: 'Základy',
-      description: 'Vše, co potřebuješ vědět o tom jak a proč AI funguje.',
-      content: {
-        title: 'Základy',
-        list: [
-          'Teorie jazykových modelů',
-          'Jak správně promptovat (zadávat příkazy)',
-          'Jak komplexně pracovat s ChatGPT',
-          'Jak si s vytvořit vlastní asistenty, kteří za tebe udělají rutinní úkoly',
-          'Jak pomocí AI analyzovat data',
-          'Jak ověřovat informace a vyhledávat na internetu'
-        ]
-      }
-    },
-    {
-      id: 2,
-      title: 'Grafika',
-      description: 'Vytvářej krásné vizuály během pár minut a ušetři za grafika.',
-      content: {
-        title: 'Grafika',
-        list: [
-          'Jak vizualizovat svoje nápady',
-          'Tvorba úžasných ilustrací a realistických fotek pomocí Midjourney',
-          'Jak vytvářet kompletní promo materiály, včetně textu',
-          'Už neřeš branding - nech si ho celý vygenerovat',
-          'Jak si pomocí AI vytvořit profesionální fotky na LinkedIn'
-        ]
-      }
-    },
-    {
-      id: 3,
-      title: 'Video',
-      description: 'Vlastní dvojník, nebo krásné záběry do reklamy? Obratem!',
-      content: {
-        title: 'Video',
-        list: [
-          'Vytvoř si vlastního AI dvojníka, který ti pomůže s marketingem po celém světě',
-          'Jak si pomocí AI nadabovat jakékoliv video',
-          'Krásné záběry do reklamy během pár vteřin',
-          'Nech si od AI sestříhat celé video'
-        ]
-      }
-    },
-    {
-      id: 4,
-      title: 'Produktivita',
-      description: 'Tyto nástroje se stanou tvým každodenním pomocníkem.',
-      content: {
-        title: 'Produktivita',
-        list: [
-          'Získej vlastní asistentku, která ti sepíše zápisy ze schůzek',
-          'Jak získat kvalifikované leady',
-          'Jak si díky AI odpřipommínkovat smlouvy v kvalitě právníka',
-          'Vytvoř si vlastního chatbota, který zodpoví dotazy tvým zákazníkům',
-        ]
-      }
-    }
-  ]
+interface WhatWillYouLearnProps {
+  heading: {
+    title: string
+    subtitle: string
+  }
+  tabs: Tab[]
+}
+
+export default function WhatWillYouLearn({ heading, tabs }: WhatWillYouLearnProps) {
+  const [tab, setTab] = useState<number>(1)
 
   return (
     <section className="bg-zinc-50">
       <div className="max-w-6xl mx-auto px-4 py-12 sm:px-6">
         <div className="max-w-3xl mx-auto text-center pb-8">
-          <h2 className="font-inter-tight text-3xl md:text-4xl font-bold text-zinc-900 mb-4">Naučíme tě toho opravdu hodně</h2>
-          <p className="text-lg text-zinc-500">AI reads and understands your designs, and with nothing more than a single line of feedback, perform complex actions autonomously.</p>
+          <h2 className="font-inter-tight text-3xl md:text-4xl font-bold text-zinc-900 mb-4">{heading.title}</h2>
+          <p className="text-lg text-zinc-500">{heading.subtitle}</p>
         </div>
         <div>
             {/* Tabs buttons */}
