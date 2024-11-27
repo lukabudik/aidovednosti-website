@@ -90,6 +90,29 @@ export default function Home() {
             title: "Termíny a ceny kurzů",
             subtitle: "Vyberte si termín, který vám nejvíce vyhovuje"
           }}
+          dates={[
+            {
+              date: '2024-12-15',
+              type: 'Prezenční',
+              location: 'Praha',
+              cityLocative: 'Praze',
+              deadline: '2024-11-15'
+            },
+            {
+              date: '2025-01-30',
+              type: 'Prezenční',
+              location: 'Praha',
+              cityLocative: 'Praze',
+              deadline: '2024-12-31'
+            },
+            {
+              date: '2025-02-15',
+              type: 'Prezenční',
+              location: 'Praha',
+              cityLocative: 'Praze',
+              deadline: '2025-01-16'
+            },
+          ]}
           pricing={{
             amount: "14 800 Kč",
             earlyBirdDiscount: {

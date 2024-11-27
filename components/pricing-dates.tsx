@@ -2,10 +2,26 @@
 
 import React, { useState, useEffect } from 'react'
 import Link from "next/link"
-import { CourseDate, parseCourseDates } from '@/utils/csvParser'
 import { motion, AnimatePresence } from 'framer-motion'
 
+export interface CourseDate {
+  date: Date
+  type: string
+  location: string
+  cityLocative: string
+  focus?: string
+  deadline: Date | null
+}
+
 interface PricingDatesProps {
+  dates: {
+    date: string
+    type: string
+    location: string
+    cityLocative: string
+    focus?: string
+    deadline: string | null
+  }[]
   heading: {
     title: string;
     subtitle: string;
@@ -34,7 +50,8 @@ interface PricingDatesProps {
 const PricingDates = ({
   heading,
   pricing,
-  upcomingDates
+  upcomingDates,
+  dates: initialDates,
 }: PricingDatesProps) => {
   const [dates, setDates] = useState<CourseDate[]>([])
   const [selectedFocus, setSelectedFocus] = useState<string>('all')
@@ -45,41 +62,63 @@ const PricingDates = ({
   const [filteredCourses, setFilteredCourses] = useState<CourseDate[]>([])
 
   useEffect(() => {
-    const loadData = async () => {
-      const courseDates = await parseCourseDates()
-      setDates(courseDates)
-      
-      // Get unique focus options
-      const uniqueFocus = Array.from(new Set(courseDates.map(course => course.focus)))
-      setFocusOptions(['all', ...uniqueFocus])
-      
-      // Initial filtering
-      updateFilteredCourses(courseDates, 'all')
+    // Parse dates from props
+    const parsedDates = initialDates.map(course => ({
+      ...course,
+      date: new Date(`${course.date}T10:00:00`),
+      deadline: course.deadline ? new Date(`${course.deadline}T23:59:59`) : null
+    })) as CourseDate[];
+    
+    console.log('Parsed dates:', parsedDates);
+    setDates(parsedDates);
+    
+    // Get unique focus options
+    const uniqueFocus = Array.from(new Set(parsedDates.map(course => course.focus).filter((focus): focus is string => focus !== undefined)));
+    console.log('Unique focus options:', uniqueFocus);
+    if (uniqueFocus.length > 0) {
+      setFocusOptions(['all', ...uniqueFocus]);
     }
     
-    loadData()
-  }, [])
+    // Initial filtering
+    updateFilteredCourses(parsedDates, 'all');
+  }, [initialDates]);
 
   const updateFilteredCourses = (courses: CourseDate[], focus: string) => {
-    const now = new Date()
-    const filtered = courses
-      .filter(course => 
-        course.date > now && 
-        (course.deadline ? course.deadline > now : true) &&
-        (focus === 'all' || course.focus === focus)
-      )
-      .slice(0, 4) // Only show the closest 4 courses
+    console.log('Updating filtered courses with:', { courses, focus });
     
-    setFilteredCourses(filtered)
+    const now = new Date();
+    const filtered = courses
+      .filter(course => {
+        const isAfterNow = course.date > now;
+        const isBeforeDeadline = course.deadline ? course.deadline > now : true;
+        const matchesFocus = focus === 'all' || course.focus === focus;
+        
+        console.log('Course filtering:', {
+          course,
+          isAfterNow,
+          isBeforeDeadline,
+          matchesFocus
+        });
+        
+        return isAfterNow && isBeforeDeadline && matchesFocus;
+      })
+      .sort((a, b) => a.date.getTime() - b.date.getTime())
+      .slice(0, 4);
+    
+    console.log('Filtered courses:', filtered);
+    setFilteredCourses(filtered);
 
     if (filtered.length > 0) {
-      // Find course with closest deadline
-      const closest = filtered.reduce((prev, curr) =>
-        (curr.deadline && prev.deadline && curr.deadline.getTime() < prev.deadline.getTime() ? curr : prev)
-      )
-      setClosestCourse(closest)
-      const timeDiff = closest.deadline ? closest.deadline.getTime() - now.getTime() : 0
-      setDaysLeft(Math.ceil(timeDiff / (1000 * 3600 * 24)))
+      const closest = filtered[0]; // Take the first course after sorting
+      setClosestCourse(closest);
+      
+      const timeDiff = closest.deadline 
+        ? closest.deadline.getTime() - now.getTime() 
+        : 0;
+      setDaysLeft(Math.ceil(timeDiff / (1000 * 3600 * 24)));
+      
+      console.log('Closest course:', closest);
+      console.log('Days left:', Math.ceil(timeDiff / (1000 * 3600 * 24)));
     }
   }
 
@@ -125,20 +164,22 @@ const PricingDates = ({
               <div className="border border-transparent [background:linear-gradient(theme(colors.white),theme(colors.zinc.50))_padding-box,linear-gradient(120deg,theme(colors.zinc.300),theme(colors.zinc.100),theme(colors.zinc.300))_border-box] rounded-lg p-6">
                 <div className="flex justify-between items-center mb-4">
                   <h3 className="font-inter-tight text-xl font-semibold text-zinc-900">{upcomingDates.title}</h3>
-                  <div className="flex items-center space-x-2">
-                    <select
-                      id="focus-filter"
-                      value={selectedFocus}
-                      onChange={(e) => setSelectedFocus(e.target.value)}
-                      className="text-sm border border-zinc-200 rounded-md py-1 px-2 focus:border-zinc-500 focus:outline-none focus:ring-zinc-500"
-                    >
-                      {focusOptions.map((focus) => (
-                        <option key={focus} value={focus}>
-                          {focus === 'all' ? upcomingDates.allCoursesLabel : focus}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
+                  {focusOptions.length > 2 && ( // Show only if there's more than one focus option (excluding 'all')
+                    <div className="flex items-center space-x-2">
+                      <select
+                        id="focus-filter"
+                        value={selectedFocus}
+                        onChange={(e) => setSelectedFocus(e.target.value)}
+                        className="text-sm border border-zinc-200 rounded-md py-1 px-2 focus:border-zinc-500 focus:outline-none focus:ring-zinc-500"
+                      >
+                        {focusOptions.map((focus) => (
+                          <option key={focus} value={focus}>
+                            {focus === 'all' ? upcomingDates.allCoursesLabel : focus}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  )}
                 </div>
               <motion.div
                 className="overflow-hidden"
@@ -173,7 +214,9 @@ const PricingDates = ({
                           <div>
                             <p className="font-semibold text-zinc-900">{formatDate(item.date)}</p>
                             <p className="text-sm text-zinc-600">{upcomingDates.cityLabel} {item.location}</p>
-                            <p className="text-sm text-zinc-600">{upcomingDates.focusLabel} {item.focus}</p>
+                            {item.focus && (
+                              <p className="text-sm text-zinc-600">{upcomingDates.focusLabel} {item.focus}</p>
+                            )}
                           </div>
                           <div className="text-right">
                             <p className="text-sm text-zinc-600">{upcomingDates.registrationDeadlineLabel}</p>

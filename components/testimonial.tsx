@@ -15,7 +15,15 @@ export default function Testimonial({ testimonial, children }: TestimonialProps)
   return (
     <div className="rounded h-full w-[22rem] border border-transparent [background:linear-gradient(#323237,#323237)_padding-box,linear-gradient(120deg,theme(colors.zinc.700),theme(colors.zinc.700/0),theme(colors.zinc.700))_border-box] p-5">
       <div className="flex items-center mb-4">
-        <Image className="shrink-0 rounded-full mr-3" src={testimonial.image} width={44} height={44} alt={testimonial.name} />
+        <div className="shrink-0 relative w-11 h-11 mr-3">
+          <Image 
+            className="rounded-full object-cover" 
+            src={testimonial.image} 
+            fill
+            sizes="(max-width: 44px) 100vw"
+            alt={testimonial.name} 
+          />
+        </div>
         <div>
           <div className="font-inter-tight font-bold text-zinc-200">{testimonial.name}</div>
           <div>

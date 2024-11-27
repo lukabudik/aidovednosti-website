@@ -51,7 +51,7 @@ const SignInInstructions = ({
           <p className="text-lg text-zinc-500">{heading.subtitle}</p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-12 items-stretch">
+        <div className="grid md:grid-cols-2 gap-12 items-center">
           {/* Left column - Instructions */}
           <div className="bg-white rounded-lg shadow-sm p-6 border border-zinc-200">
             <ol className="space-y-4">
@@ -65,15 +65,16 @@ const SignInInstructions = ({
           </div>
 
           {/* Right column - Embedded video */}
-          <div className="bg-white rounded-lg shadow-sm border border-zinc-200 overflow-hidden h-full">
-            <iframe 
-              className="w-full h-full"
-              src={video.embedUrl}
-              title={video.title}
-              frameBorder="0" 
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-              allowFullScreen
-            ></iframe>
+          <div className="bg-white rounded-lg shadow-sm border border-zinc-200 overflow-hidden">
+            <div className="relative w-full h-0" style={{ paddingBottom: '90%' }}>
+              <iframe 
+                src="https://www.loom.com/embed/7ab8b14f0f2f4ad6ba72a81f6bcda797?sid=fb9b80fe-1660-4435-a1fa-9df77173386c" 
+                frameBorder="0"
+                allowFullScreen
+                className="absolute top-0 left-0 w-full h-full"
+                allow="fullscreen"
+              ></iframe>
+            </div>
           </div>
         </div>
 

@@ -34,7 +34,7 @@ export default function Home() {
             cta={{
               primary: {
                 text: "Koupit s podporou",
-                href: "https://www.aiinstitute.cz/ai-dovednosti-registrace",
+                href: "https://www.uradprace.cz/web/cz/vyhledani-rekvalifikacniho-kurzu#/rekvalifikacni-kurz-detail/18900",
                 discount: "-82%"
               },
               secondary: {
@@ -90,6 +90,29 @@ export default function Home() {
               title: "Termíny a ceny kurzů",
               subtitle: "Vyberte si termín, který vám nejvíce vyhovuje"
             }}
+            dates={[
+              {
+                date: '2025-01-17',
+                type: 'Prezenční',
+                location: 'Staroměstké náměstí / Můstek, Praha',
+                cityLocative: 'Praze',
+                deadline: '2024-12-18'
+              },
+              {
+                date: '2025-02-11',
+                type: 'Prezenční',
+                location: 'JIC, Brno',
+                cityLocative: 'Brně',
+                deadline: '2025-01-12'
+              },
+              {
+                date: '2025-02-28',
+                type: 'Prezenční',
+                location: 'Staroměstké náměstí / Můstek, Praha',
+                cityLocative: 'Praze',
+                deadline: '2025-01-29'
+              },
+            ]}
             pricing={{
               amount: "14 800 Kč",
               earlyBirdDiscount: {
@@ -106,7 +129,7 @@ export default function Home() {
               daysLeftText: "Do kurzu v {city} zbývá jen {days} dní na registraci!",
               courseDateLabel: "Datum kurzu:",
               registrationDeadlineLabel: "Deadline registrace:",
-              cityLabel: "Město:",
+              cityLabel: "Kde:",
               focusLabel: "Zaměření:"
             }}
         />
@@ -135,7 +158,7 @@ export default function Home() {
                 ],
                 cta: {
                   text: "Koupit s podporou",
-                  href: "https://www.aiinstitute.cz/ai-dovednosti-registrace"
+                  href: "https://www.uradprace.cz/web/cz/vyhledani-rekvalifikacniho-kurzu#/rekvalifikacni-kurz-detail/18900"
                 },
                 badge: "NEJLEPŠÍ VOLBA"
               },
@@ -154,7 +177,7 @@ export default function Home() {
                 ],
                 cta: {
                   text: "Koupit bez podpory",
-                  href: "https://www.aiinstitute.cz/ai-dovednosti-registrace"
+                  href: "https://www.uradprace.cz/web/cz/vyhledani-rekvalifikacniho-kurzu#/rekvalifikacni-kurz-detail/18900"
                 }
               }
             ]}
@@ -297,7 +320,7 @@ export default function Home() {
             cta={{
               primary: {
                 text: "Koupit s podporou",
-                href: "https://www.aiinstitute.cz/ai-dovednosti-registrace",
+                href: "https://www.uradprace.cz/web/cz/vyhledani-rekvalifikacniho-kurzu#/rekvalifikacni-kurz-detail/18900",
                 discount: "-20%"
               },
               secondary: {
@@ -431,7 +454,7 @@ export default function Home() {
               }
             ]}
         /> */}
-        {/* <SignInInstructions
+        <SignInInstructions
             heading={{
               title: "Jak se přihlásit na workshop?",
               subtitle: "Jednoduchý proces registrace"
@@ -466,7 +489,7 @@ export default function Home() {
                 href: "#pricing-dates"
               }
             }}
-        /> */}
+        />
       </>
   )
 }
