@@ -396,7 +396,7 @@ export default function Home() {
           }
         ]}
       />
-      <Testimonials
+      {/*} <Testimonials
           heading={{
             title: "Co o kurzu říkají realitní makléři"
           }}
@@ -466,7 +466,7 @@ export default function Home() {
             href: "#pricing-dates"
           }
         }}
-      />
+      /> */}
     </>
   )
 }
