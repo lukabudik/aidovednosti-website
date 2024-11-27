@@ -38,7 +38,7 @@ export default function Home() {
             discount: "-82%"
           },
           secondary: {
-            text: "Koupit bez podpory",
+            text: "Více informací",
             href: "#pricing-dates"
           }
         }}
