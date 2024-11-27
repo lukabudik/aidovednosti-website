@@ -92,7 +92,7 @@ const PricingDates = ({
   }
 
   return (
-      <section id="pricing-dates" className="bg-zinc-50 py-8 md:py-10">
+      <section id="pricing-dates" className="bg-zinc-50 py-8 md:py-10 scroll-mt-32">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <div className="max-w-3xl mx-auto text-center pb-6">
             <h2 className="font-inter-tight text-2xl md:text-3xl font-bold text-zinc-900 mb-2">{heading.title}</h2>

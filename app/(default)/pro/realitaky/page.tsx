@@ -1,6 +1,6 @@
 import IsItForMe from "@/components/is-it-for-me"
 import { PiCertificate, PiCamera, PiIceCream } from "react-icons/pi"
-import { FiCoffee } from 'react-icons/fi'
+import {FiCoffee, FiAward, FiPackage} from 'react-icons/fi'
 import TestimonialImg01 from '@/public/images/testimonial-01.jpg'
 import TestimonialImg02 from '@/public/images/testimonial-02.jpg'
 import TestimonialImg03 from '@/public/images/testimonial-03.jpg'
@@ -13,17 +13,13 @@ export const metadata = {
 
 import Hero from '@/components/hero'
 import WhatWillYouLearn from '@/components/what-will-you-learn'
-import Features02 from '@/components/features-02'
-import Features03 from '@/components/features-03'
 import Testimonials from '@/components/testimonials'
-import Cta from '@/components/cta'
 import PricingDates from "@/components/pricing-dates"
 import MeetTrainers from "@/components/meet-trainers"
 import Bonuses from "@/components/bonuses"
 import SignInInstructions from "@/components/SignInInstructions"
 import FinancingOptions from "@/components/financing-options"
 import CourseProgramme from "@/components/course-programme"
-import PartnerLogos from "@/components/PartnerLogos"
 
 export default function Home() {
   return (
@@ -38,7 +34,7 @@ export default function Home() {
         cta={{
           primary: {
             text: "Koupit s podporou",
-            href: "#pricing-dates",
+            href: "https://www.aiinstitute.cz/ai-dovednosti-registrace",
             discount: "-82%"
           },
           secondary: {
@@ -95,7 +91,7 @@ export default function Home() {
             subtitle: "Vyberte si termín, který vám nejvíce vyhovuje"
           }}
           pricing={{
-            amount: "14 900 Kč",
+            amount: "14 800 Kč",
             earlyBirdDiscount: {
               amount: "2 664 Kč",
               text: "s dotací MPSV",
@@ -123,12 +119,12 @@ export default function Home() {
             {
               title: "S příspěvkem MPSV",
               price: {
-                amount: "3 600",
+                amount: "2 664",
                 currency: "Kč",
                 includesVat: true
               },
               savings: {
-                amount: "16 400 Kč",
+                amount: "12 136 Kč",
                 label: "Ušetříte"
               },
               description: "S příspěvkem Ministerstva práce a sociálních věcí, který Vám pokryje 82 % částky za kurzovné.",
@@ -146,7 +142,7 @@ export default function Home() {
             {
               title: "Standardní cena",
               price: {
-                amount: "20 000",
+                amount: "14 800",
                 currency: "Kč",
                 includesVat: true
               },
@@ -174,12 +170,13 @@ export default function Home() {
               blocks: [
                 {
                   time: "9:00",
-                  title: "Úvod do AI pro realitní makléře",
+                  title: "Úvod do AI a ChatGPT",
                   content: [
-                    "Základní koncepty AI v realitním byznysu",
-                    "- Historie a vývoj umělé inteligence",
-                    "- Současné možnosti a limity AI v realitách",
-                    "- Praktické využití v každodenní práci makléře"
+                    "Vliv AI na trh práce a produktivitu",
+                    "- Mýty vs. realita AI v pracovním procesu",
+                    "- Základy práce s ChatGPT od A do Z",
+                    "- Pokročilé techniky promptingu",
+                    "- Analýza dokumentů a práce s daty"
                   ]
                 },
                 {
@@ -190,12 +187,44 @@ export default function Home() {
                 },
                 {
                   time: "11:00",
-                  title: "Praktické využití AI v realitách",
+                  title: "Pokračování praktických cvičení",
                   content: [
-                    "Základní nástroje a jejich použití",
-                    "- ChatGPT pro tvorbu popisů nemovitostí",
-                    "- Midjourney pro úpravu fotografií nemovitostí",
-                    "- AI nástroje pro analýzu trhu"
+                    "Praktické využití ChatGPT",
+                    "- Analýza dokumentů a dat",
+                    "- Tvorba obsahu a textů",
+                    "- Řešení reálných případů"
+                  ]
+                },
+                {
+                  time: "12:00",
+                  title: "Oběd",
+                  content: [],
+                  icon: <FiPackage />
+                },
+                {
+                  time: "13:00",
+                  title: "Generování vizuálního obsahu",
+                  content: [
+                    "Práce s DALL-E 3",
+                    "- Tvorba log a vizuálních prvků",
+                    "- Využití pro marketing a prezentace",
+                    "- GPTs a vlastní AI asistenti"
+                  ]
+                },
+                {
+                  time: "15:00",
+                  title: "Odpolední občerstvení",
+                  content: [],
+                  icon: <FiCoffee />
+                },
+                {
+                  time: "15:30",
+                  title: "Závěr prvního dne",
+                  content: [
+                    "Shrnutí poznatků",
+                    "- Znalostní kvíz s odměnou",
+                    "- Q&A session",
+                    "- Příprava na druhý den"
                   ]
                 }
               ]
@@ -205,12 +234,12 @@ export default function Home() {
               blocks: [
                 {
                   time: "9:00",
-                  title: "Pokročilé techniky",
+                  title: "Pokročilé AI nástroje",
                   content: [
-                    "Efektivní prompt engineering pro reality",
-                    "- Tvorba poutavých popisů nemovitostí",
-                    "- Optimalizace inzerátů",
-                    "- Práce s fotografiemi nemovitostí"
+                    "Midjourney a Adobe Firefly",
+                    "- Tvorba profesionálního vizuálního obsahu",
+                    "- Práce s IdeoGram pro text v obrázcích",
+                    "- Nejnovější trendy v AI nástrojích"
                   ]
                 },
                 {
@@ -223,10 +252,43 @@ export default function Home() {
                   time: "11:00",
                   title: "Praktické workshopy",
                   content: [
-                    "Reálné případové studie",
-                    "- Automatizace rutinních úkolů makléře",
-                    "- Tvorba marketingových materiálů",
-                    "- Analýza realitního trhu s AI"
+                    "Týmová práce s AI nástroji",
+                    "- Soutěž týmů",
+                    "- Praktické úkoly",
+                    "- Sdílení zkušeností"
+                  ]
+                },
+                {
+                  time: "12:00",
+                  title: "Oběd",
+                  content: [],
+                  icon: <FiPackage />
+                },
+                {
+                  time: "13:00",
+                  title: "Audio a video AI nástroje",
+                  content: [
+                    "Elevenlabs a HeyGen",
+                    "- Tvorba mluveného slova",
+                    "- Video obsah s AI avatarem",
+                    "- Automatizace schůzek"
+                  ]
+                },
+                {
+                  time: "15:00",
+                  title: "Odpolední občerstvení",
+                  content: [],
+                  icon: <FiCoffee />
+                },
+                {
+                  time: "15:30",
+                  title: "Závěrečný blok",
+                  content: [
+                    "Praktické aplikace v byznysu",
+                    "- Tvorba brandingu pomocí AI",
+                    "- Efektivní AI studium",
+                    "- Závěrečné vyhodnocení",
+                    "- Předání certifikátů"
                   ]
                 }
               ]
@@ -235,11 +297,11 @@ export default function Home() {
           cta={{
             primary: {
               text: "Koupit s podporou",
-              href: "#pricing-dates",
+              href: "https://www.aiinstitute.cz/ai-dovednosti-registrace",
               discount: "-82%"
             },
             secondary: {
-              text: "Koupit bez podpory",
+              text: "Více informací",
               href: "#pricing-dates"
             }
           }}
@@ -387,7 +449,7 @@ export default function Home() {
         contact={{
           text: "Máte-li jakékoliv dotazy, neváhejte kontaktovat",
           phone: "+420 775 200 593",
-          name: "Ondřej Hlaváč"
+          name: "Veronika Kosecová"
         }}
         video={{
           embedUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",

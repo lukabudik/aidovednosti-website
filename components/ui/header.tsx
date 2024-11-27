@@ -46,11 +46,11 @@ export default function Header() {
                         Realiťáky
                       </Link>
                       <Link
-                        href="/pro/studenty"
+                        href="/"
                         className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                         onClick={() => setIsDropdownOpen(false)}
                       >
-                        Studenty
+                        Veřejnost
                       </Link>
                       <Link
                         href="/pro/podnikatele"
@@ -63,14 +63,6 @@ export default function Header() {
                   )}
                 </li>
 
-                <li className="ml-1">
-                  <Link
-                    className="btn-sm text-zinc-100 bg-zinc-900 hover:bg-zinc-800 w-full shadow"
-                    href="#pricing-dates"
-                  >
-                    Koupit s podporou
-                  </Link>
-                </li>
               </ul>
             </nav>
 

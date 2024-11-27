@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import Stats from '@/components/stats'
 import Image from 'next/image'
+import ScrollLink from './ScrollLink'
 
 interface Partner {
   name: string
@@ -70,19 +71,23 @@ export default function Hero({
                       {cta.primary.discount && (
                         <span className="absolute -top-3 -right-3 bg-black text-white text-xs font-bold px-3 py-1.5 rounded-full transform rotate-12 shadow-lg group-hover:rotate-6 transition-all duration-300 z-20 border-2 border-white">{cta.primary.discount}</span>
                       )}
-                      <a className="btn text-white bg-blue-700 hover:bg-blue-800 w-full shadow-lg text-lg py-3 px-6 transition-all duration-300 ease-in-out transform group-hover:translate-y-[-2px] group-hover:shadow-xl relative overflow-hidden"
-                         href={cta.primary.href}>
+                      <a 
+                        href={cta.primary.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="btn text-white bg-blue-700 hover:bg-blue-800 w-full shadow-lg text-lg py-3 px-6 transition-all duration-300 ease-in-out transform group-hover:translate-y-[-2px] group-hover:shadow-xl relative overflow-hidden cursor-pointer">
                         <span className="relative z-10">{cta.primary.text}</span>
                         <div className="absolute inset-0 bg-gradient-to-r from-blue-800 to-blue-900 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out"></div>
                       </a>
                     </div>
                   </div>
                   <div className="relative group">
-                    <a className="btn text-gray-800 bg-white group-hover:text-black w-full shadow-lg text-lg py-3 px-6 transition-all duration-300 ease-in-out transform group-hover:translate-y-[-2px] group-hover:shadow-xl relative overflow-hidden"
-                       href={cta.secondary.href}>
+                    <ScrollLink 
+                      to={cta.secondary.href.substring(1)}
+                      className="btn text-gray-800 bg-white group-hover:text-black w-full shadow-lg text-lg py-3 px-6 transition-all duration-300 ease-in-out transform group-hover:translate-y-[-2px] group-hover:shadow-xl relative overflow-hidden cursor-pointer">
                       <span className="relative z-10">{cta.secondary.text}</span>
                       <div className="absolute inset-0 bg-gradient-to-r from-gray-100 to-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out"></div>
-                    </a>
+                    </ScrollLink>
                   </div>
                 </div>
               </div>
@@ -105,17 +110,17 @@ export default function Hero({
 
         {/* Partner logos */}
         <div className="max-w-6xl mx-auto px-4 sm:px-6 mt-8">
-          <div className="text-center mb-4">
-            <p className="text-sm text-zinc-400">{partners.heading}</p>
+          <div className="text-center mb-6">
+            <p className="text-lg font-semibold text-zinc-600">{partners.heading}</p>
           </div>
-          <div className="flex flex-wrap justify-center items-center gap-12">
-            {partners.list.map((partner, index) => (
+          <div className="flex flex-wrap md:flex-nowrap justify-center items-center gap-8">
+            {partners.list.slice(0, 6).map((partner, index) => (
               <a 
                 key={index}
                 href={partner.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="relative w-24 h-24 transition-transform duration-300 ease-in-out transform hover:scale-110"
+                className="relative w-32 h-24 md:w-36 md:h-28 transition-transform duration-300 ease-in-out transform hover:scale-110"
               >
                 <Image
                   src={partner.logo}

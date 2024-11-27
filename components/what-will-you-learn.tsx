@@ -12,6 +12,7 @@ interface Tab {
   content: {
     title: string
     list: string[]
+    image?: string
   }
 }
 
@@ -66,7 +67,7 @@ export default function WhatWillYouLearn({ heading, tabs }: WhatWillYouLearnProp
                     className={`w-full ${tab === item.id ? '' : 'hidden'}`}
                   >
                     <div className="flex flex-col md:flex-row items-center">
-                      <div className="md:w-1/2 md:pr-8 mb-8 md:mb-0">
+                      <div className={`${item.content.image ? 'md:w-1/2 md:pr-8' : 'w-full'} mb-8 md:mb-0`}>
                         <h3 className="font-inter-tight text-2xl font-bold text-zinc-900 mb-4">{item.content.title}</h3>
                         <ul className="list-disc list-inside text-zinc-500">
                           {item.content.list.map((listItem, index) => (
@@ -74,10 +75,12 @@ export default function WhatWillYouLearn({ heading, tabs }: WhatWillYouLearnProp
                           ))}
                         </ul>
                       </div>
-                      <div className="md:w-1/2 relative">
-                        <Image className="rounded-t-lg border border-transparent [background:linear-gradient(theme(colors.white),theme(colors.white))_padding-box,linear-gradient(120deg,theme(colors.zinc.300),theme(colors.zinc.100),theme(colors.zinc.300))_border-box] box-content shadow-2xl" src={FeatureImage01} width={600} height={360} alt={`Feature ${item.id}`} />
-                        <Image className="absolute top-0 left-full -translate-x-[70%] -mr-20 max-md:w-[45%] max-md:hidden" src={FeatureIllustration} width={273} height={288} alt="Illustration" aria-hidden="true" />
-                      </div>
+                      {item.content.image && (
+                        <div className="md:w-1/2 relative">
+                          <Image className="rounded-t-lg border border-transparent [background:linear-gradient(theme(colors.white),theme(colors.white))_padding-box,linear-gradient(120deg,theme(colors.zinc.300),theme(colors.zinc.100),theme(colors.zinc.300))_border-box] box-content shadow-2xl" src={item.content.image} width={600} height={360} alt={`Feature ${item.id}`} />
+                          <Image className="absolute top-0 left-full -translate-x-[70%] -mr-20 max-md:w-[45%] max-md:hidden" src={FeatureIllustration} width={273} height={288} alt="Illustration" aria-hidden="true" />
+                        </div>
+                      )}
                     </div>
                   </div>
                 ))}
