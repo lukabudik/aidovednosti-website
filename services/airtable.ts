@@ -8,6 +8,7 @@ interface RegistrationData {
   ReferralCodeCookies?: string
   CourseDate: string
   CourseLocation: string
+  GDPRConsent: boolean
 }
 
 export async function submitRegistration(data: RegistrationData) {
@@ -35,7 +36,8 @@ export async function submitRegistration(data: RegistrationData) {
           ReferralCodeWritten: data.ReferralCodeWritten || '',
           ReferralCodeCookies: data.ReferralCodeCookies || '',
           CourseDate: data.CourseDate,
-          CourseLocation: data.CourseLocation
+          CourseLocation: data.CourseLocation,
+          GDPRConsent: Boolean(data.GDPRConsent)
         }
       }
     ])
