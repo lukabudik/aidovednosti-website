@@ -30,6 +30,7 @@ export default function Home() {
                     highlight: "AI workshop",
                     suffix: "Nauč se konečně s AI"
                 }}
+                dates={[]}
                 description="Ušetřený čas pak věnuj sobě a své rodině, zvyš své příjmy a zvyš svoji hodnotu na trhu práce."
                 cta={{
                     primary: {
@@ -138,6 +139,7 @@ export default function Home() {
                     title: "Možnosti financování",
                     subtitle: "Vyberte si variantu, která vám nejlépe vyhovuje"
                 }}
+                dates={[]}
                 options={[
                     {
                         title: "S příspěvkem MPSV",

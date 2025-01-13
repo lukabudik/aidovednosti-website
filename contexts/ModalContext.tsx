@@ -1,6 +1,9 @@
 'use client'
 
 import React, { createContext, useContext, useState } from 'react'
+import { getCookie } from '@/utils/cookies'
+import { submitRegistration } from '@/services/airtable'
+import toast from 'react-hot-toast'
 import Modal from '@/components/ui/modal'
 import RegistrationForm, { RegistrationFormData } from '@/components/registration-form'
 
@@ -15,9 +18,47 @@ export function ModalProvider({ children }: { children: React.ReactNode }) {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [modalDates, setModalDates] = useState<any[]>([])
 
-  const handleSubmit = (data: RegistrationFormData) => {
-    console.log('Form submitted:', data)
-    setIsModalOpen(false)
+  const handleSubmit = async (data: RegistrationFormData) => {
+    try {
+      const cookieReferral = getCookie('referral')
+      const selectedDate = modalDates.find(date => date.date === data.courseDate)
+      
+      if (!selectedDate) {
+        throw new Error('Selected date not found')
+      }
+
+      console.log('Form submission data:', {
+        formData: data,
+        cookieReferral,
+        selectedDate
+      })
+
+      const promise = toast.promise(
+        submitRegistration({
+          Name: data.name,
+          Email: data.email,
+          Phone: data.phone,
+          ReferralCodeWritten: data.source,
+          ReferralCodeCookies: cookieReferral || '',
+          CourseDate: data.courseDate,
+          CourseLocation: selectedDate.location
+        }),
+        {
+          loading: 'Odesílám registraci...',
+          success: 'Registrace byla úspěšně odeslána!',
+          error: (err) => `Chyba: ${err.message || 'Něco se pokazilo. Zkuste to prosím znovu.'}`,
+        }
+      )
+
+      await promise
+      
+      setTimeout(() => {
+        setIsModalOpen(false)
+      }, 1000)
+    } catch (error: any) {
+      console.error('Form submission error:', error)
+      toast.error(`Chyba: ${error.message || 'Něco se pokazilo. Zkuste to prosím znovu.'}`)
+    }
   }
 
   const openModal = (dates: any[]) => {

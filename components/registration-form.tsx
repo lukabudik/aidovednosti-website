@@ -21,13 +21,15 @@ export interface RegistrationFormData {
   phone?: string
   source?: string
   courseDate: string
+  writtenReferral?: string
+  cookieReferral?: string
 }
 
 export default function RegistrationForm({ dates, onSubmit, onClose }: RegistrationFormProps) {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<RegistrationFormData>()
 
   return (
@@ -130,9 +132,19 @@ export default function RegistrationForm({ dates, onSubmit, onClose }: Registrat
         </button>
         <button
           type="submit"
-          className="rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+          disabled={isSubmitting}
+          className={`rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 relative ${isSubmitting ? 'opacity-75 cursor-not-allowed' : ''}`}
         >
-          Odeslat
+          {isSubmitting ? (
+            <>
+              <span className="opacity-0">Odeslat</span>
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+              </div>
+            </>
+          ) : (
+            'Odeslat'
+          )}
         </button>
       </div>
     </form>

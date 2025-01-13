@@ -1,6 +1,8 @@
 import './css/style.css'
 import { ModalProvider } from '@/contexts/ModalContext'
 import { Inter, Inter_Tight } from 'next/font/google'
+import ReferralHandler from '@/components/ReferralHandler'
+import { Toaster } from 'react-hot-toast'
 
 const inter = Inter({
   subsets: ['latin'],
@@ -31,8 +33,33 @@ export default function RootLayout({
       <body className={`${inter.variable} ${inter_tight.variable} font-inter antialiased bg-white text-zinc-900 tracking-tight`}>
         <div className="flex flex-col min-h-screen overflow-hidden supports-[overflow:clip]:overflow-clip">
           <ModalProvider>
+            <ReferralHandler />
             {children}
           </ModalProvider>
+          <Toaster 
+            position="top-center"
+            toastOptions={{
+              duration: 3000,
+              style: {
+                background: '#363636',
+                color: '#fff',
+              },
+              success: {
+                duration: 3000,
+                iconTheme: {
+                  primary: '#4ade80',
+                  secondary: '#fff',
+                },
+              },
+              error: {
+                duration: 4000,
+                iconTheme: {
+                  primary: '#ef4444',
+                  secondary: '#fff',
+                },
+              },
+            }}
+          />
         </div>
       </body>
     </html>

@@ -30,6 +30,7 @@ export default function Home() {
           highlight: "realiťáky",
           suffix: "a realitní investory"
         }}
+        dates={[]}
         description="Nauč se konečně pracovat s AI, zvyš svou hodnotu na trhu práce a zvládni 2x tolik práce za stejné množství času."
         cta={{
           primary: {
@@ -138,6 +139,7 @@ export default function Home() {
             title: "Možnosti financování",
             subtitle: "Vyberte si variantu, která vám nejlépe vyhovuje"
           }}
+          dates={[]}
           options={[
             {
               title: "S příspěvkem MPSV",
