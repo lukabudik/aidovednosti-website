@@ -41,7 +41,8 @@ export function ModalProvider({ children }: { children: React.ReactNode }) {
           ReferralCodeWritten: data.source,
           ReferralCodeCookies: cookieReferral || '',
           CourseDate: data.courseDate,
-          CourseLocation: selectedDate.location
+          CourseLocation: selectedDate.location,
+          GDPRConsent: Boolean(data.gdprConsent)
         }),
         {
           loading: 'Odesílám registraci...',
