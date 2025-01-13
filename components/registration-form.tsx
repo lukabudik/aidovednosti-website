@@ -1,6 +1,7 @@
 'use client'
 
 import { useForm } from 'react-hook-form'
+import toast from 'react-hot-toast'
 import { CourseDate } from './pricing-dates'
 
 interface RegistrationFormProps {
@@ -32,8 +33,21 @@ export default function RegistrationForm({ dates, onSubmit, onClose }: Registrat
     formState: { errors, isSubmitting },
   } = useForm<RegistrationFormData>()
 
+  const onSubmitWrapper = async (data: RegistrationFormData) => {
+    try {
+      await onSubmit(data)
+      onClose()
+      toast.success('Registrace byla úspěšná! Přesměrováváme vás...')
+      setTimeout(() => {
+        window.location.href = 'https://www.uradprace.cz/web/cz/vyhledani-rekvalifikacniho-kurzu#/rekvalifikacni-kurz-detail/18900'
+      }, 2000)
+    } catch (error) {
+      toast.error('Něco se pokazilo. Zkuste to prosím znovu.')
+    }
+  }
+
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+    <form onSubmit={handleSubmit(onSubmitWrapper)} className="space-y-4">
       <div>
         <label htmlFor="courseDate" className="block text-sm font-medium text-gray-700">
           Termín kurzu *
