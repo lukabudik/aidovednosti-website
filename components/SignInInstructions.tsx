@@ -1,5 +1,7 @@
+'use client'
 import React from 'react'
 import ScrollLink from './ScrollLink'
+import { useModal } from '@/contexts/ModalContext'
 
 interface Step {
   text: string
@@ -40,8 +42,10 @@ const SignInInstructions = ({
   steps,
   contact,
   video,
-  cta
-}: SignInInstructionsProps) => {
+  cta,
+  dates = []
+}: SignInInstructionsProps & { dates?: any[] }) => {
+  const modal = useModal()
 
   return (
     <section className="bg-zinc-50 py-8 md:py-12">
@@ -93,14 +97,12 @@ const SignInInstructions = ({
                 {cta.primary.discount && (
                   <span className="absolute -top-3 -right-3 bg-black text-white text-xs font-bold px-3 py-1.5 rounded-full transform rotate-12 shadow-lg group-hover:rotate-6 transition-all duration-300 z-20 border-2 border-white">{cta.primary.discount}</span>
                 )}
-                <a 
-                  href={cta.primary.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <button 
+                  onClick={() => modal.openModal(dates)}
                   className="btn text-white bg-blue-700 hover:bg-blue-800 w-full shadow-lg text-lg py-3 px-6 transition-all duration-300 ease-in-out transform group-hover:translate-y-[-2px] group-hover:shadow-xl relative overflow-hidden cursor-pointer">
                   <span className="relative z-10">{cta.primary.text}</span>
                   <div className="absolute inset-0 bg-gradient-to-r from-blue-800 to-blue-900 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out"></div>
-                </a>
+                </button>
               </div>
             </div>
             <div className="relative group">

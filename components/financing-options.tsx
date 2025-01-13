@@ -1,6 +1,7 @@
 'use client'
 
 import React from 'react'
+import { useModal } from '@/contexts/ModalContext'
 
 interface FinancingOption {
   title: string
@@ -31,10 +32,19 @@ interface FinancingOptionsProps {
     subtitle: string
   }
   options: FinancingOption[]
+  dates: {
+    date: string
+    type: string
+    location: string
+    cityLocative: string
+    deadline: string
+  }[]
 }
 
-const FinancingOptions = ({ heading, options }: FinancingOptionsProps) => {
+const FinancingOptions = ({ heading, options, dates }: FinancingOptionsProps & { dates: any[] }) => {
+  const modal = useModal()
   return (
+    <>
     <section className="bg-zinc-50 py-6 md:py-8" id={"koupit"}>
       <div className="max-w-5xl mx-auto px-4 sm:px-6">
         <div className="max-w-2xl mx-auto text-center pb-6 md:pb-8">
@@ -84,22 +94,23 @@ const FinancingOptions = ({ heading, options }: FinancingOptionsProps) => {
                 ))}
               </ul>
               <div className="mt-8">
-                <a 
+                <button 
                   className={`btn w-full shadow ${
                     index === 0 
                       ? 'text-white bg-blue-700 hover:bg-blue-800 transform hover:translate-y-[-2px] transition-all duration-300' 
                       : 'text-zinc-600 bg-white hover:text-zinc-900 border border-zinc-200'
                   }`} 
-                  href={option.cta.href}
+                  onClick={() => modal.openModal(dates)}
                 >
                   {option.cta.text}
-                </a>
+                </button>
               </div>
             </div>
           ))}
         </div>
       </div>
     </section>
+    </>
   )
 }
 

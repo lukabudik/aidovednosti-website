@@ -1,7 +1,9 @@
+'use client'
 import Link from 'next/link'
 import Stats from '@/components/stats'
 import Image from 'next/image'
 import ScrollLink from './ScrollLink'
+import { useModal } from '@/contexts/ModalContext'
 
 interface Partner {
   name: string
@@ -35,6 +37,7 @@ interface HeroProps {
     heading: string
     list: Partner[]
   }
+  dates: any[]
 }
 
 export default function Hero({
@@ -42,8 +45,10 @@ export default function Hero({
   description,
   cta,
   video,
-  partners
+  partners,
+  dates = []
 }: HeroProps) {
+  const modal = useModal()
   return (
     <section className="relative before:absolute before:inset-0 before:h-80 before:pointer-events-none before:bg-gradient-to-b before:from-zinc-100 before:-z-10">
       <div className="pt-24 pb-6 md:pt-32 md:pb-8">
@@ -71,14 +76,12 @@ export default function Hero({
                       {cta.primary.discount && (
                         <span className="absolute -top-3 -right-3 bg-black text-white text-xs font-bold px-3 py-1.5 rounded-full transform rotate-12 shadow-lg group-hover:rotate-6 transition-all duration-300 z-20 border-2 border-white">{cta.primary.discount}</span>
                       )}
-                      <a 
-                        href={cta.primary.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
+                      <button 
+                        onClick={() => modal.openModal(dates || [])}
                         className="btn text-white bg-blue-700 hover:bg-blue-800 w-full shadow-lg text-lg py-3 px-6 transition-all duration-300 ease-in-out transform group-hover:translate-y-[-2px] group-hover:shadow-xl relative overflow-hidden cursor-pointer">
                         <span className="relative z-10">{cta.primary.text}</span>
                         <div className="absolute inset-0 bg-gradient-to-r from-blue-800 to-blue-900 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out"></div>
-                      </a>
+                      </button>
                     </div>
                   </div>
                   <div className="relative group">

@@ -1,4 +1,5 @@
 import IsItForMe from "@/components/is-it-for-me"
+import { courseDates } from "@/data/course-dates"
 import { PiCertificate, PiCamera, PiIceCream } from "react-icons/pi"
 import {FiCoffee, FiAward, FiPackage} from 'react-icons/fi'
 import TestimonialImg01 from '@/public/images/testimonial-01.jpg'
@@ -42,6 +43,7 @@ export default function Home() {
                 href: "#pricing-dates"
               }
             }}
+            dates={courseDates}
             video={{
               embedUrl: "https://www.youtube.com/embed/lrkoFhfeMcY",
               title: "AI pro realitní makléře"
@@ -90,29 +92,7 @@ export default function Home() {
               title: "Termíny a ceny kurzů",
               subtitle: "Vyberte si termín, který vám nejvíce vyhovuje"
             }}
-            dates={[
-              {
-                date: '2025-01-17',
-                type: 'Prezenční',
-                location: 'Staroměstké náměstí / Můstek, Praha',
-                cityLocative: 'Praze',
-                deadline: '2024-12-18'
-              },
-              {
-                date: '2025-02-11',
-                type: 'Prezenční',
-                location: 'JIC, Brno',
-                cityLocative: 'Brně',
-                deadline: '2025-01-12'
-              },
-              {
-                date: '2025-02-28',
-                type: 'Prezenční',
-                location: 'Staroměstké náměstí / Můstek, Praha',
-                cityLocative: 'Praze',
-                deadline: '2025-01-29'
-              },
-            ]}
+            dates={courseDates}
             pricing={{
               amount: "14 800 Kč",
               earlyBirdDiscount: {
@@ -138,6 +118,7 @@ export default function Home() {
               title: "Možnosti financování",
               subtitle: "Vyberte si variantu, která vám nejlépe vyhovuje"
             }}
+            dates={courseDates}
             options={[
               {
                 title: "S příspěvkem MPSV",
@@ -187,6 +168,7 @@ export default function Home() {
               title: "Program kurzu",
               subtitle: "Podrobný program dvoudenního kurzu"
             }}
+            dates={courseDates}
             programme={[
               {
                 day: "Den 1",
@@ -455,6 +437,7 @@ export default function Home() {
             ]}
         /> */}
         <SignInInstructions
+            dates={courseDates}
             heading={{
               title: "Jak se přihlásit na workshop?",
               subtitle: "Jednoduchý proces registrace"

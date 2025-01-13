@@ -1,5 +1,5 @@
 import './css/style.css'
-
+import { ModalProvider } from '@/contexts/ModalContext'
 import { Inter, Inter_Tight } from 'next/font/google'
 
 const inter = Inter({
@@ -30,7 +30,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${inter.variable} ${inter_tight.variable} font-inter antialiased bg-white text-zinc-900 tracking-tight`}>
         <div className="flex flex-col min-h-screen overflow-hidden supports-[overflow:clip]:overflow-clip">
-          {children}
+          <ModalProvider>
+            {children}
+          </ModalProvider>
         </div>
       </body>
     </html>
