@@ -52,7 +52,6 @@ export default function Home() {
               heading: "Své vzdělání v oblasti AI nám svěřují přední společnosti",
               list: [
                 { name: 'Century21', logo: '/images/partners/century.webp', url: 'https://www.century21.cz/' },
-                { name: 'XTB', logo: '/images/partners/xtb.webp', url: 'https://www.xtb.com/cz' },
                 { name: 'Seznam', logo: '/images/partners/seznam.webp', url: 'https://www.seznam.cz/' },
                 { name: 'Remax', logo: '/images/partners/remax.webp', url: 'https://www.remax-czech.cz/' },
                 { name: 'Svaz Měst a Obcí ČR', logo: '/images/partners/smo.webp', url: 'https://www.smocr.cz/' },
