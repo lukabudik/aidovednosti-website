@@ -39,7 +39,8 @@ export default function RegistrationForm({ dates, onSubmit, onClose }: Registrat
       // Ensure gdprConsent is explicitly converted to boolean
       const formData = {
         ...data,
-        gdprConsent: Boolean(data.gdprConsent)
+        gdprConsent: Boolean(data.gdprConsent),
+        GDPRConsent: Boolean(data.gdprConsent) // Add this field for Airtable
       }
       await onSubmit(formData)
       onClose()
