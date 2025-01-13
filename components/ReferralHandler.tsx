@@ -1,13 +1,13 @@
 'use client'
 
-import { useEffect } from 'react'
+import { Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { setCookie, getCookie } from '@/utils/cookies'
 
-export default function ReferralHandler() {
+function ReferralHandlerInner() {
   const searchParams = useSearchParams()
   
-  useEffect(() => {
+  if (typeof window !== 'undefined') {
     const ref = searchParams.get('ref')
     const existingRef = getCookie('referral')
     
@@ -15,7 +15,15 @@ export default function ReferralHandler() {
       // Set cookie for 60 days
       setCookie('referral', ref, 60)
     }
-  }, [searchParams])
+  }
 
   return null
+}
+
+export default function ReferralHandler() {
+  return (
+    <Suspense fallback={null}>
+      <ReferralHandlerInner />
+    </Suspense>
+  )
 }
