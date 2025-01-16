@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react'
 import Link from "next/link"
 import { motion, AnimatePresence } from 'framer-motion'
+import { useModal } from '@/contexts/ModalContext'
 
 export interface CourseDate {
   date: Date
@@ -60,6 +61,7 @@ const PricingDates = ({
   const [closestCourse, setClosestCourse] = useState<CourseDate | null>(null)
   const [daysLeft, setDaysLeft] = useState<number>(0)
   const [filteredCourses, setFilteredCourses] = useState<CourseDate[]>([])
+  const modal = useModal()
 
   useEffect(() => {
     // Parse dates from props
@@ -103,7 +105,7 @@ const PricingDates = ({
         return isAfterNow && isBeforeDeadline && matchesFocus;
       })
       .sort((a, b) => a.date.getTime() - b.date.getTime())
-      .slice(0, 4);
+      .slice(0, 6);
     
     console.log('Filtered courses:', filtered);
     setFilteredCourses(filtered);
@@ -142,9 +144,12 @@ const PricingDates = ({
             <div className="text-center md:text-left">
               <h2 className="font-inter-tight text-3xl md:text-4xl font-bold text-zinc-900 mb-4">{pricing.amount}</h2>
               <div className="relative inline-block mb-6">
-                <div className="bg-black text-white text-lg font-semibold py-2 px-4 rounded-lg">
+                <button 
+                  onClick={() => modal.openModal(dates)}
+                  className="bg-black text-white text-lg font-semibold py-2 px-4 rounded-lg hover:bg-zinc-800 transition-colors duration-200"
+                >
                   {pricing.earlyBirdDiscount.amount} {pricing.earlyBirdDiscount.text}
-                </div>
+                </button>
                 <div
                     className="absolute -top-2 -right-2 transform translate-x-1/4 -translate-y-1/4 bg-blue-500 text-white text-xs font-bold py-1 px-2 rounded-full">
                   {pricing.earlyBirdDiscount.label}
