@@ -302,7 +302,7 @@ export default function Home() {
               primary: {
                 text: "Koupit s podporou",
                 href: "https://www.uradprace.cz/web/cz/vyhledani-rekvalifikacniho-kurzu#/rekvalifikacni-kurz-detail/18900",
-                discount: "-20%"
+                discount: "-82%"
               },
               secondary: {
                 text: "Více informací",

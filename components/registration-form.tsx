@@ -131,38 +131,32 @@ export default function RegistrationForm({ dates, onSubmit, onClose }: Registrat
         />
       </div>
 
-      <div className="bg-blue-50 p-4 rounded-lg border border-blue-100 mt-6">
-        <div>
-            <label htmlFor="source" className="block text-sm font-medium text-gray-700 flex items-center">
-              Promo kód
-              <div className="relative ml-1 group">
-                <svg className="w-4 h-4 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
-                  <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
-                </svg>
-                <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 bg-gray-900 text-white text-xs rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 w-48 text-center">
-                  Zadejte promo kód, který jste obdrželi od našich partnerů nebo ambasadorů
-                  <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1 border-4 border-transparent border-t-gray-900"></div>
-                </div>
-              </div>
-            </label>
-            <div className="mt-1 relative">
-              <input
-                type="text"
-                {...register('source')}
-                placeholder="Zadejte váš promo kód"
-                className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 pr-4"
-              />
-            </div>
-            <div className="mt-2 flex items-center space-x-2">
-              <svg className="w-5 h-5 text-blue-600" viewBox="0 0 20 20" fill="currentColor">
-                <path fillRule="evenodd" d="M5 5a3 3 0 015-2.236A3 3 0 0114.83 6H16a2 2 0 110 4h-5V9a1 1 0 10-2 0v1H4a2 2 0 110-4h1.17C5.06 5.687 5 5.35 5 5zm4 1V5a1 1 0 10-1 1h1zm3 0a1 1 0 10-1-1v1h1z" clipRule="evenodd" />
-                <path d="M9 11H3v5a2 2 0 002 2h4v-7zM11 18h4a2 2 0 002-2v-5h-6v7z" />
-              </svg>
-              <p className="text-sm text-blue-700 font-medium">
-                Získejte dárek v hodnotě 490 Kč
-              </p>
-            </div>
-        </div>
+      <div>
+        <label htmlFor="source" className="block text-sm font-medium text-gray-700">
+          Promo kód
+        </label>
+        <input
+          type="text"
+          {...register('source', {
+            onChange: (e) => {
+              const giftMessage = document.getElementById('giftMessage');
+              if (giftMessage) {
+                if (e.target.value) {
+                  giftMessage.classList.remove('opacity-0', 'max-h-0');
+                  giftMessage.classList.add('opacity-100', 'max-h-20');
+                } else {
+                  giftMessage.classList.remove('opacity-100', 'max-h-20');
+                  giftMessage.classList.add('opacity-0', 'max-h-0');
+                }
+              }
+            }
+          })}
+          placeholder="Zadejte váš promo kód"
+          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+        />
+        <p id="giftMessage" className="mt-2 text-sm text-blue-700 font-medium opacity-0 max-h-0 overflow-hidden transition-all duration-300 ease-in-out">
+          Získáte dárek v hodnotě 490 Kč
+        </p>
       </div>
 
 
