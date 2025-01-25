@@ -6,8 +6,8 @@ interface RegistrationData {
   Phone?: string
   ReferralCodeWritten?: string
   ReferralCodeCookies?: string
-  CourseDate: string
-  CourseLocation: string
+  CourseDate: string | 'Zatím nevybrán'
+  CourseLocation: string | 'Zatím nevybráno'
   GDPRConsent: boolean
 }
 

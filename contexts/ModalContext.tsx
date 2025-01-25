@@ -21,10 +21,14 @@ export function ModalProvider({ children }: { children: React.ReactNode }) {
   const handleSubmit = async (data: RegistrationFormData) => {
     try {
       const cookieReferral = getCookie('referral')
-      const selectedDate = modalDates.find(date => date.date === data.courseDate)
+      let selectedLocation = ''
       
-      if (!selectedDate) {
-        throw new Error('Selected date not found')
+      if (data.courseDate !== 'unknown') {
+        const selectedDate = modalDates.find(date => date.date === data.courseDate)
+        if (!selectedDate) {
+          throw new Error('Selected date not found')
+        }
+        selectedLocation = selectedDate.location
       }
 
       console.log('Form submission data:', {
@@ -40,8 +44,8 @@ export function ModalProvider({ children }: { children: React.ReactNode }) {
           Phone: data.phone,
           ReferralCodeWritten: data.source,
           ReferralCodeCookies: cookieReferral || '',
-          CourseDate: data.courseDate,
-          CourseLocation: selectedDate.location,
+          CourseDate: data.courseDate === 'unknown' ? 'Zatím nevybrán' : data.courseDate,
+          CourseLocation: data.courseDate === 'unknown' ? 'Zatím nevybráno' : selectedLocation,
           GDPRConsent: Boolean(data.gdprConsent)
         }),
         {

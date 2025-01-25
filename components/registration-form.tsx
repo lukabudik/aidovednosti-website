@@ -21,7 +21,7 @@ export interface RegistrationFormData {
   email: string
   phone?: string
   source?: string
-  courseDate: string
+  courseDate: string | 'unknown'
   writtenReferral?: string
   cookieReferral?: string
   gdprConsent: boolean
@@ -36,11 +36,9 @@ export default function RegistrationForm({ dates, onSubmit, onClose }: Registrat
 
   const onSubmitWrapper = async (data: RegistrationFormData) => {
     try {
-      // Ensure gdprConsent is explicitly converted to boolean
       const formData = {
         ...data,
         gdprConsent: Boolean(data.gdprConsent),
-        GDPRConsent: Boolean(data.gdprConsent) // Add this field for Airtable
       }
       await onSubmit(formData)
       onClose()
@@ -54,7 +52,7 @@ export default function RegistrationForm({ dates, onSubmit, onClose }: Registrat
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmitWrapper)} className="space-y-4">
+    <form onSubmit={handleSubmit(onSubmitWrapper)} className="space-y-4" noValidate>
       <div>
         <label htmlFor="courseDate" className="block text-sm font-medium text-gray-700">
           Termín kurzu *
@@ -64,6 +62,7 @@ export default function RegistrationForm({ dates, onSubmit, onClose }: Registrat
           className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
         >
           <option value="">Vyberte termín</option>
+          <option value="unknown">Ještě nevím termín</option>
           {dates
             .filter(date => {
               const courseDate = new Date(date.date);
@@ -131,32 +130,94 @@ export default function RegistrationForm({ dates, onSubmit, onClose }: Registrat
         />
       </div>
 
-      <div>
-        <label htmlFor="source" className="block text-sm font-medium text-gray-700">
-          Promo kód
-        </label>
-        <input
-          type="text"
-          {...register('source', {
-            onChange: (e) => {
-              const giftMessage = document.getElementById('giftMessage');
-              if (giftMessage) {
-                if (e.target.value) {
-                  giftMessage.classList.remove('opacity-0', 'max-h-0');
-                  giftMessage.classList.add('opacity-100', 'max-h-20');
-                } else {
-                  giftMessage.classList.remove('opacity-100', 'max-h-20');
-                  giftMessage.classList.add('opacity-0', 'max-h-0');
-                }
+      <div className="relative">
+        <button
+          type="button"
+          onClick={() => {
+            const promoSection = document.getElementById('promoSection');
+            const promoButton = document.getElementById('promoButton');
+            if (promoSection && promoButton) {
+              promoSection.classList.toggle('max-h-0');
+              promoSection.classList.toggle('max-h-40');
+              promoSection.classList.toggle('opacity-0');
+              promoSection.classList.toggle('opacity-100');
+              promoButton.classList.toggle('text-blue-800');
+              
+              // Rotate the plus icon
+              const plusIcon = promoButton.querySelector('svg');
+              if (plusIcon) {
+                plusIcon.classList.toggle('rotate-45');
               }
             }
-          })}
-          placeholder="Zadejte váš promo kód"
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-        />
-        <p id="giftMessage" className="mt-2 text-sm text-blue-700 font-medium opacity-0 max-h-0 overflow-hidden transition-all duration-300 ease-in-out">
-          Získáte dárek v hodnotě 490 Kč
-        </p>
+          }}
+          id="promoButton"
+          className="text-blue-600 hover:text-blue-700 text-sm font-medium flex items-center group transition-colors duration-200"
+        >
+          <svg 
+            className="w-4 h-4 mr-1 transition-transform duration-200 ease-in-out" 
+            fill="none" 
+            stroke="currentColor" 
+            viewBox="0 0 24 24"
+          >
+            <path 
+              strokeLinecap="round" 
+              strokeLinejoin="round" 
+              strokeWidth={2} 
+              d="M12 4v16m8-8H4" 
+            />
+          </svg>
+          Zadat promo kód
+        </button>
+        
+        <div 
+          id="promoSection" 
+          className="max-h-0 opacity-0 overflow-hidden transition-all duration-300 ease-in-out"
+        >
+          <div className="mt-3 px-0.5">
+            <div className="relative flex items-center overflow-visible">
+              <div className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
+                <svg 
+                  className="h-5 w-5 text-blue-500" 
+                  fill="none" 
+                  viewBox="0 0 24 24" 
+                  stroke="currentColor"
+                >
+                  <path 
+                    strokeLinecap="round" 
+                    strokeLinejoin="round" 
+                    strokeWidth={2} 
+                    d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z"
+                  />
+                </svg>
+              </div>
+              <input
+                type="text"
+                {...register('source', {
+                  onChange: (e) => {
+                    const giftMessage = document.getElementById('giftMessage');
+                    if (giftMessage) {
+                      if (e.target.value) {
+                        giftMessage.classList.remove('opacity-0', 'max-h-0');
+                        giftMessage.classList.add('opacity-100', 'max-h-20');
+                      } else {
+                        giftMessage.classList.remove('opacity-100', 'max-h-20');
+                        giftMessage.classList.add('opacity-0', 'max-h-0');
+                      }
+                    }
+                  }
+                })}
+                placeholder="Zadejte váš promo kód"
+                className="pl-11 pr-4 py-2.5 block w-full rounded-lg border border-gray-200 bg-gray-50 text-gray-900 shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:ring-offset-0 focus:bg-white transition-all duration-200 text-sm"
+              />
+            </div>
+            <p id="giftMessage" className="mt-2.5 text-sm text-blue-600 font-medium opacity-0 max-h-0 overflow-hidden transition-all duration-300 ease-in-out flex items-center">
+              <svg className="w-4 h-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+              </svg>
+              Získáte dárek v hodnotě 490 Kč
+            </p>
+          </div>
+        </div>
       </div>
 
 
