@@ -1,9 +1,7 @@
 'use client'
 
 import { useForm, Controller } from 'react-hook-form'
-import PhoneInput from 'react-phone-number-input'
-import { cs } from '@/app/translations/phone-input-cs'
-import '@/app/css/additional-styles/phone-input.css'
+import EnhancedPhoneInput from './enhanced-phone-input'
 import toast from 'react-hot-toast'
 import { CourseDate } from './pricing-dates'
 
@@ -150,32 +148,20 @@ export default function RegistrationForm({ dates, onSubmit, onClose }: Registrat
             control={control}
             rules={{
               validate: (value) => {
-                if (value && !/^\+[1-9]\d{1,14}$/.test(value)) {
-                  return 'Zadejte platné telefonní číslo včetně mezinárodní předvolby'
+                if (value && !/^\+[0-9]{3} [0-9]{3} [0-9]{3} [0-9]{3}$/.test(value)) {
+                  return 'Zadejte platné telefonní číslo ve formátu +420 777 123 456'
                 }
                 return true
               }
             }}
             render={({ field: { onChange, value } }) => (
-              <div className="relative">
-                <PhoneInput
-                  international
-                  defaultCountry="CZ"
-                  value={value}
-                  onChange={onChange}
-                  labels={cs}
-                  placeholder="Zadejte telefonní číslo"
-                  className="mt-1 block w-full"
-                  countrySelectProps={{
-                    className: "PhoneInputCountrySelect"
-                  }}
-                />
-              </div>
+              <EnhancedPhoneInput
+                value={value}
+                onChange={onChange}
+                error={errors.phone?.message}
+              />
             )}
           />
-          {errors.phone && (
-            <p className="mt-1 text-sm text-red-600">{errors.phone.message}</p>
-          )}
         </div>
       </div>
 
