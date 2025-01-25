@@ -1,6 +1,9 @@
 'use client'
 
-import { useForm } from 'react-hook-form'
+import { useForm, Controller } from 'react-hook-form'
+import PhoneInput from 'react-phone-number-input'
+import { cs } from '@/app/translations/phone-input-cs'
+import '@/app/css/additional-styles/phone-input.css'
 import toast from 'react-hot-toast'
 import { CourseDate } from './pricing-dates'
 
@@ -31,6 +34,7 @@ export default function RegistrationForm({ dates, onSubmit, onClose }: Registrat
   const {
     register,
     handleSubmit,
+    control,
     formState: { errors, isSubmitting },
   } = useForm<RegistrationFormData>()
 
@@ -103,18 +107,35 @@ export default function RegistrationForm({ dates, onSubmit, onClose }: Registrat
         <label htmlFor="email" className="block text-sm font-medium text-gray-700">
           Email *
         </label>
-        <input
-          type="email"
-          {...register('email', {
-            required: 'Email je povinný',
-            pattern: {
-              value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-              message: 'Neplatný email',
-            },
-          })}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-        />
-        {errors.email && (
+        <div className="mt-1 relative">
+          <input
+            type="email"
+            {...register('email', {
+              required: 'Email je povinný',
+              pattern: {
+                value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                message: 'Neplatný email',
+              },
+              onChange: (e) => {
+                const input = e.target;
+                const isValid = input.checkValidity() && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.value);
+                const errorMessage = document.getElementById('email-error');
+                if (errorMessage) {
+                  if (!isValid && input.value) {
+                    errorMessage.textContent = 'Neplatný email';
+                    errorMessage.classList.remove('hidden');
+                  } else {
+                    errorMessage.classList.add('hidden');
+                  }
+                }
+              }
+            })}
+            placeholder="vas@email.cz"
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+          />
+        </div>
+        <p id="email-error" className="mt-1 text-sm text-red-600 hidden"></p>
+        {errors.email && !document.getElementById('email-error')?.textContent && (
           <p className="mt-1 text-sm text-red-600">{errors.email.message}</p>
         )}
       </div>
@@ -123,11 +144,39 @@ export default function RegistrationForm({ dates, onSubmit, onClose }: Registrat
         <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
           Telefon
         </label>
-        <input
-          type="tel"
-          {...register('phone')}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-        />
+        <div className="mt-1">
+          <Controller
+            name="phone"
+            control={control}
+            rules={{
+              validate: (value) => {
+                if (value && !/^\+[1-9]\d{1,14}$/.test(value)) {
+                  return 'Zadejte platné telefonní číslo včetně mezinárodní předvolby'
+                }
+                return true
+              }
+            }}
+            render={({ field: { onChange, value } }) => (
+              <div className="relative">
+                <PhoneInput
+                  international
+                  defaultCountry="CZ"
+                  value={value}
+                  onChange={onChange}
+                  labels={cs}
+                  placeholder="Zadejte telefonní číslo"
+                  className="mt-1 block w-full"
+                  countrySelectProps={{
+                    className: "PhoneInputCountrySelect"
+                  }}
+                />
+              </div>
+            )}
+          />
+          {errors.phone && (
+            <p className="mt-1 text-sm text-red-600">{errors.phone.message}</p>
+          )}
+        </div>
       </div>
 
       <div className="relative">

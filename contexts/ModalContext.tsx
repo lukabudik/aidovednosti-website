@@ -34,7 +34,7 @@ export function ModalProvider({ children }: { children: React.ReactNode }) {
       console.log('Form submission data:', {
         formData: data,
         cookieReferral,
-        selectedDate
+        selectedLocation
       })
 
       const promise = toast.promise(
