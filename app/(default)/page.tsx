@@ -45,7 +45,7 @@ export default function Home() {
             }}
             dates={courseDates}
             video={{
-              embedUrl: "https://www.youtube.com/embed/lrkoFhfeMcY",
+              embedUrl: "https://www.youtube.com/embed/YuQOtcbzp7w",
               title: "AI pro realitní makléře"
             }}
             partners={{
