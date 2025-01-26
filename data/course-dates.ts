@@ -1,12 +1,5 @@
 export const courseDates = [
   {
-    date: '2025-02-28',
-    type: 'Prezenční',
-    location: 'Praha',
-    cityLocative: 'Praze',
-    deadline: '2025-01-28'
-  },
-  {
     date: '2025-03-08',
     type: 'Prezenční',
     location: 'Karlovy Vary',
