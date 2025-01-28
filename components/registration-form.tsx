@@ -74,11 +74,20 @@ export default function RegistrationForm({ dates, onSubmit, onClose }: Registrat
             })
             .map((date, index) => (
               <option key={index} value={date.date}>
-                {new Date(date.date).toLocaleDateString('cs-CZ', {
-                  day: 'numeric',
-                  month: 'long',
-                  year: 'numeric',
-                })} - {date.location}
+                {(() => {
+                  const courseDate = new Date(date.date);
+                  const nextDay = new Date(courseDate);
+                  nextDay.setDate(courseDate.getDate() + 1);
+                  
+                  const formatDate = (date: Date, nextDay: Date) => {
+                    if (date.getMonth() === nextDay.getMonth()) {
+                      return `${date.getDate()}.-${nextDay.getDate()}. ${date.toLocaleDateString('cs-CZ', { month: 'long', year: 'numeric' })}`;
+                    }
+                    return `${date.getDate()}. ${date.toLocaleDateString('cs-CZ', { month: 'long' })} - ${nextDay.getDate()}. ${nextDay.toLocaleDateString('cs-CZ', { month: 'long', year: 'numeric' })}`;
+                  };
+                  
+                  return `${formatDate(courseDate, nextDay)} - ${date.location}`;
+                })()}
               </option>
             ))}
         </select>

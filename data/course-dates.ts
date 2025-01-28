@@ -26,5 +26,33 @@ export const courseDates = [
     location: 'Brno',
     cityLocative: 'Brně',
     deadline: '2025-02-25'
+  },
+  {
+    date: '2025-04-08',
+    type: 'Prezenční',
+    location: 'Praha',
+    cityLocative: 'Praze',
+    deadline: '2025-03-08'
+  },
+  {
+    date: '2025-04-22',
+    type: 'Prezenční',
+    location: 'Brno',
+    cityLocative: 'Brně',
+    deadline: '2025-03-22'
+  },
+  {
+    date: '2025-05-16',
+    type: 'Prezenční',
+    location: 'Praha',
+    cityLocative: 'Praze',
+    deadline: '2025-04-16'
+  },
+  {
+    date: '2025-05-23',
+    type: 'Prezenční',
+    location: 'Brno',
+    cityLocative: 'Brně',
+    deadline: '2025-04-23'
   }
 ];

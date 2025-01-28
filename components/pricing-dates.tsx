@@ -61,6 +61,7 @@ const PricingDates = ({
   const [closestCourse, setClosestCourse] = useState<CourseDate | null>(null)
   const [daysLeft, setDaysLeft] = useState<number>(0)
   const [filteredCourses, setFilteredCourses] = useState<CourseDate[]>([])
+  const [showAll, setShowAll] = useState(false)
   const modal = useModal()
 
   useEffect(() => {
@@ -95,20 +96,18 @@ const PricingDates = ({
         const isBeforeDeadline = course.deadline ? course.deadline > now : true;
         const matchesFocus = focus === 'all' || course.focus === focus;
         
-        console.log('Course filtering:', {
-          course,
-          isAfterNow,
-          isBeforeDeadline,
-          matchesFocus
-        });
-        
         return isAfterNow && isBeforeDeadline && matchesFocus;
       })
-      .sort((a, b) => a.date.getTime() - b.date.getTime())
-      .slice(0, 6);
+      .sort((a, b) => a.date.getTime() - b.date.getTime());
     
-    console.log('Filtered courses:', filtered);
-    setFilteredCourses(filtered);
+    // Store the total number of filtered courses before slicing
+    const totalFilteredCourses = filtered.length;
+    const slicedCourses = showAll ? filtered : filtered.slice(0, 6);
+    
+    console.log('Filtered courses:', slicedCourses);
+    console.log('Total filtered courses:', totalFilteredCourses);
+    
+    setFilteredCourses(slicedCourses);
 
     if (filtered.length > 0) {
       const closest = filtered[0]; // Take the first course after sorting
@@ -126,10 +125,22 @@ const PricingDates = ({
 
   useEffect(() => {
     updateFilteredCourses(dates, selectedFocus)
-  }, [dates, selectedFocus])
+  }, [dates, selectedFocus, showAll])
 
   const formatDate = (date: Date) => {
-    return date.toLocaleDateString('cs-CZ', { day: 'numeric', month: 'long', year: 'numeric' })
+    const nextDay = new Date(date);
+    nextDay.setDate(date.getDate() + 1);
+    
+    // If it's the same month, just show the dates
+    if (date.getMonth() === nextDay.getMonth()) {
+      return `${date.getDate()}.-${nextDay.getDate()}. ${date.toLocaleDateString('cs-CZ', { month: 'long', year: 'numeric' })}`;
+    }
+    // If it spans months, show both months
+    return `${date.getDate()}. ${date.toLocaleDateString('cs-CZ', { month: 'long' })} - ${nextDay.getDate()}. ${nextDay.toLocaleDateString('cs-CZ', { month: 'long', year: 'numeric' })}`;
+  }
+
+  const formatDeadlineDate = (date: Date) => {
+    return `${date.getDate()}. ${date.toLocaleDateString('cs-CZ', { month: 'long', year: 'numeric' })}`;
   }
 
   return (
@@ -190,7 +201,7 @@ const PricingDates = ({
                 className="overflow-hidden"
                 initial={false}
                 animate={{ height: "auto" }}
-                transition={{ duration: 0.4, ease: "easeOut" }}
+                transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
               >
                 <AnimatePresence initial={false} mode="popLayout">
                   <motion.ul 
@@ -208,9 +219,9 @@ const PricingDates = ({
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -20 }}
                         transition={{ 
-                          duration: 0.3,
-                          delay: index * 0.05,
-                          ease: "easeOut"
+                          duration: 0.2,
+                          delay: index * 0.03,
+                          ease: [0.4, 0, 0.2, 1]
                         }}
                         layout
                         className="border-b border-zinc-200 pb-4 last:border-b-0 last:pb-0"
@@ -225,7 +236,7 @@ const PricingDates = ({
                           </div>
                           <div className="text-right">
                             <p className="text-sm text-zinc-600">{upcomingDates.registrationDeadlineLabel}</p>
-                            <p className="font-semibold text-zinc-900">{item.deadline ? formatDate(item.deadline) : 'N/A'}</p>
+                            <p className="font-semibold text-zinc-900">{item.deadline ? formatDeadlineDate(item.deadline) : 'N/A'}</p>
                           </div>
                         </div>
                       </motion.li>
@@ -233,6 +244,23 @@ const PricingDates = ({
                   </motion.ul>
                 </AnimatePresence>
               </motion.div>
+              {dates.filter(course => {
+                const now = new Date();
+                return course.date > now && (!course.deadline || course.deadline > now);
+              }).length > 6 && (
+                <motion.div 
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  className="mt-4 text-center"
+                >
+                  <button
+                    onClick={() => setShowAll(!showAll)}
+                    className="text-blue-600 hover:text-blue-800 text-sm font-semibold transition-colors duration-200"
+                  >
+                    {showAll ? 'Zobrazit méně' : 'Zobrazit všechny termíny'}
+                  </button>
+                </motion.div>
+              )}
             </div>
           </div>
           </div>
