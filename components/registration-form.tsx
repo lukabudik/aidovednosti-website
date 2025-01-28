@@ -11,7 +11,7 @@ interface RegistrationFormProps {
     type: string;
     location: string;
     cityLocative: string;
-    deadline: string;
+    deadline?: string;
   }[]
   onSubmit: (data: RegistrationFormData) => void
   onClose: () => void
@@ -68,9 +68,16 @@ export default function RegistrationForm({ dates, onSubmit, onClose }: Registrat
           {dates
             .filter(date => {
               const courseDate = new Date(date.date);
-              const deadline = date.deadline ? new Date(date.deadline) : null;
+              const secondDay = new Date(courseDate);
+              secondDay.setDate(secondDay.getDate() + 1);
+              
+              // Calculate deadline as 1 month before the second day
+              const deadline = new Date(secondDay);
+              deadline.setMonth(deadline.getMonth() - 1);
+              deadline.setHours(23, 59, 59);
+              
               const now = new Date();
-              return courseDate > now && (!deadline || deadline > now);
+              return courseDate > now && deadline > now;
             })
             .map((date, index) => (
               <option key={index} value={date.date}>
