@@ -11,7 +11,7 @@ export interface CourseDate {
   location: string
   cityLocative: string
   focus?: string
-  deadline: Date | null
+  deadline?: Date
 }
 
 interface PricingDatesProps {
@@ -21,7 +21,7 @@ interface PricingDatesProps {
     location: string
     cityLocative: string
     focus?: string
-    deadline: string | null
+    deadline?: string
   }[]
   heading: {
     title: string;
@@ -65,12 +65,24 @@ const PricingDates = ({
   const modal = useModal()
 
   useEffect(() => {
-    // Parse dates from props
-    const parsedDates = initialDates.map(course => ({
-      ...course,
-      date: new Date(`${course.date}T10:00:00`),
-      deadline: course.deadline ? new Date(`${course.deadline}T23:59:59`) : null
-    })) as CourseDate[];
+    // Parse dates from props and calculate deadlines
+    const parsedDates = initialDates.map(course => {
+      const courseDate = new Date(`${course.date}T10:00:00`);
+      
+      // Calculate deadline as 1 month before the second day of the course
+      const secondDay = new Date(courseDate);
+      secondDay.setDate(secondDay.getDate() + 1);
+      
+      const deadline = new Date(secondDay);
+      deadline.setMonth(deadline.getMonth() - 1);
+      deadline.setHours(23, 59, 59);
+
+      return {
+        ...course,
+        date: courseDate,
+        deadline: deadline
+      };
+    }) as CourseDate[];
     
     console.log('Parsed dates:', parsedDates);
     setDates(parsedDates);
