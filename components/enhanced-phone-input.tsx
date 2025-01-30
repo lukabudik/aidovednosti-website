@@ -65,7 +65,7 @@ const extendedCountryData: Record<string, ExtendedCountryInfo> = {
 }
 
 interface EnhancedPhoneInputProps {
-  value?: string
+  value: string
   onChange: (value: string) => void
   /** An external error message (e.g. from form validation) */
   error?: string

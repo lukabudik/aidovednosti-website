@@ -20,9 +20,8 @@ interface RegistrationFormProps {
 export interface RegistrationFormData {
   name: string
   email: string
-  phone?: string
-  source?: string
-  courseDate: string | 'unknown'
+  phone: string
+  course: string | 'unknown'
   writtenReferral?: string
   cookieReferral?: string
   gdprConsent: boolean
@@ -56,11 +55,11 @@ export default function RegistrationForm({ dates, onSubmit, onClose }: Registrat
   return (
     <form onSubmit={handleSubmit(onSubmitWrapper)} className="space-y-4" noValidate>
       <div>
-        <label htmlFor="courseDate" className="block text-sm font-medium text-gray-700">
+        <label htmlFor="course" className="block text-sm font-medium text-gray-700">
           Termín kurzu *
         </label>
         <select
-          {...register('courseDate', { required: 'Vyberte termín kurzu' })}
+          {...register('course', { required: 'Vyberte termín kurzu' })}
           className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
         >
           <option value="">Vyberte termín</option>
@@ -86,20 +85,20 @@ export default function RegistrationForm({ dates, onSubmit, onClose }: Registrat
                   const nextDay = new Date(courseDate);
                   nextDay.setDate(courseDate.getDate() + 1);
                   
-                  const formatDate = (date: Date, nextDay: Date) => {
-                    if (date.getMonth() === nextDay.getMonth()) {
-                      return `${date.getDate()}.-${nextDay.getDate()}. ${date.toLocaleDateString('cs-CZ', { month: 'long', year: 'numeric' })}`;
-                    }
-                    return `${date.getDate()}. ${date.toLocaleDateString('cs-CZ', { month: 'long' })} - ${nextDay.getDate()}. ${nextDay.toLocaleDateString('cs-CZ', { month: 'long', year: 'numeric' })}`;
+                  const formatDate = (date: Date) => {
+                    const day = date.getDate();
+                    const month = date.getMonth() + 1;
+                    const year = date.getFullYear();
+                    return `${day}.${month}. ${year}`;
                   };
                   
-                  return `${formatDate(courseDate, nextDay)} - ${date.location}`;
+                  return `${formatDate(courseDate)} - ${date.location}`;
                 })()}
               </option>
             ))}
         </select>
-        {errors.courseDate && (
-          <p className="mt-1 text-sm text-red-600">{errors.courseDate.message}</p>
+        {errors.course && (
+          <p className="mt-1 text-sm text-red-600">{errors.course.message}</p>
         )}
       </div>
 
@@ -109,7 +108,29 @@ export default function RegistrationForm({ dates, onSubmit, onClose }: Registrat
         </label>
         <input
           type="text"
-          {...register('name', { required: 'Jméno je povinné' })}
+          {...register('name', { 
+            required: 'Jméno je povinné',
+            pattern: {
+              value: /^[A-Za-zÀ-ž]+([ -][A-Za-zÀ-ž]+)+$/,
+              message: 'Prosím zadejte celé jméno (jméno a příjmení)'
+            },
+            minLength: {
+              value: 3,
+              message: 'Jméno musí obsahovat alespoň 3 znaky'
+            },
+            validate: {
+              validName: (value) => {
+                const names = value.trim().split(/\s+/);
+                if (names.length < 2) {
+                  return 'Prosím zadejte celé jméno (jméno a příjmení)';
+                }
+                if (names.some(name => name.length < 2)) {
+                  return 'Každá část jména musí obsahovat alespoň 2 znaky';
+                }
+                return true;
+              }
+            }
+          })}
           className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
         />
         {errors.name && (
@@ -156,15 +177,16 @@ export default function RegistrationForm({ dates, onSubmit, onClose }: Registrat
 
       <div>
         <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
-          Telefon
+          Telefon *
         </label>
         <div className="mt-1">
           <Controller
             name="phone"
             control={control}
             rules={{
+              required: 'Telefonní číslo je povinné',
               validate: (value) => {
-                if (value && !/^\+[0-9]{3} [0-9]{3} [0-9]{3} [0-9]{3}$/.test(value)) {
+                if (!value || !/^\+[0-9]{3} [0-9]{3} [0-9]{3} [0-9]{3}$/.test(value)) {
                   return 'Zadejte platné telefonní číslo ve formátu +420 777 123 456'
                 }
                 return true
@@ -243,7 +265,7 @@ export default function RegistrationForm({ dates, onSubmit, onClose }: Registrat
               </div>
               <input
                 type="text"
-                {...register('source', {
+                {...register('writtenReferral', {
                   onChange: (e) => {
                     const giftMessage = document.getElementById('giftMessage');
                     if (giftMessage) {
@@ -277,10 +299,10 @@ export default function RegistrationForm({ dates, onSubmit, onClose }: Registrat
           <div className="flex items-center h-5">
             <input
               type="checkbox"
-              {...register('gdprConsent', { 
-                required: 'Pro odeslání formuláře je nutné souhlasit se zpracováním osobních údajů' 
-              })}
-              className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+              {...register('gdprConsent')}
+              defaultChecked={true}
+              disabled={true}
+              className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded cursor-not-allowed opacity-60"
             />
           </div>
           <div className="ml-3">

@@ -3,15 +3,16 @@ import Airtable from 'airtable'
 interface RegistrationData {
   Name: string
   Email: string
-  Phone?: string
+  Phone: string
   ReferralCodeWritten?: string
   ReferralCodeCookies?: string
-  CourseDate: string | 'Zatím nevybrán'
-  CourseLocation: string | 'Zatím nevybráno'
+  Course: string | 'Zatím nevybrán'
   GDPRConsent: boolean
+  Status: string
 }
 
 export async function submitRegistration(data: RegistrationData) {
+  // Ensure we have the required environment variables
   if (!process.env.NEXT_PUBLIC_AIRTABLE_PAT) {
     throw new Error('Airtable API token is missing. Please check your environment variables.')
   }
@@ -27,20 +28,23 @@ export async function submitRegistration(data: RegistrationData) {
   try {
     console.log('Submitting registration data:', data)
     
-    const result = await base('Registrations').create([
-      {
-        fields: {
-          Name: data.Name,
-          Email: data.Email,
-          Phone: data.Phone || '',
-          ReferralCodeWritten: data.ReferralCodeWritten || '',
-          ReferralCodeCookies: data.ReferralCodeCookies || '',
-          CourseDate: data.CourseDate,
-          CourseLocation: data.CourseLocation,
-          GDPRConsent: Boolean(data.GDPRConsent)
+    const result = await base('Registrations').create(
+      [
+        {
+          fields: {
+            Name: data.Name,
+            Email: data.Email,
+            Phone: data.Phone,
+            ReferralCodeWritten: data.ReferralCodeWritten || '',
+            ReferralCodeCookies: data.ReferralCodeCookies || '',
+            Course: data.Course,
+            GDPRConsent: true, // Always true as per requirements
+            Status: 'Nepřihlášen' // Default status
+          }
         }
-      }
-    ])
+      ],
+      { typecast: true }
+    )
 
     console.log('Airtable response:', result)
     return result

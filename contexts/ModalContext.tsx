@@ -23,8 +23,8 @@ export function ModalProvider({ children }: { children: React.ReactNode }) {
       const cookieReferral = getCookie('referral')
       let selectedLocation = ''
       
-      if (data.courseDate !== 'unknown') {
-        const selectedDate = modalDates.find(date => date.date === data.courseDate)
+      if (data.course !== 'unknown') {
+        const selectedDate = modalDates.find(date => date.date === data.course)
         if (!selectedDate) {
           throw new Error('Selected date not found')
         }
@@ -42,11 +42,17 @@ export function ModalProvider({ children }: { children: React.ReactNode }) {
           Name: data.name,
           Email: data.email,
           Phone: data.phone,
-          ReferralCodeWritten: data.source,
+          ReferralCodeWritten: data.writtenReferral || '',
           ReferralCodeCookies: cookieReferral || '',
-          CourseDate: data.courseDate === 'unknown' ? 'Zatím nevybrán' : data.courseDate,
-          CourseLocation: data.courseDate === 'unknown' ? 'Zatím nevybráno' : selectedLocation,
-          GDPRConsent: Boolean(data.gdprConsent)
+          Course: data.course === 'unknown' ? 'Zatím nevybrán' : (() => {
+            const date = new Date(data.course);
+            const day = date.getDate();
+            const month = date.getMonth() + 1;
+            const year = date.getFullYear();
+            return `${day}.${month}. ${year} - ${selectedLocation}`;
+          })(),
+          GDPRConsent: true,
+          Status: 'New'
         }),
         {
           loading: 'Odesílám registraci...',
