@@ -37,11 +37,11 @@ interface FinancingOptionsProps {
     type: string
     location: string
     cityLocative: string
-    deadline: string
+    deadline?: string
   }[]
 }
 
-const FinancingOptions = ({ heading, options, dates }: FinancingOptionsProps & { dates: any[] }) => {
+const FinancingOptions = ({ heading, options, dates }: FinancingOptionsProps) => {
   const modal = useModal()
   return (
     <>

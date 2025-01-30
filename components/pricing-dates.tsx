@@ -21,8 +21,8 @@ interface PricingDatesProps {
     location: string
     cityLocative: string
     focus?: string
-    deadline?: string // Optional in props since it's calculated internally
-  }[] & any[] // Allow additional properties to prevent excess property checks
+    deadline?: string
+  }[]
   heading: {
     title: string;
     subtitle: string;

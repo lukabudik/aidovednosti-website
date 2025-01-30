@@ -11,6 +11,7 @@ interface RegistrationFormProps {
     type: string;
     location: string;
     cityLocative: string;
+    focus?: string;
     deadline?: string;
   }[]
   onSubmit: (data: RegistrationFormData) => void
