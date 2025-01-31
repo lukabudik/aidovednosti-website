@@ -36,6 +36,12 @@ export const courseDates = [
     cityLocative: 'Brně',
   },
   {
+    date: '2025-04-28',
+    type: 'Prezenční',
+    location: 'Ostrava',
+    cityLocative: 'Ostravě',
+  },
+  {
     date: '2025-05-16',
     type: 'Prezenční',
     location: 'Praha',
