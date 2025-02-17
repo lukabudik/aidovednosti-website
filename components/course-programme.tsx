@@ -1,16 +1,15 @@
 "use client"
 import React, { useState } from 'react'
 import ScrollLink from './ScrollLink'
-import { FiChevronDown, FiCoffee, FiPackage } from "react-icons/fi";
+import { FiChevronDown, FiCoffee } from "react-icons/fi";
 import { useModal } from '@/contexts/ModalContext'
 import { motion, AnimatePresence } from 'framer-motion'
-import Stats from "@/components/stats";
 
 interface ProgrammeBlock {
   time: string
   title: string
   content: string[]
-  icon?: React.ReactNode
+  icon?: React.ReactNode | string
 }
 
 interface ProgrammeDay {
@@ -23,7 +22,8 @@ interface CourseProgrammeProps {
     title: string
     subtitle: string
   }
-  programme: ProgrammeDay[]
+  beginnerProgramme: ProgrammeDay[]
+  advancedProgramme: ProgrammeDay[]
   cta: {
     primary: {
       text: string
@@ -37,9 +37,26 @@ interface CourseProgrammeProps {
   }
 }
 
-export default function CourseProgramme({ heading, programme, cta, dates = [] }: CourseProgrammeProps & { dates?: any[] }) {
+export default function CourseProgramme({ 
+  heading, 
+  beginnerProgramme,
+  advancedProgramme,
+  cta, 
+  dates = [] 
+}: CourseProgrammeProps & { dates?: Array<{
+  date: string
+  type: string
+  location: string
+  cityLocative: string
+  level: string
+  focus?: string
+  deadline?: string
+}> }) {
   const [openBlocks, setOpenBlocks] = useState<{ [key: string]: boolean }>({})
+  const [selectedLevel, setSelectedLevel] = useState<'beginner' | 'advanced'>('beginner')
   const modal = useModal()
+
+  const programme = selectedLevel === 'beginner' ? beginnerProgramme : advancedProgramme
 
   const toggleBlock = (day: string, blockIndex: number) => {
     setOpenBlocks(prev => ({
@@ -49,18 +66,40 @@ export default function CourseProgramme({ heading, programme, cta, dates = [] }:
   }
 
   return (
-      <section className=" py-6 md:py-8">
+      <section className="py-6 md:py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <div className="max-w-3xl mx-auto text-center pb-6">
             <h2 className="font-inter-tight text-2xl md:text-3xl font-bold text-zinc-900 mb-2">{heading.title}</h2>
             <p className="text-base text-zinc-500">{heading.subtitle}</p>
+            <div className="mt-4 inline-flex rounded-lg border border-zinc-200 p-1 bg-white">
+              <button
+                onClick={() => setSelectedLevel('beginner')}
+                className={`px-4 py-2 text-sm font-medium rounded-md transition-colors duration-200 ${
+                  selectedLevel === 'beginner' 
+                    ? 'bg-blue-100 text-blue-700' 
+                    : 'text-zinc-500 hover:text-zinc-700'
+                }`}
+              >
+                Začátečník
+              </button>
+              <button
+                onClick={() => setSelectedLevel('advanced')}
+                className={`px-4 py-2 text-sm font-medium rounded-md transition-colors duration-200 ${
+                  selectedLevel === 'advanced' 
+                    ? 'bg-purple-100 text-purple-700' 
+                    : 'text-zinc-500 hover:text-zinc-700'
+                }`}
+              >
+                Pokročilý
+              </button>
+            </div>
           </div>
-          <div className="grid md:grid-cols-2 gap-8">
-            {programme.map((day, dayIndex) => (
+          <div className="grid md:grid-cols-2 gap-8 mt-8">
+            {programme.map((day: ProgrammeDay, dayIndex: number) => (
                 <div key={dayIndex} className="mb-8">
                   <h3 className="font-inter-tight text-xl font-semibold text-zinc-900 mb-4 bg-zinc-100 p-3 rounded-lg">{day.day}</h3>
                   <div className="space-y-4">
-                    {day.blocks.map((block, blockIndex) => (
+                    {day.blocks.map((block: ProgrammeBlock, blockIndex: number) => (
                         <motion.div
                             key={blockIndex}
                             className="border border-transparent [background:linear-gradient(theme(colors.white),theme(colors.white))_padding-box,linear-gradient(120deg,theme(colors.zinc.300),theme(colors.zinc.100),theme(colors.zinc.300))_border-box] rounded-lg overflow-hidden"
@@ -77,7 +116,11 @@ export default function CourseProgramme({ heading, programme, cta, dates = [] }:
                               <span className="font-inter-tight font-semibold text-zinc-900">{block.title}</span>
                             </div>
                             <div className="flex items-center space-x-2">
-                              {block.icon && <div className="text-zinc-400">{block.icon}</div>}
+                              {block.icon && (
+                                <div className="text-zinc-400">
+                                  {typeof block.icon === 'string' && block.icon === 'coffee' ? <FiCoffee /> : block.icon}
+                                </div>
+                              )}
                               {block.content.length > 0 && (
                                   <motion.div
                                       animate={{rotate: openBlocks[`${day.day}-${blockIndex}`] ? 180 : 0}}
@@ -166,7 +209,6 @@ export default function CourseProgramme({ heading, programme, cta, dates = [] }:
             </div>
           </div>
         </div>
-
       </section>
   )
 }

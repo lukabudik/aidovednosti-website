@@ -1,11 +1,5 @@
-import IsItForMe from "@/components/is-it-for-me"
 import { courseDates } from "@/data/course-dates"
 import { PiCertificate, PiCamera, PiIceCream } from "react-icons/pi"
-import {FiCoffee, FiAward, FiPackage} from 'react-icons/fi'
-import TestimonialImg01 from '@/public/images/testimonial-01.jpg'
-import TestimonialImg02 from '@/public/images/testimonial-02.jpg'
-import TestimonialImg03 from '@/public/images/testimonial-03.jpg'
-import TestimonialImg04 from '@/public/images/testimonial-04.jpg'
 
 export const metadata = {
   title: 'AI workshop - Ovládni umělou inteligenci',
@@ -14,13 +8,16 @@ export const metadata = {
 
 import Hero from '@/components/hero'
 import WhatWillYouLearn from '@/components/what-will-you-learn'
-import Testimonials from '@/components/testimonials'
 import PricingDates from "@/components/pricing-dates"
 import MeetTrainers from "@/components/meet-trainers"
 import Bonuses from "@/components/bonuses"
 import SignInInstructions from "@/components/SignInInstructions"
 import FinancingOptions from "@/components/financing-options"
 import CourseProgramme from "@/components/course-programme"
+import { beginnerProgramme } from "@/data/beginner-programme"
+import { advancedProgramme } from "@/data/advanced-programme"
+import { beginnerTabs } from "@/data/what-will-you-learn-beginner"
+import { advancedTabs } from "@/data/what-will-you-learn-advanced"
 
 export default function Home() {
   return (
@@ -168,136 +165,8 @@ export default function Home() {
               subtitle: "Podrobný program dvoudenního kurzu"
             }}
             dates={courseDates}
-            programme={[
-              {
-                day: "Den 1",
-                blocks: [
-                  {
-                    time: "9:00",
-                    title: "Úvod do AI a ChatGPT",
-                    content: [
-                      "Vliv AI na trh práce a produktivitu",
-                      "- Mýty vs. realita AI v pracovním procesu",
-                      "- Základy práce s ChatGPT od A do Z",
-                      "- Pokročilé techniky promptingu",
-                      "- Analýza dokumentů a práce s daty"
-                    ]
-                  },
-                  {
-                    time: "10:30",
-                    title: "Přestávka na kávu",
-                    content: [],
-                    icon: <FiCoffee />
-                  },
-                  {
-                    time: "11:00",
-                    title: "Pokračování praktických cvičení",
-                    content: [
-                      "Praktické využití ChatGPT",
-                      "- Analýza dokumentů a dat",
-                      "- Tvorba obsahu a textů",
-                      "- Řešení reálných případů"
-                    ]
-                  },
-                  {
-                    time: "12:00",
-                    title: "Oběd",
-                    content: [],
-                    icon: <FiPackage />
-                  },
-                  {
-                    time: "13:00",
-                    title: "Generování vizuálního obsahu",
-                    content: [
-                      "Práce s DALL-E 3",
-                      "- Tvorba log a vizuálních prvků",
-                      "- Využití pro marketing a prezentace",
-                      "- GPTs a vlastní AI asistenti"
-                    ]
-                  },
-                  {
-                    time: "15:00",
-                    title: "Odpolední občerstvení",
-                    content: [],
-                    icon: <FiCoffee />
-                  },
-                  {
-                    time: "15:30",
-                    title: "Závěr prvního dne",
-                    content: [
-                      "Shrnutí poznatků",
-                      "- Znalostní kvíz s odměnou",
-                      "- Q&A session",
-                      "- Příprava na druhý den"
-                    ]
-                  }
-                ]
-              },
-              {
-                day: "Den 2",
-                blocks: [
-                  {
-                    time: "9:00",
-                    title: "Pokročilé AI nástroje",
-                    content: [
-                      "Midjourney a Adobe Firefly",
-                      "- Tvorba profesionálního vizuálního obsahu",
-                      "- Práce s IdeoGram pro text v obrázcích",
-                      "- Nejnovější trendy v AI nástrojích"
-                    ]
-                  },
-                  {
-                    time: "10:30",
-                    title: "Přestávka na kávu",
-                    content: [],
-                    icon: <FiCoffee />
-                  },
-                  {
-                    time: "11:00",
-                    title: "Praktické workshopy",
-                    content: [
-                      "Týmová práce s AI nástroji",
-                      "- Soutěž týmů",
-                      "- Praktické úkoly",
-                      "- Sdílení zkušeností"
-                    ]
-                  },
-                  {
-                    time: "12:00",
-                    title: "Oběd",
-                    content: [],
-                    icon: <FiPackage />
-                  },
-                  {
-                    time: "13:00",
-                    title: "Audio a video AI nástroje",
-                    content: [
-                      "Elevenlabs a HeyGen",
-                      "- Tvorba mluveného slova",
-                      "- Video obsah s AI avatarem",
-                      "- Automatizace schůzek"
-                    ]
-                  },
-                  {
-                    time: "15:00",
-                    title: "Odpolední občerstvení",
-                    content: [],
-                    icon: <FiCoffee />
-                  },
-                  {
-                    time: "15:30",
-                    title: "Závěrečný blok",
-                    content: [
-                      "Praktické aplikace v byznysu",
-                      "- Tvorba brandingu pomocí AI",
-                      "- Efektivní AI studium",
-                      "- Závěrečné vyhodnocení",
-                      "- Předání certifikátů"
-                    ]
-                  }
-                ]
-              }
-            ]}
+            beginnerProgramme={beginnerProgramme}
+            advancedProgramme={advancedProgramme}
             cta={{
               primary: {
                 text: "Koupit s podporou",
@@ -315,67 +184,8 @@ export default function Home() {
               title: "Naučíme tě toho opravdu hodně",
               subtitle: "AI reads and understands your designs, and with nothing more than a single line of feedback, perform complex actions autonomously."
             }}
-            tabs={[
-              {
-                id: 1,
-                title: 'Základy',
-                description: 'Vše, co potřebuješ vědět o tom jak a proč AI funguje.',
-                content: {
-                  title: 'Základy',
-                  list: [
-                    'Jak komplexně pracovat s ChatGPT a dalšími užitečnými AI nástroji',
-                    'Jak se díky AI rychleji učit, tvořit prezentace či marketingové posty',
-                    'Vytvoříš si asistenta, který za tebe bude psát emaily či zaškolovat lidi',
-                    'Jak ti AI může pomoci s cestováním, marketingem či produktivitou',
-                    'Jak získat AI asistentku na virtuální meety, která ti sepíše zápisy',
-                    'Jak ověřovat informace a vyhledávat na internetu'
-                  ]
-                }
-              },
-              {
-                id: 2,
-                title: 'Grafika',
-                description: 'Vytvářej krásné vizuály během pár minut a ušetři za grafika.',
-                content: {
-                  title: 'Grafika',
-                  list: [
-                    'Jak vizualizovat svoje nápady',
-                    'Tvorba úžasných ilustrací a realistických fotek pomocí Midjourney',
-                    'Jak vytvářet kompletní promo materiály, včetně textu',
-                    'Už neřeš branding - nech si ho celý vygenerovat',
-                    'Jak si pomocí AI vytvořit profesionální fotky na LinkedIn'
-                  ]
-                }
-              },
-              {
-                id: 3,
-                title: 'Video',
-                description: 'Vlastní dvojník, nebo krásné záběry do reklamy? Obratem!',
-                content: {
-                  title: 'Video',
-                  list: [
-                    'Jak si tvořit své avatary, kteří ti pomohou s marketingem (i celosvětově)',
-                    'Jak si pomocí AI nadabovat jakékoliv video',
-                    'Jak si snadno a rychle tvořit své profi byznys fotografie díky AI',
-                    'Jak získat kvalifikované leady pro tvůj byznys díky AI'
-                  ]
-                }
-              },
-              {
-                id: 4,
-                title: 'Produktivita',
-                description: 'Tyto nástroje se stanou tvým každodenním pomocníkem.',
-                content: {
-                  title: 'Produktivita',
-                  list: [
-                    'Získej vlastní asistentku, která ti sepíše zápisy ze schůzek',
-                    'Jak získat kvalifikované leady',
-                    'Jak si díky AI odpřipommínkovat smlouvy v kvalitě právníka',
-                    'Vytvoř si vlastního chatbota, který zodpoví dotazy tvým zákazníkům',
-                  ]
-                }
-              }
-            ]}
+            beginnerTabs={beginnerTabs}
+            advancedTabs={advancedTabs}
         />
         <Bonuses
             heading={{
