@@ -1,7 +1,6 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
-import Link from "next/link"
 import { motion, AnimatePresence } from 'framer-motion'
 import { useModal } from '@/contexts/ModalContext'
 
@@ -10,6 +9,7 @@ export interface CourseDate {
   type: string
   location: string
   cityLocative: string
+  level: string
   focus?: string
   deadline?: Date
 }
@@ -20,6 +20,7 @@ interface PricingDatesProps {
     type: string
     location: string
     cityLocative: string
+    level: string
     focus?: string
     deadline?: string
   }[]
@@ -56,7 +57,9 @@ const PricingDates = ({
 }: PricingDatesProps) => {
   const [dates, setDates] = useState<CourseDate[]>([])
   const [selectedFocus, setSelectedFocus] = useState<string>('all')
+  const [selectedLevel, setSelectedLevel] = useState<string>('all')
   const [focusOptions, setFocusOptions] = useState<string[]>([])
+  const [levelOptions] = useState<string[]>(['all', 'beginner', 'advanced'])
 
   const [closestCourse, setClosestCourse] = useState<CourseDate | null>(null)
   const [daysLeft, setDaysLeft] = useState<number>(0)
@@ -107,8 +110,9 @@ const PricingDates = ({
         const isAfterNow = course.date > now;
         const isBeforeDeadline = course.deadline ? course.deadline > now : true;
         const matchesFocus = focus === 'all' || course.focus === focus;
+        const matchesLevel = selectedLevel === 'all' || course.level === selectedLevel;
         
-        return isAfterNow && isBeforeDeadline && matchesFocus;
+        return isAfterNow && isBeforeDeadline && matchesFocus && matchesLevel;
       })
       .sort((a, b) => a.date.getTime() - b.date.getTime());
     
@@ -137,7 +141,7 @@ const PricingDates = ({
 
   useEffect(() => {
     updateFilteredCourses(dates, selectedFocus)
-  }, [dates, selectedFocus, showAll])
+  }, [dates, selectedFocus, selectedLevel, showAll])
 
   const formatDate = (date: Date) => {
     const nextDay = new Date(date);
@@ -190,24 +194,42 @@ const PricingDates = ({
             {/* Right column - Filter and Dates */}
             <div className="space-y-6">
               <div className="border border-transparent [background:linear-gradient(theme(colors.white),theme(colors.zinc.50))_padding-box,linear-gradient(120deg,theme(colors.zinc.300),theme(colors.zinc.100),theme(colors.zinc.300))_border-box] rounded-lg p-6">
-                <div className="flex justify-between items-center mb-4">
-                  <h3 className="font-inter-tight text-xl font-semibold text-zinc-900">{upcomingDates.title}</h3>
-                  {focusOptions.length > 2 && ( // Show only if there's more than one focus option (excluding 'all')
-                    <div className="flex items-center space-x-2">
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <h3 className="font-inter-tight text-xl font-semibold text-zinc-900">{upcomingDates.title}</h3>
+                    <div className="flex items-center gap-2">
+                    <div className="relative w-[180px]">
                       <select
-                        id="focus-filter"
-                        value={selectedFocus}
-                        onChange={(e) => setSelectedFocus(e.target.value)}
-                        className="text-sm border border-zinc-200 rounded-md py-1 px-2 focus:border-zinc-500 focus:outline-none focus:ring-zinc-500"
+                        id="level-filter"
+                        value={selectedLevel}
+                        onChange={(e) => setSelectedLevel(e.target.value)}
+                        className="w-full text-sm bg-white border border-zinc-200 rounded-md py-2 pl-3 pr-8 cursor-pointer hover:border-zinc-300 focus:border-zinc-500 focus:outline-none focus:ring-zinc-500 transition-colors duration-200 appearance-none bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23666%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E')] bg-[length:8px_8px] bg-[position:right_12px_center] bg-no-repeat"
                       >
-                        {focusOptions.map((focus) => (
-                          <option key={focus} value={focus}>
-                            {focus === 'all' ? upcomingDates.allCoursesLabel : focus}
+                        {levelOptions.map((level) => (
+                          <option key={level} value={level}>
+                            {level === 'all' ? 'Všechny úrovně' : level === 'beginner' ? 'Začátečník' : 'Pokročilý'}
                           </option>
                         ))}
                       </select>
                     </div>
-                  )}
+                    {focusOptions.length > 2 && (
+                      <div className="relative w-[180px]">
+                        <select
+                          id="focus-filter"
+                          value={selectedFocus}
+                          onChange={(e) => setSelectedFocus(e.target.value)}
+                          className="w-full text-sm bg-white border border-zinc-200 rounded-md py-2 pl-3 pr-8 cursor-pointer hover:border-zinc-300 focus:border-zinc-500 focus:outline-none focus:ring-zinc-500 transition-colors duration-200 appearance-none bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23666%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E')] bg-[length:8px_8px] bg-[position:right_12px_center] bg-no-repeat"
+                        >
+                          {focusOptions.map((focus) => (
+                            <option key={focus} value={focus}>
+                              {focus === 'all' ? upcomingDates.allCoursesLabel : focus}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                    )}
+                    </div>
+                  </div>
                 </div>
               <motion.div
                 className="overflow-hidden"
@@ -242,9 +264,22 @@ const PricingDates = ({
                           <div>
                             <p className="font-semibold text-zinc-900">{formatDate(item.date)}</p>
                             <p className="text-sm text-zinc-600">{upcomingDates.cityLabel} {item.location}</p>
-                            {item.focus && (
-                              <p className="text-sm text-zinc-600">{upcomingDates.focusLabel} {item.focus}</p>
-                            )}
+                            <p className="text-sm text-zinc-600">
+                              <div className="flex items-center gap-2">
+                                <span className={`inline-flex items-center px-2.5 py-0.5 text-xs font-medium ${
+                                  item.level === 'beginner' 
+                                    ? 'bg-blue-50 text-blue-700 border border-blue-200' 
+                                    : 'bg-purple-50 text-purple-700 border border-purple-200'
+                                } rounded-md`}>
+                                  {item.level === 'beginner' ? 'Začátečník' : 'Pokročilý'}
+                                </span>
+                                {item.focus && (
+                                  <span className="text-zinc-600">
+                                    {upcomingDates.focusLabel} {item.focus}
+                                  </span>
+                                )}
+                              </div>
+                            </p>
                           </div>
                           <div className="text-right">
                             <p className="text-sm text-zinc-600">{upcomingDates.registrationDeadlineLabel}</p>
