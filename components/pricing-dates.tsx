@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useModal } from '@/contexts/ModalContext'
+import { useLevel } from '@/contexts/LevelContext'
 
 export interface CourseDate {
   date: Date
@@ -57,9 +58,8 @@ const PricingDates = ({
 }: PricingDatesProps) => {
   const [dates, setDates] = useState<CourseDate[]>([])
   const [selectedFocus, setSelectedFocus] = useState<string>('all')
-  const [selectedLevel, setSelectedLevel] = useState<string>('all')
+  const { level, setLevel } = useLevel()
   const [focusOptions, setFocusOptions] = useState<string[]>([])
-  const [levelOptions] = useState<string[]>(['all', 'beginner', 'advanced'])
 
   const [closestCourse, setClosestCourse] = useState<CourseDate | null>(null)
   const [daysLeft, setDaysLeft] = useState<number>(0)
@@ -87,12 +87,10 @@ const PricingDates = ({
       };
     }) as CourseDate[];
     
-    console.log('Parsed dates:', parsedDates);
     setDates(parsedDates);
     
     // Get unique focus options
     const uniqueFocus = Array.from(new Set(parsedDates.map(course => course.focus).filter((focus): focus is string => focus !== undefined)));
-    console.log('Unique focus options:', uniqueFocus);
     if (uniqueFocus.length > 0) {
       setFocusOptions(['all', ...uniqueFocus]);
     }
@@ -102,56 +100,44 @@ const PricingDates = ({
   }, [initialDates]);
 
   const updateFilteredCourses = (courses: CourseDate[], focus: string) => {
-    console.log('Updating filtered courses with:', { courses, focus });
-    
     const now = new Date();
     const filtered = courses
       .filter(course => {
         const isAfterNow = course.date > now;
         const isBeforeDeadline = course.deadline ? course.deadline > now : true;
         const matchesFocus = focus === 'all' || course.focus === focus;
-        const matchesLevel = selectedLevel === 'all' || course.level === selectedLevel;
+        const matchesLevel = level === 'beginner' ? course.level === 'beginner' : course.level === 'advanced';
         
         return isAfterNow && isBeforeDeadline && matchesFocus && matchesLevel;
       })
       .sort((a, b) => a.date.getTime() - b.date.getTime());
     
-    // Store the total number of filtered courses before slicing
-    const totalFilteredCourses = filtered.length;
     const slicedCourses = showAll ? filtered : filtered.slice(0, 6);
-    
-    console.log('Filtered courses:', slicedCourses);
-    console.log('Total filtered courses:', totalFilteredCourses);
     
     setFilteredCourses(slicedCourses);
 
     if (filtered.length > 0) {
-      const closest = filtered[0]; // Take the first course after sorting
+      const closest = filtered[0];
       setClosestCourse(closest);
       
       const timeDiff = closest.deadline 
         ? closest.deadline.getTime() - now.getTime() 
         : 0;
       setDaysLeft(Math.ceil(timeDiff / (1000 * 3600 * 24)));
-      
-      console.log('Closest course:', closest);
-      console.log('Days left:', Math.ceil(timeDiff / (1000 * 3600 * 24)));
     }
   }
 
   useEffect(() => {
     updateFilteredCourses(dates, selectedFocus)
-  }, [dates, selectedFocus, selectedLevel, showAll])
+  }, [dates, selectedFocus, level, showAll])
 
   const formatDate = (date: Date) => {
     const nextDay = new Date(date);
     nextDay.setDate(date.getDate() + 1);
     
-    // If it's the same month, just show the dates
     if (date.getMonth() === nextDay.getMonth()) {
       return `${date.getDate()}.-${nextDay.getDate()}. ${date.toLocaleDateString('cs-CZ', { month: 'long', year: 'numeric' })}`;
     }
-    // If it spans months, show both months
     return `${date.getDate()}. ${date.toLocaleDateString('cs-CZ', { month: 'long' })} - ${nextDay.getDate()}. ${nextDay.toLocaleDateString('cs-CZ', { month: 'long', year: 'numeric' })}`;
   }
 
@@ -197,23 +183,20 @@ const PricingDates = ({
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
                     <h3 className="font-inter-tight text-xl font-semibold text-zinc-900">{upcomingDates.title}</h3>
-                    <div className="flex items-center gap-2">
-                    <div className="relative w-[180px]">
-                      <select
-                        id="level-filter"
-                        value={selectedLevel}
-                        onChange={(e) => setSelectedLevel(e.target.value)}
-                        className="w-full text-sm bg-white border border-zinc-200 rounded-md py-2 pl-3 pr-8 cursor-pointer hover:border-zinc-300 focus:border-zinc-500 focus:outline-none focus:ring-zinc-500 transition-colors duration-200 appearance-none bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23666%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E')] bg-[length:8px_8px] bg-[position:right_12px_center] bg-no-repeat"
-                      >
-                        {levelOptions.map((level) => (
-                          <option key={level} value={level}>
-                            {level === 'all' ? 'Všechny úrovně' : level === 'beginner' ? 'Začátečník' : 'Pokročilý'}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                    {focusOptions.length > 2 && (
+                    <div className="flex items-center gap-4">
                       <div className="relative w-[180px]">
+                        <select
+                          id="level-filter"
+                          value={level}
+                          onChange={(e) => setLevel(e.target.value as 'beginner' | 'advanced')}
+                          className="w-full text-sm bg-white border border-zinc-200 rounded-md py-2 pl-3 pr-8 cursor-pointer hover:border-zinc-300 focus:border-zinc-500 focus:outline-none focus:ring-zinc-500 transition-colors duration-200 appearance-none bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23666%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E')] bg-[length:8px_8px] bg-[position:right_12px_center] bg-no-repeat"
+                        >
+                          <option value="beginner">Začátečník</option>
+                          <option value="advanced">Pokročilý</option>
+                        </select>
+                      </div>
+                      {focusOptions.length > 2 && (
+                        <div className="relative w-[180px]">
                         <select
                           id="focus-filter"
                           value={selectedFocus}
@@ -226,8 +209,8 @@ const PricingDates = ({
                             </option>
                           ))}
                         </select>
-                      </div>
-                    )}
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>

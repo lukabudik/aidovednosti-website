@@ -1,5 +1,6 @@
 import './css/style.css'
 import { ModalProvider } from '@/contexts/ModalContext'
+import { LevelProvider } from '@/contexts/LevelContext'
 import { Inter, Inter_Tight } from 'next/font/google'
 import ReferralHandler from '@/components/ReferralHandler'
 import { Toaster } from 'react-hot-toast'
@@ -33,8 +34,10 @@ export default function RootLayout({
       <body className={`${inter.variable} ${inter_tight.variable} font-inter antialiased bg-white text-zinc-900 tracking-tight`}>
         <div className="flex flex-col min-h-screen overflow-hidden supports-[overflow:clip]:overflow-clip">
           <ModalProvider>
-            <ReferralHandler />
-            {children}
+            <LevelProvider>
+              <ReferralHandler />
+              {children}
+            </LevelProvider>
           </ModalProvider>
           <Toaster 
             position="top-center"

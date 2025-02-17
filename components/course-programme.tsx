@@ -4,6 +4,7 @@ import ScrollLink from './ScrollLink'
 import { FiChevronDown, FiCoffee } from "react-icons/fi";
 import { useModal } from '@/contexts/ModalContext'
 import { motion, AnimatePresence } from 'framer-motion'
+import { useLevel } from '@/contexts/LevelContext'
 
 interface ProgrammeBlock {
   time: string
@@ -53,10 +54,10 @@ export default function CourseProgramme({
   deadline?: string
 }> }) {
   const [openBlocks, setOpenBlocks] = useState<{ [key: string]: boolean }>({})
-  const [selectedLevel, setSelectedLevel] = useState<'beginner' | 'advanced'>('beginner')
+  const { level, setLevel } = useLevel()
   const modal = useModal()
 
-  const programme = selectedLevel === 'beginner' ? beginnerProgramme : advancedProgramme
+  const programme = level === 'beginner' ? beginnerProgramme : advancedProgramme
 
   const toggleBlock = (day: string, blockIndex: number) => {
     setOpenBlocks(prev => ({
@@ -73,9 +74,9 @@ export default function CourseProgramme({
             <p className="text-base text-zinc-500">{heading.subtitle}</p>
             <div className="mt-4 inline-flex rounded-lg border border-zinc-200 p-1 bg-white">
               <button
-                onClick={() => setSelectedLevel('beginner')}
+                onClick={() => setLevel('beginner')}
                 className={`px-4 py-2 text-sm font-medium rounded-md transition-colors duration-200 ${
-                  selectedLevel === 'beginner' 
+                  level === 'beginner' 
                     ? 'bg-blue-100 text-blue-700' 
                     : 'text-zinc-500 hover:text-zinc-700'
                 }`}
@@ -83,9 +84,9 @@ export default function CourseProgramme({
                 Začátečník
               </button>
               <button
-                onClick={() => setSelectedLevel('advanced')}
+                onClick={() => setLevel('advanced')}
                 className={`px-4 py-2 text-sm font-medium rounded-md transition-colors duration-200 ${
-                  selectedLevel === 'advanced' 
+                  level === 'advanced' 
                     ? 'bg-purple-100 text-purple-700' 
                     : 'text-zinc-500 hover:text-zinc-700'
                 }`}
