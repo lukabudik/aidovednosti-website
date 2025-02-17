@@ -11,14 +11,16 @@ export const courseDates = [
     type: 'Prezenční',
     location: 'Praha',
     cityLocative: 'Praze',
-    level: 'beginner'
+    level: 'beginner',
+    isFull: true
   },
   {
     date: '2025-03-21',
     type: 'Prezenční',
     location: 'Praha',
     cityLocative: 'Praze',
-    level: 'beginner'
+    level: 'beginner',
+    isFull: true
   },
   {
     date: '2025-03-25',

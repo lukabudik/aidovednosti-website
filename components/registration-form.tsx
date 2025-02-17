@@ -13,6 +13,7 @@ interface RegistrationFormProps {
     level: string;
     focus?: string;
     deadline?: string;
+    isFull?: boolean;
   }[]
   onSubmit: (data: RegistrationFormData) => void
   onClose: () => void
@@ -106,7 +107,7 @@ export default function RegistrationForm({ dates, onSubmit, onClose }: Registrat
 
               const courseDate = new Date(date.date);
               const secondDay = new Date(courseDate);
-              secondDay.setDate(secondDay.getDate() + 1);
+              secondDay.setDate(courseDate.getDate() + 1);
               
               // Calculate deadline as 1 month before the second day
               const deadline = new Date(secondDay);
@@ -114,7 +115,7 @@ export default function RegistrationForm({ dates, onSubmit, onClose }: Registrat
               deadline.setHours(23, 59, 59);
               
               const now = new Date();
-              return courseDate > now && deadline > now;
+              return courseDate > now && deadline > now && !date.isFull;
             })
             .map((date, index) => (
               <option key={index} value={date.date}>

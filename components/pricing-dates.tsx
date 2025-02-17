@@ -13,6 +13,7 @@ export interface CourseDate {
   level: string
   focus?: string
   deadline?: Date
+  isFull?: boolean
 }
 
 interface PricingDatesProps {
@@ -24,6 +25,7 @@ interface PricingDatesProps {
     level: string
     focus?: string
     deadline?: string
+    isFull?: boolean
   }[]
   heading: {
     title: string;
@@ -107,8 +109,9 @@ const PricingDates = ({
         const isBeforeDeadline = course.deadline ? course.deadline > now : true;
         const matchesFocus = focus === 'all' || course.focus === focus;
         const matchesLevel = level === 'beginner' ? course.level === 'beginner' : course.level === 'advanced';
+        const isNotFull = !course.isFull;
         
-        return isAfterNow && isBeforeDeadline && matchesFocus && matchesLevel;
+        return isAfterNow && isBeforeDeadline && matchesFocus && matchesLevel && isNotFull;
       })
       .sort((a, b) => a.date.getTime() - b.date.getTime());
     
