@@ -3,7 +3,6 @@
 import { useForm, Controller } from 'react-hook-form'
 import EnhancedPhoneInput from './enhanced-phone-input'
 import toast from 'react-hot-toast'
-import { CourseDate } from './pricing-dates'
 
 interface RegistrationFormProps {
   dates: {
@@ -11,11 +10,23 @@ interface RegistrationFormProps {
     type: string;
     location: string;
     cityLocative: string;
+    level: string;
     focus?: string;
     deadline?: string;
   }[]
   onSubmit: (data: RegistrationFormData) => void
   onClose: () => void
+}
+
+interface FormData {
+  name: string
+  email: string
+  phone: string
+  level: string
+  course: string | 'unknown'
+  writtenReferral?: string
+  cookieReferral?: string
+  gdprConsent: boolean
 }
 
 export interface RegistrationFormData {
@@ -33,13 +44,15 @@ export default function RegistrationForm({ dates, onSubmit, onClose }: Registrat
     register,
     handleSubmit,
     control,
+    watch,
     formState: { errors, isSubmitting },
-  } = useForm<RegistrationFormData>()
+  } = useForm<FormData>()
 
-  const onSubmitWrapper = async (data: RegistrationFormData) => {
+  const onSubmitWrapper = async (data: FormData) => {
     try {
+      const { level, ...formDataWithoutLevel } = data; // eslint-disable-line @typescript-eslint/no-unused-vars
       const formData = {
-        ...data,
+        ...formDataWithoutLevel,
         gdprConsent: Boolean(data.gdprConsent),
       }
       await onSubmit(formData)
@@ -48,13 +61,31 @@ export default function RegistrationForm({ dates, onSubmit, onClose }: Registrat
       setTimeout(() => {
         window.location.href = 'https://www.uradprace.cz/web/cz/vyhledani-rekvalifikacniho-kurzu#/rekvalifikacni-kurz-detail/18900'
       }, 2000)
-    } catch (error) {
+    } catch (err) {
+      console.error('Registration error:', err)
       toast.error('Něco se pokazilo. Zkuste to prosím znovu.')
     }
   }
 
   return (
     <form onSubmit={handleSubmit(onSubmitWrapper)} className="space-y-4" noValidate>
+      <div>
+        <label htmlFor="level" className="block text-sm font-medium text-gray-700">
+          Úroveň kurzu *
+        </label>
+        <select
+          {...register('level', { required: 'Vyberte úroveň kurzu' })}
+          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+        >
+          <option value="">Vyberte úroveň</option>
+          <option value="beginner">Začátečník</option>
+          <option value="advanced">Pokročilý</option>
+        </select>
+        {errors.level && (
+          <p className="mt-1 text-sm text-red-600">{errors.level.message}</p>
+        )}
+      </div>
+
       <div>
         <label htmlFor="course" className="block text-sm font-medium text-gray-700">
           Termín kurzu *
@@ -67,6 +98,12 @@ export default function RegistrationForm({ dates, onSubmit, onClose }: Registrat
           <option value="unknown">Ještě nevím termín</option>
           {dates
             .filter(date => {
+              // First filter by level if selected
+              const selectedLevel = watch('level');
+              if (selectedLevel && date.level !== selectedLevel) {
+                return false;
+              }
+
               const courseDate = new Date(date.date);
               const secondDay = new Date(courseDate);
               secondDay.setDate(secondDay.getDate() + 1);
@@ -93,7 +130,7 @@ export default function RegistrationForm({ dates, onSubmit, onClose }: Registrat
                     return `${day}.${month}. ${year}`;
                   };
                   
-                  return `${formatDate(courseDate)} - ${date.location}`;
+                  return `${formatDate(courseDate)} - ${date.location} (${date.level === 'beginner' ? 'Začátečník' : 'Pokročilý'})`;
                 })()}
               </option>
             ))}
