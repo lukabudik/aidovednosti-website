@@ -8,9 +8,7 @@ import Bonuses from "@/components/bonuses"
 import SignInInstructions from "@/components/SignInInstructions"
 import FinancingOptions from "@/components/financing-options"
 import CourseProgramme from "@/components/course-programme"
-import { beginnerProgramme } from "@/data/beginner-programme"
 import { advancedProgramme } from "@/data/advanced-programme"
-import { beginnerTabs } from "@/data/what-will-you-learn-beginner"
 import { advancedTabs } from "@/data/what-will-you-learn-advanced"
 
 export const metadata = {
@@ -39,7 +37,7 @@ export default function Home() {
                 href: "#pricing-dates"
               }
             }}
-            dates={courseDates}
+            dates={courseDates.filter(date => date.level === 'advanced')}
             video={{
               embedUrl: "https://www.youtube.com/embed/YuQOtcbzp7w",
               title: "AI pro realitní makléře"
@@ -87,7 +85,7 @@ export default function Home() {
               title: "Termíny a ceny kurzů",
               subtitle: "Vyberte si termín, který vám nejvíce vyhovuje"
             }}
-            dates={courseDates}
+            dates={courseDates.filter(date => date.level === 'advanced')}
             pricing={{
               amount: "14 800 Kč",
               earlyBirdDiscount: {
@@ -113,7 +111,7 @@ export default function Home() {
               title: "Možnosti financování",
               subtitle: "Vyberte si variantu, která vám nejlépe vyhovuje"
             }}
-            dates={courseDates}
+            dates={courseDates.filter(date => date.level === 'advanced')}
             options={[
               {
                 title: "S příspěvkem MPSV",
@@ -163,9 +161,8 @@ export default function Home() {
               title: "Program kurzu",
               subtitle: "Podrobný program dvoudenního kurzu"
             }}
-            dates={courseDates}
-            beginnerProgramme={beginnerProgramme}
-            advancedProgramme={advancedProgramme}
+            dates={courseDates.filter(date => date.level === 'advanced')}
+            beginnerProgramme={advancedProgramme}
             cta={{
               primary: {
                 text: "Koupit s podporou",
@@ -183,8 +180,7 @@ export default function Home() {
               title: "Naučíme tě toho opravdu hodně",
               subtitle: "AI reads and understands your designs, and with nothing more than a single line of feedback, perform complex actions autonomously."
             }}
-            beginnerTabs={beginnerTabs}
-            advancedTabs={advancedTabs}
+            beginnerTabs={advancedTabs}
         />
         <Bonuses
             heading={{
@@ -210,7 +206,7 @@ export default function Home() {
             ]}
         />
         <SignInInstructions
-            dates={courseDates}
+            dates={courseDates.filter(date => date.level === 'advanced')}
             heading={{
               title: "Jak se přihlásit na workshop?",
               subtitle: "Jednoduchý proces registrace"

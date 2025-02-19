@@ -4,8 +4,6 @@ import ScrollLink from './ScrollLink'
 import { FiChevronDown, FiCoffee } from "react-icons/fi";
 import { useModal } from '@/contexts/ModalContext'
 import { motion, AnimatePresence } from 'framer-motion'
-import { useLevel } from '@/contexts/LevelContext'
-
 interface ProgrammeBlock {
   time: string
   title: string
@@ -24,7 +22,6 @@ interface CourseProgrammeProps {
     subtitle: string
   }
   beginnerProgramme: ProgrammeDay[]
-  advancedProgramme: ProgrammeDay[]
   cta: {
     primary: {
       text: string
@@ -41,7 +38,6 @@ interface CourseProgrammeProps {
 export default function CourseProgramme({ 
   heading, 
   beginnerProgramme,
-  advancedProgramme,
   cta, 
   dates = [] 
 }: CourseProgrammeProps & { dates?: Array<{
@@ -54,10 +50,9 @@ export default function CourseProgramme({
   deadline?: string
 }> }) {
   const [openBlocks, setOpenBlocks] = useState<{ [key: string]: boolean }>({})
-  const { level, setLevel } = useLevel()
   const modal = useModal()
 
-  const programme = level === 'beginner' ? beginnerProgramme : advancedProgramme
+  const programme = beginnerProgramme
 
   const toggleBlock = (day: string, blockIndex: number) => {
     setOpenBlocks(prev => ({
@@ -72,28 +67,6 @@ export default function CourseProgramme({
           <div className="max-w-3xl mx-auto text-center pb-6">
             <h2 className="font-inter-tight text-2xl md:text-3xl font-bold text-zinc-900 mb-2">{heading.title}</h2>
             <p className="text-base text-zinc-500">{heading.subtitle}</p>
-            <div className="mt-4 inline-flex rounded-lg border border-zinc-200 p-1 bg-white">
-              <button
-                onClick={() => setLevel('beginner')}
-                className={`px-4 py-2 text-sm font-medium rounded-md transition-colors duration-200 ${
-                  level === 'beginner' 
-                    ? 'bg-blue-100 text-blue-700' 
-                    : 'text-zinc-500 hover:text-zinc-700'
-                }`}
-              >
-                Začátečník
-              </button>
-              <button
-                onClick={() => setLevel('advanced')}
-                className={`px-4 py-2 text-sm font-medium rounded-md transition-colors duration-200 ${
-                  level === 'advanced' 
-                    ? 'bg-purple-100 text-purple-700' 
-                    : 'text-zinc-500 hover:text-zinc-700'
-                }`}
-              >
-                Pokročilý
-              </button>
-            </div>
           </div>
           <div className="grid md:grid-cols-2 gap-8 mt-8">
             {programme.map((day: ProgrammeDay, dayIndex: number) => (

@@ -23,7 +23,6 @@ interface FormData {
   name: string
   email: string
   phone: string
-  level: string
   course: string | 'unknown'
   writtenReferral?: string
   cookieReferral?: string
@@ -45,15 +44,13 @@ export default function RegistrationForm({ dates, onSubmit, onClose }: Registrat
     register,
     handleSubmit,
     control,
-    watch,
     formState: { errors, isSubmitting },
   } = useForm<FormData>()
 
   const onSubmitWrapper = async (data: FormData) => {
     try {
-      const { level, ...formDataWithoutLevel } = data; // eslint-disable-line @typescript-eslint/no-unused-vars
       const formData = {
-        ...formDataWithoutLevel,
+        ...data,
         gdprConsent: Boolean(data.gdprConsent),
       }
       await onSubmit(formData)
@@ -71,23 +68,6 @@ export default function RegistrationForm({ dates, onSubmit, onClose }: Registrat
   return (
     <form onSubmit={handleSubmit(onSubmitWrapper)} className="space-y-4" noValidate>
       <div>
-        <label htmlFor="level" className="block text-sm font-medium text-gray-700">
-          Úroveň kurzu *
-        </label>
-        <select
-          {...register('level', { required: 'Vyberte úroveň kurzu' })}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-        >
-          <option value="">Vyberte úroveň</option>
-          <option value="beginner">Začátečník</option>
-          <option value="advanced">Pokročilý</option>
-        </select>
-        {errors.level && (
-          <p className="mt-1 text-sm text-red-600">{errors.level.message}</p>
-        )}
-      </div>
-
-      <div>
         <label htmlFor="course" className="block text-sm font-medium text-gray-700">
           Termín kurzu *
         </label>
@@ -99,12 +79,6 @@ export default function RegistrationForm({ dates, onSubmit, onClose }: Registrat
           <option value="unknown">Ještě nevím termín</option>
           {dates
             .filter(date => {
-              // First filter by level if selected
-              const selectedLevel = watch('level');
-              if (selectedLevel && date.level !== selectedLevel) {
-                return false;
-              }
-
               const courseDate = new Date(date.date);
               const secondDay = new Date(courseDate);
               secondDay.setDate(courseDate.getDate() + 1);
@@ -131,7 +105,7 @@ export default function RegistrationForm({ dates, onSubmit, onClose }: Registrat
                     return `${day}.${month}. ${year}`;
                   };
                   
-                  return `${formatDate(courseDate)} - ${date.location} (${date.level === 'beginner' ? 'Začátečník' : 'Pokročilý'})`;
+                  return `${formatDate(courseDate)} - ${date.location}`;
                 })()}
               </option>
             ))}
@@ -331,7 +305,6 @@ export default function RegistrationForm({ dates, onSubmit, onClose }: Registrat
           </div>
         </div>
       </div>
-
 
       <div className="mt-6">
         <div className="flex items-start">

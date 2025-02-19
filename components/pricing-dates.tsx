@@ -3,8 +3,6 @@
 import React, { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useModal } from '@/contexts/ModalContext'
-import { useLevel } from '@/contexts/LevelContext'
-
 export interface CourseDate {
   date: Date
   type: string
@@ -60,8 +58,8 @@ const PricingDates = ({
 }: PricingDatesProps) => {
   const [dates, setDates] = useState<CourseDate[]>([])
   const [selectedFocus, setSelectedFocus] = useState<string>('all')
-  const { level, setLevel } = useLevel()
   const [focusOptions, setFocusOptions] = useState<string[]>([])
+  const level = initialDates.some(date => date.level === 'advanced') ? 'advanced' : 'beginner'
 
   const [closestCourse, setClosestCourse] = useState<CourseDate | null>(null)
   const [daysLeft, setDaysLeft] = useState<number>(0)
@@ -187,17 +185,6 @@ const PricingDates = ({
                   <div className="flex items-center justify-between">
                     <h3 className="font-inter-tight text-xl font-semibold text-zinc-900">{upcomingDates.title}</h3>
                     <div className="flex items-center gap-4">
-                      <div className="relative w-[180px]">
-                        <select
-                          id="level-filter"
-                          value={level}
-                          onChange={(e) => setLevel(e.target.value as 'beginner' | 'advanced')}
-                          className="w-full text-sm bg-white border border-zinc-200 rounded-md py-2 pl-3 pr-8 cursor-pointer hover:border-zinc-300 focus:border-zinc-500 focus:outline-none focus:ring-zinc-500 transition-colors duration-200 appearance-none bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23666%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E')] bg-[length:8px_8px] bg-[position:right_12px_center] bg-no-repeat"
-                        >
-                          <option value="beginner">Začátečník</option>
-                          <option value="advanced">Pokročilý</option>
-                        </select>
-                      </div>
                       {focusOptions.length > 2 && (
                         <div className="relative w-[180px]">
                         <select

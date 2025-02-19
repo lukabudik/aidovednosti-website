@@ -3,7 +3,6 @@
 import { useState } from 'react'
 import Image from 'next/image'
 import FeatureIllustration from '@/public/images/feature-illustration.png'
-import { useLevel } from '@/contexts/LevelContext'
 
 interface Tab {
   id: number
@@ -22,14 +21,11 @@ interface WhatWillYouLearnProps {
     subtitle: string
   }
   beginnerTabs: Tab[]
-  advancedTabs: Tab[]
 }
 
-export default function WhatWillYouLearn({ heading, beginnerTabs, advancedTabs }: WhatWillYouLearnProps) {
+export default function WhatWillYouLearn({ heading, beginnerTabs }: WhatWillYouLearnProps) {
   const [tab, setTab] = useState<number>(1)
-  const { level, setLevel } = useLevel()
-  
-  const tabs = level === 'beginner' ? beginnerTabs : advancedTabs
+  const tabs = beginnerTabs
 
   return (
     <section className="bg-zinc-50">
@@ -37,34 +33,6 @@ export default function WhatWillYouLearn({ heading, beginnerTabs, advancedTabs }
         <div className="max-w-3xl mx-auto text-center pb-8">
           <h2 className="font-inter-tight text-3xl md:text-4xl font-bold text-zinc-900 mb-4">{heading.title}</h2>
           <p className="text-lg text-zinc-500">{heading.subtitle}</p>
-          <div className="mt-6 inline-flex rounded-lg border border-zinc-200 p-1 bg-white">
-            <button
-              onClick={() => {
-                setLevel('beginner')
-                setTab(1)
-              }}
-              className={`px-4 py-2 text-sm font-medium rounded-md transition-colors duration-200 ${
-                level === 'beginner' 
-                  ? 'bg-blue-100 text-blue-700' 
-                  : 'text-zinc-500 hover:text-zinc-700'
-              }`}
-            >
-              Začátečník
-            </button>
-            <button
-              onClick={() => {
-                setLevel('advanced')
-                setTab(1)
-              }}
-              className={`px-4 py-2 text-sm font-medium rounded-md transition-colors duration-200 ${
-                level === 'advanced' 
-                  ? 'bg-purple-100 text-purple-700' 
-                  : 'text-zinc-500 hover:text-zinc-700'
-              }`}
-            >
-              Pokročilý
-            </button>
-          </div>
         </div>
         <div>
             {/* Tabs buttons */}
