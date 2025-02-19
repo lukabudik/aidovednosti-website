@@ -57,7 +57,10 @@ export default function RegistrationForm({ dates, onSubmit, onClose }: Registrat
       onClose()
       toast.success('Registrace byla úspěšná! Přesměrováváme vás...')
       setTimeout(() => {
-        window.location.href = 'https://www.uradprace.cz/web/cz/vyhledani-rekvalifikacniho-kurzu#/rekvalifikacni-kurz-detail/18900'
+        const isAdvanced = dates.some(date => date.level === 'advanced');
+        window.location.href = isAdvanced 
+          ? 'https://www.uradprace.cz/web/cz/vyhledani-rekvalifikacniho-kurzu#/rekvalifikacni-kurz-detail/18901'
+          : 'https://www.uradprace.cz/web/cz/vyhledani-rekvalifikacniho-kurzu#/rekvalifikacni-kurz-detail/18900';
       }, 2000)
     } catch (err) {
       console.error('Registration error:', err)

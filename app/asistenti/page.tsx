@@ -29,7 +29,7 @@ export default function Home() {
             cta={{
               primary: {
                 text: "Koupit s podporou",
-                href: "https://www.uradprace.cz/web/cz/vyhledani-rekvalifikacniho-kurzu#/rekvalifikacni-kurz-detail/18900",
+                href: "https://www.uradprace.cz/web/cz/vyhledani-rekvalifikacniho-kurzu#/rekvalifikacni-kurz-detail/18901",
                 discount: "-82%"
               },
               secondary: {
@@ -132,7 +132,7 @@ export default function Home() {
                 ],
                 cta: {
                   text: "Koupit s podporou",
-                  href: "https://www.uradprace.cz/web/cz/vyhledani-rekvalifikacniho-kurzu#/rekvalifikacni-kurz-detail/18900"
+                  href: "https://www.uradprace.cz/web/cz/vyhledani-rekvalifikacniho-kurzu#/rekvalifikacni-kurz-detail/18901"
                 },
                 badge: "NEJLEPŠÍ VOLBA"
               },
@@ -151,7 +151,7 @@ export default function Home() {
                 ],
                 cta: {
                   text: "Koupit bez podpory",
-                  href: "https://www.uradprace.cz/web/cz/vyhledani-rekvalifikacniho-kurzu#/rekvalifikacni-kurz-detail/18900"
+                  href: "https://www.uradprace.cz/web/cz/vyhledani-rekvalifikacniho-kurzu#/rekvalifikacni-kurz-detail/18901"
                 }
               }
             ]}
@@ -166,7 +166,7 @@ export default function Home() {
             cta={{
               primary: {
                 text: "Koupit s podporou",
-                href: "https://www.uradprace.cz/web/cz/vyhledani-rekvalifikacniho-kurzu#/rekvalifikacni-kurz-detail/18900",
+                href: "https://www.uradprace.cz/web/cz/vyhledani-rekvalifikacniho-kurzu#/rekvalifikacni-kurz-detail/18901",
                 discount: "-82%"
               },
               secondary: {
@@ -233,7 +233,7 @@ export default function Home() {
             cta={{
               primary: {
                 text: "Koupit s podporou",
-                href: "https://www.uradprace.cz/web/cz/vyhledani-rekvalifikacniho-kurzu#/rekvalifikacni-kurz-detail/18900",
+                href: "https://www.uradprace.cz/web/cz/vyhledani-rekvalifikacniho-kurzu#/rekvalifikacni-kurz-detail/18901",
                 discount: "-82%"
               },
               secondary: {
