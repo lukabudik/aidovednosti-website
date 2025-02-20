@@ -32,15 +32,6 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <head>
-        <noscript>
-          <img
-            height="1"
-            width="1"
-            style={{ display: 'none' }}
-            src={`https://www.facebook.com/tr?id=123456789&ev=PageView&noscript=1`}
-            alt=""
-          />
-        </noscript>
       </head>
       <body className={`${inter.variable} ${inter_tight.variable} font-inter antialiased bg-white text-zinc-900 tracking-tight`}>
         <Script
