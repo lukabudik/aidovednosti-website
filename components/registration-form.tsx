@@ -3,6 +3,7 @@
 import { useForm, Controller } from 'react-hook-form'
 import EnhancedPhoneInput from './enhanced-phone-input'
 import toast from 'react-hot-toast'
+import { trackRegistration } from '@/utils/facebook-pixel'
 
 interface RegistrationFormProps {
   dates: {
@@ -54,6 +55,7 @@ export default function RegistrationForm({ dates, onSubmit, onClose }: Registrat
         gdprConsent: Boolean(data.gdprConsent),
       }
       await onSubmit(formData)
+      trackRegistration() // Track the conversion
       onClose()
       toast.success('Registrace byla úspěšná! Přesměrováváme vás...')
       setTimeout(() => {
