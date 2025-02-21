@@ -239,13 +239,11 @@ const PricingDates = ({
                             <p className="text-sm text-zinc-600">{upcomingDates.cityLabel} {item.location}</p>
                             <p className="text-sm text-zinc-600">
                               <div className="flex items-center gap-2">
-                                <span className={`inline-flex items-center px-2.5 py-0.5 text-xs font-medium ${
-                                  item.level === 'beginner' 
-                                    ? 'bg-blue-50 text-blue-700 border border-blue-200' 
-                                    : 'bg-purple-50 text-purple-700 border border-purple-200'
-                                } rounded-md`}>
-                                  {item.level === 'beginner' ? 'Začátečník' : 'Pokročilý'}
-                                </span>
+                                {item.level === 'advanced' && (
+                                  <span className="inline-flex items-center px-2.5 py-0.5 text-xs font-medium bg-purple-50 text-purple-700 border border-purple-200 rounded-md">
+                                    Pokročilý
+                                  </span>
+                                )}
                                 {item.focus && (
                                   <span className="text-zinc-600">
                                     {upcomingDates.focusLabel} {item.focus}
