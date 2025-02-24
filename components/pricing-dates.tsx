@@ -143,6 +143,19 @@ const PricingDates = ({
     return `${date.getDate()}. ${date.toLocaleDateString('cs-CZ', { month: 'long', year: 'numeric' })}`;
   }
 
+  // Helper function to get the correct Czech form of the word "den" (day)
+  const getDayForm = (days: number): string => {
+    if (days === 1) return "den";
+    if (days >= 2 && days <= 4) return "dny";
+    return "dní";
+  }
+
+  // Helper function to get the correct Czech verb form based on the number
+  const getVerbForm = (days: number): string => {
+    if (days === 0 || days === 1 || days >= 5) return "zbývá";
+    return "zbývají";
+  }
+
   return (
       <section id="pricing-dates" className="bg-zinc-50 py-8 md:py-10 scroll-mt-32">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
@@ -169,7 +182,11 @@ const PricingDates = ({
               {closestCourse && (
                   <div className="border-l-4 p-4 mb-6" role="alert">
                     <p className="font-bold">{upcomingDates.nextCourseLabel}</p>
-                    <p>{upcomingDates.daysLeftText.replace('{city}', closestCourse.cityLocative).replace('{days}', daysLeft.toString())}</p>
+                    <p>{upcomingDates.daysLeftText
+                      .replace('{city}', closestCourse.cityLocative)
+                      .replace('{days}', daysLeft.toString())
+                      .replace('dní', getDayForm(daysLeft))
+                      .replace('zbývá', getVerbForm(daysLeft))}</p>
                     <p className="text-sm mt-2">{upcomingDates.courseDateLabel} {formatDate(closestCourse.date)}</p>
                   </div>
               )}
