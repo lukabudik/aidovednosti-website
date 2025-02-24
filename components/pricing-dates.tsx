@@ -72,12 +72,9 @@ const PricingDates = ({
     const parsedDates = initialDates.map(course => {
       const courseDate = new Date(`${course.date}T10:00:00`);
       
-      // Calculate deadline as 1 month before the second day of the course
-      const secondDay = new Date(courseDate);
-      secondDay.setDate(secondDay.getDate() + 1);
-      
-      const deadline = new Date(secondDay);
-      deadline.setMonth(deadline.getMonth() - 1);
+      // Calculate deadline as 30 days before the first day of the course
+      const deadline = new Date(courseDate);
+      deadline.setDate(deadline.getDate() - 30);
       deadline.setHours(23, 59, 59);
 
       return {
