@@ -1,6 +1,7 @@
 'use client'
 
 import { useForm, Controller } from 'react-hook-form'
+import { useEffect } from 'react'
 import EnhancedPhoneInput from './enhanced-phone-input'
 import toast from 'react-hot-toast'
 import { trackRegistration } from '@/utils/facebook-pixel'
@@ -18,6 +19,7 @@ interface RegistrationFormProps {
   }[]
   onSubmit: (data: RegistrationFormData) => void
   onClose: () => void
+  preselectedDate?: string | null
 }
 
 interface FormData {
@@ -40,13 +42,25 @@ export interface RegistrationFormData {
   gdprConsent: boolean
 }
 
-export default function RegistrationForm({ dates, onSubmit, onClose }: RegistrationFormProps) {
+export default function RegistrationForm({ dates, onSubmit, onClose, preselectedDate }: RegistrationFormProps) {
   const {
     register,
     handleSubmit,
     control,
+    setValue,
     formState: { errors, isSubmitting },
   } = useForm<FormData>()
+  
+  // Set preselected date if provided
+  useEffect(() => {
+    if (preselectedDate) {
+      // Find the matching date in the dates array
+      const matchingDate = dates.find(d => d.date === preselectedDate);
+      if (matchingDate) {
+        setValue('course', preselectedDate);
+      }
+    }
+  }, [preselectedDate, dates, setValue]);
 
   const onSubmitWrapper = async (data: FormData) => {
     try {
@@ -78,7 +92,8 @@ export default function RegistrationForm({ dates, onSubmit, onClose }: Registrat
         </label>
         <select
           {...register('course', { required: 'Vyberte termín kurzu' })}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+          className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 ${preselectedDate ? 'bg-gray-100' : ''}`}
+          disabled={!!preselectedDate}
         >
           <option value="">Vyberte termín</option>
           <option value="unknown">Ještě nevím termín</option>
