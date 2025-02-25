@@ -86,6 +86,13 @@ export const courseDates = [
     level: 'beginner'
   },
   {
+    date: '2025-04-01',
+    type: 'Prezenční',
+    location: 'Praha',
+    cityLocative: 'Praze',
+    level: 'advanced'
+  },
+  {
     date: '2025-05-07',
     type: 'Prezenční',
     location: 'Brno',
