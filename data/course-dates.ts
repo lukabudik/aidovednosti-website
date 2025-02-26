@@ -93,7 +93,7 @@ export const courseDates = [
     level: 'advanced'
   },
   {
-    date: '2025-05-07',
+    date: '2025-05-29',
     type: 'Prezenční',
     location: 'Brno',
     cityLocative: 'Brně',
@@ -133,6 +133,13 @@ export const courseDates = [
     location: 'Brno',
     cityLocative: 'Brně',
     level: 'beginner'
+  },
+  {
+    date: '2025-05-24',
+    type: 'Prezenční',
+    location: 'Karlovy Vary',
+    cityLocative: 'Karlových Varech',
+    level: 'advanced'
   },
   {
     date: '2025-05-30',

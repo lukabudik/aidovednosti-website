@@ -75,7 +75,7 @@ export default function RegistrationForm({ dates, onSubmit, onClose, preselected
       setTimeout(() => {
         const isAdvanced = dates.some(date => date.level === 'advanced');
         window.location.href = isAdvanced 
-          ? 'https://www.uradprace.cz/web/cz/vyhledani-rekvalifikacniho-kurzu#/rekvalifikacni-kurz-detail/18901'
+          ? 'https://www.uradprace.cz/web/cz/vyhledani-rekvalifikacniho-kurzu#/rekvalifikacni-kurz-detail/20793'
           : 'https://www.uradprace.cz/web/cz/vyhledani-rekvalifikacniho-kurzu#/rekvalifikacni-kurz-detail/18900';
       }, 2000)
     } catch (err) {
