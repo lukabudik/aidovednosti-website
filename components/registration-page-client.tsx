@@ -49,6 +49,10 @@ export default function RegistrationPageClient() {
         selectedLocation
       })
 
+      // Determine the level based on the selected course
+      const selectedDate = data.course !== 'unknown' ? courseDates.find(date => date.date === data.course) : null;
+      const level: 'beginner' | 'advanced' = selectedDate?.level === 'advanced' ? 'advanced' : 'beginner';
+
       await submitRegistration({
         Name: data.name,
         Email: data.email,
@@ -63,7 +67,8 @@ export default function RegistrationPageClient() {
           return `${day}.${month}. ${year} - ${selectedLocation}`;
         })(),
         GDPRConsent: true,
-        Status: 'New'
+        Status: 'New',
+        Level: level
       })
       
       trackRegistration() // Track the conversion
@@ -97,6 +102,9 @@ export default function RegistrationPageClient() {
     window.location.href = '/'
   }
 
+  // Filter course dates to only show beginner courses
+  const beginnerCourseDates = courseDates.filter(date => date.level === 'beginner')
+
   return (
     <div className="min-h-screen bg-gray-50 py-12">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -107,7 +115,7 @@ export default function RegistrationPageClient() {
           </p>
           
           <RegistrationForm 
-            dates={courseDates} 
+            dates={beginnerCourseDates} 
             onSubmit={handleSubmit} 
             onClose={handleClose}
             preselectedDate={validDateParam}

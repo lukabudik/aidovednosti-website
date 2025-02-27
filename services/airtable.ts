@@ -9,6 +9,7 @@ interface RegistrationData {
   Course: string | 'Zatím nevybrán'
   GDPRConsent: boolean
   Status: string
+  Level?: 'beginner' | 'advanced'
 }
 
 export async function submitRegistration(data: RegistrationData) {
@@ -39,7 +40,8 @@ export async function submitRegistration(data: RegistrationData) {
             ReferralCodeCookies: data.ReferralCodeCookies || '',
             Course: data.Course,
             GDPRConsent: true, // Always true as per requirements
-            Status: 'Nepřihlášen' // Default status
+            Status: 'Nepřihlášen', // Default status
+            Level: data.Level || 'beginner' // Default to beginner if not specified
           }
         }
       ],
@@ -48,16 +50,17 @@ export async function submitRegistration(data: RegistrationData) {
 
     console.log('Airtable response:', result)
     return result
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Detailed Airtable error:', {
-      message: error.message,
       error: error,
       data: data
     })
     
     // Throw a more specific error message
-    throw new Error(
-      error.message || 'Failed to submit registration to Airtable'
-    )
+    if (error instanceof Error) {
+      throw new Error(error.message || 'Failed to submit registration to Airtable')
+    } else {
+      throw new Error('Failed to submit registration to Airtable')
+    }
   }
 }

@@ -6,9 +6,22 @@ import { submitRegistration } from '@/services/airtable'
 import toast from 'react-hot-toast'
 import Modal from '@/components/ui/modal'
 import RegistrationForm, { RegistrationFormData } from '@/components/registration-form'
+import { CourseDate } from '@/components/pricing-dates'
+
+// Define the type expected by the RegistrationForm component
+interface RegistrationFormDate {
+  date: string;
+  type: string;
+  location: string;
+  cityLocative: string;
+  level: string;
+  focus?: string;
+  deadline?: string;
+  isFull?: boolean;
+}
 
 interface ModalContextType {
-  openModal: (dates: any[]) => void
+  openModal: (dates: CourseDate[]) => void
   closeModal: () => void
 }
 
@@ -16,7 +29,21 @@ const ModalContext = createContext<ModalContextType | undefined>(undefined)
 
 export function ModalProvider({ children }: { children: React.ReactNode }) {
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [modalDates, setModalDates] = useState<any[]>([])
+  const [modalDates, setModalDates] = useState<RegistrationFormDate[]>([])
+
+  // Helper function to convert CourseDate[] to RegistrationFormDate[]
+  const convertDates = (dates: CourseDate[]): RegistrationFormDate[] => {
+    return dates.map(date => ({
+      date: date.date instanceof Date ? date.date.toISOString().split('T')[0] : date.date,
+      type: date.type,
+      location: date.location,
+      cityLocative: date.cityLocative,
+      level: date.level,
+      focus: date.focus,
+      deadline: date.deadline instanceof Date ? date.deadline.toISOString().split('T')[0] : date.deadline,
+      isFull: date.isFull
+    }));
+  };
 
   const handleSubmit = async (data: RegistrationFormData) => {
     try {
@@ -37,6 +64,11 @@ export function ModalProvider({ children }: { children: React.ReactNode }) {
         selectedLocation
       })
 
+      // Determine the level based on the selected course
+      const selectedDate = data.course !== 'unknown' ? 
+        modalDates.find(date => date.date === data.course) : null;
+      const level: 'beginner' | 'advanced' = selectedDate?.level === 'advanced' ? 'advanced' : 'beginner';
+
       const promise = toast.promise(
         submitRegistration({
           Name: data.name,
@@ -52,7 +84,8 @@ export function ModalProvider({ children }: { children: React.ReactNode }) {
             return `${day}.${month}. ${year} - ${selectedLocation}`;
           })(),
           GDPRConsent: true,
-          Status: 'New'
+          Status: 'New',
+          Level: level
         }),
         {
           loading: 'Odesílám registraci...',
@@ -66,14 +99,23 @@ export function ModalProvider({ children }: { children: React.ReactNode }) {
       setTimeout(() => {
         setIsModalOpen(false)
       }, 1000)
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Form submission error:', error)
-      toast.error(`Chyba: ${error.message || 'Něco se pokazilo. Zkuste to prosím znovu.'}`)
+      let errorMessage = 'Něco se pokazilo. Zkuste to prosím znovu.';
+      
+      if (error instanceof Error) {
+        errorMessage = error.message;
+      }
+      
+      toast.error(`Chyba: ${errorMessage}`)
     }
   }
 
-  const openModal = (dates: any[]) => {
-    setModalDates(dates)
+  const openModal = (dates: CourseDate[]) => {
+    // The dates passed to openModal are already filtered by the page component
+    // (e.g., Hero component in app/(default)/page.tsx filters for beginner courses)
+    // So we just need to convert them to the format expected by the RegistrationForm
+    setModalDates(convertDates(dates))
     setIsModalOpen(true)
   }
 

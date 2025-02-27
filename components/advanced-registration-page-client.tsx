@@ -66,7 +66,8 @@ export default function AdvancedRegistrationPageClient() {
           return `${day}.${month}. ${year} - ${selectedLocation}`;
         })(),
         GDPRConsent: true,
-        Status: 'New'
+        Status: 'New',
+        Level: 'advanced' // Always advanced for this page
       })
       
       trackRegistration() // Track the conversion
