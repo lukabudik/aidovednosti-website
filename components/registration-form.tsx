@@ -111,6 +111,7 @@ export default function RegistrationForm({ dates, onSubmit, onClose, preselected
               const now = new Date();
               return courseDate > now && deadline > now && !date.isFull;
             })
+            .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()) // Sort by date from nearest to furthest
             .map((date, index) => (
               <option key={index} value={date.date}>
                 {(() => {
