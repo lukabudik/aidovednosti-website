@@ -100,7 +100,16 @@ const FinancingOptions = ({ heading, options, dates }: FinancingOptionsProps) =>
                       ? 'text-white bg-blue-700 hover:bg-blue-800 transform hover:translate-y-[-2px] transition-all duration-300' 
                       : 'text-zinc-600 bg-white hover:text-zinc-900 border border-zinc-200'
                   }`} 
-                  onClick={() => modal.openModal(dates)}
+                  onClick={() => {
+                    // Convert dates to CourseDate format with level property
+                    const convertedDates = dates.map(date => ({
+                      ...date,
+                      date: new Date(date.date),
+                      deadline: date.deadline ? new Date(date.deadline) : undefined,
+                      level: 'beginner' // Default to beginner level
+                    }));
+                    modal.openModal(convertedDates);
+                  }}
                 >
                   {option.cta.text}
                 </button>
