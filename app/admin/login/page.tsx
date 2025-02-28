@@ -1,10 +1,14 @@
 import { Metadata } from 'next';
+import { Suspense } from 'react';
 import LoginForm from '@/components/login-form';
 
 export const metadata: Metadata = {
   title: 'Přihlášení | AI Dovednosti',
   description: 'Přihlášení do administrace',
 };
+
+// Make this page dynamic to avoid static generation issues
+export const dynamic = 'force-dynamic';
 
 export default function LoginPage() {
   return (
@@ -20,7 +24,9 @@ export default function LoginPage() {
         </h1>
       </div>
       
-      <LoginForm />
+      <Suspense fallback={<div className="text-center p-4">Načítání...</div>}>
+        <LoginForm />
+      </Suspense>
     </div>
   );
 }
