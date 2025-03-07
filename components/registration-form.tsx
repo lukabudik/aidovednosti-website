@@ -20,6 +20,7 @@ interface RegistrationFormProps {
   onSubmit: (data: RegistrationFormData) => void
   onClose: () => void
   preselectedDate?: string | null
+  preselectedLocation?: string | null
 }
 
 interface FormData {
@@ -42,7 +43,7 @@ export interface RegistrationFormData {
   gdprConsent: boolean
 }
 
-export default function RegistrationForm({ dates, onSubmit, onClose, preselectedDate }: RegistrationFormProps) {
+export default function RegistrationForm({ dates, onSubmit, onClose, preselectedDate, preselectedLocation }: RegistrationFormProps) {
   const {
     register,
     handleSubmit,
@@ -53,14 +54,45 @@ export default function RegistrationForm({ dates, onSubmit, onClose, preselected
   
   // Set preselected date if provided
   useEffect(() => {
+    console.log('RegistrationForm - preselectedDate:', preselectedDate);
+    console.log('RegistrationForm - preselectedLocation:', preselectedLocation);
+    console.log('RegistrationForm - available dates:', dates);
+    
     if (preselectedDate) {
-      // Find the matching date in the dates array
-      const matchingDate = dates.find(d => d.date === preselectedDate);
-      if (matchingDate) {
-        setValue('course', preselectedDate);
+      // Find all matching dates
+      const matchingDates = dates.filter(d => d.date === preselectedDate);
+      console.log('RegistrationForm - matching dates found:', matchingDates);
+      
+      if (matchingDates.length === 0) {
+        console.log('RegistrationForm - no matching dates found');
+        return;
+      }
+      
+      // If there's only one matching date, use it
+      if (matchingDates.length === 1) {
+        console.log('RegistrationForm - only one matching date, using it:', matchingDates[0]);
+        setValue('course', `${preselectedDate}|${matchingDates[0].location}`);
+        return;
+      }
+      
+      // If there are multiple matching dates and a location is specified, find the matching one
+      if (preselectedLocation) {
+        console.log('RegistrationForm - multiple matching dates, looking for location:', preselectedLocation);
+        const matchingCourse = matchingDates.find(d => d.location === preselectedLocation);
+        console.log('RegistrationForm - matching course with location:', matchingCourse);
+        
+        if (matchingCourse) {
+          console.log('RegistrationForm - setting course value to:', `${preselectedDate}|${preselectedLocation}`);
+          setValue('course', `${preselectedDate}|${preselectedLocation}`);
+        }
+      } else {
+        // If no location is specified but there are multiple dates, use the first one
+        // This is a fallback and should not happen if the client component is working correctly
+        console.log('RegistrationForm - multiple matching dates but no location specified, using first one:', matchingDates[0]);
+        setValue('course', `${preselectedDate}|${matchingDates[0].location}`);
       }
     }
-  }, [preselectedDate, dates, setValue]);
+  }, [preselectedDate, preselectedLocation, dates, setValue]);
 
   const onSubmitWrapper = async (data: FormData) => {
     try {
@@ -113,7 +145,7 @@ export default function RegistrationForm({ dates, onSubmit, onClose, preselected
             })
             .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()) // Sort by date from nearest to furthest
             .map((date, index) => (
-              <option key={index} value={date.date}>
+              <option key={index} value={`${date.date}|${date.location}`}>
                 {(() => {
                   const courseDate = new Date(date.date);
                   const nextDay = new Date(courseDate);

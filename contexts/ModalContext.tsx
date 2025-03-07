@@ -51,11 +51,22 @@ export function ModalProvider({ children }: { children: React.ReactNode }) {
       let selectedLocation = ''
       
       if (data.course !== 'unknown') {
-        const selectedDate = modalDates.find(date => date.date === data.course)
-        if (!selectedDate) {
-          throw new Error('Selected date not found')
+        // Parse the course value to get date and location
+        const [courseDate, courseLocation] = data.course.split('|');
+        
+        // If the course value is in the new format (date|location)
+        if (courseLocation) {
+          selectedLocation = courseLocation;
+          // Update data.course to just the date part for backward compatibility
+          data.course = courseDate;
+        } else {
+          // Fallback for backward compatibility
+          const selectedDate = modalDates.find(date => date.date === data.course)
+          if (!selectedDate) {
+            throw new Error('Selected date not found')
+          }
+          selectedLocation = selectedDate.location
         }
-        selectedLocation = selectedDate.location
       }
 
       console.log('Form submission data:', {

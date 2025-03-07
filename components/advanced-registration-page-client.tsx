@@ -10,22 +10,56 @@ import { trackRegistration } from '@/utils/facebook-pixel'
 
 export default function AdvancedRegistrationPageClient() {
   const [validDateParam, setValidDateParam] = useState<string | null>(null)
+  const [validLocationParam, setValidLocationParam] = useState<string | null>(null)
+  
+  // Add a console log whenever parameters change
+  useEffect(() => {
+    console.log('Advanced - validDateParam changed:', validDateParam);
+    console.log('Advanced - validLocationParam changed:', validLocationParam);
+  }, [validDateParam, validLocationParam]);
   
   // Filter course dates to only show advanced courses
   const advancedCourseDates = courseDates.filter(date => date.level === 'advanced')
   
-  // Get the date parameter from the URL on the client side
+  // Get the date and location parameters from the URL on the client side
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search)
-    const param = searchParams.get('date')
+    const dateParam = searchParams.get('date')
+    const locationParam = searchParams.get('location')
     
-    // Validate that the date parameter exists in advancedCourseDates
-    const isValid = param && advancedCourseDates.some(date => date.date === param)
-    setValidDateParam(isValid ? param : null)
+    if (!dateParam) {
+      return; // No date parameter provided
+    }
     
-    // Show a notification if an invalid date was provided
-    if (param && !isValid) {
+    // Find all advanced courses on the specified date
+    const coursesOnDate = advancedCourseDates.filter(date => date.date === dateParam)
+    
+    if (coursesOnDate.length === 0) {
+      // No courses found for this date
       toast.error('Neplatné datum v URL. Prosím vyberte termín z nabídky.')
+      return;
+    }
+    
+    if (coursesOnDate.length === 1) {
+      // Only one course on this date, so we can select it directly
+      setValidDateParam(dateParam)
+      return;
+    }
+    
+    // Multiple courses on the same date, so we need to check location
+    if (locationParam) {
+      // Decode the URL-encoded location parameter
+      const decodedLocation = decodeURIComponent(locationParam)
+      const matchingCourse = coursesOnDate.find(course => course.location === decodedLocation)
+      if (matchingCourse) {
+        setValidDateParam(dateParam)
+        setValidLocationParam(decodedLocation)
+      } else {
+        toast.error(`Pro datum ${dateParam} neexistuje pokročilý kurz v lokaci "${decodedLocation}". Prosím vyberte správnou lokaci.`)
+      }
+    } else {
+      // Multiple courses on the same date but no location specified
+      toast.error(`Pro datum ${dateParam} existuje více pokročilých kurzů v různých lokacích. Prosím upřesněte lokaci v URL.`)
     }
   }, [advancedCourseDates])
   
@@ -39,11 +73,22 @@ export default function AdvancedRegistrationPageClient() {
       let selectedLocation = ''
       
       if (data.course !== 'unknown') {
-        const selectedDate = advancedCourseDates.find(date => date.date === data.course)
-        if (!selectedDate) {
-          throw new Error('Selected date not found')
+        // Parse the course value to get date and location
+        const [courseDate, courseLocation] = data.course.split('|');
+        
+        // If the course value is in the new format (date|location)
+        if (courseLocation) {
+          selectedLocation = courseLocation;
+          // Update data.course to just the date part for backward compatibility
+          data.course = courseDate;
+        } else {
+          // Fallback for backward compatibility
+          const selectedDate = advancedCourseDates.find(date => date.date === data.course)
+          if (!selectedDate) {
+            throw new Error('Selected date not found')
+          }
+          selectedLocation = selectedDate.location
         }
-        selectedLocation = selectedDate.location
       }
 
       console.log('Form submission data:', {
@@ -113,6 +158,7 @@ export default function AdvancedRegistrationPageClient() {
             onSubmit={handleSubmit} 
             onClose={handleClose}
             preselectedDate={validDateParam}
+            preselectedLocation={validLocationParam}
           />
         </div>
       </div>

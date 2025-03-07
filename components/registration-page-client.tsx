@@ -10,19 +10,78 @@ import { trackRegistration } from '@/utils/facebook-pixel'
 
 export default function RegistrationPageClient() {
   const [validDateParam, setValidDateParam] = useState<string | null>(null)
+  const [validLocationParam, setValidLocationParam] = useState<string | null>(null)
   
-  // Get the date parameter from the URL on the client side
+  // Add a console log whenever validDateParam changes
+  useEffect(() => {
+    console.log('validDateParam changed:', validDateParam);
+    console.log('validLocationParam changed:', validLocationParam);
+  }, [validDateParam, validLocationParam]);
+  
+  // Get the date and location parameters from the URL on the client side
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search)
-    const param = searchParams.get('date')
+    const dateParam = searchParams.get('date')
+    const locationParam = searchParams.get('location')
     
-    // Validate that the date parameter exists in courseDates
-    const isValid = param && courseDates.some(date => date.date === param)
-    setValidDateParam(isValid ? param : null)
+    console.log('URL Parameters:', { dateParam, locationParam })
     
-    // Show a notification if an invalid date was provided
-    if (param && !isValid) {
+    if (!dateParam) {
+      console.log('No date parameter provided')
+      return; // No date parameter provided
+    }
+    
+    // Find all courses on the specified date
+    const coursesOnDate = courseDates.filter(date => date.date === dateParam && date.level === 'beginner')
+    console.log('Courses on date:', coursesOnDate)
+    
+    if (coursesOnDate.length === 0) {
+      // No courses found for this date
+      console.log('No courses found for this date')
       toast.error('Neplatné datum v URL. Prosím vyberte termín z nabídky.')
+      return;
+    }
+    
+    if (coursesOnDate.length === 1) {
+      // Only one course on this date, so we can select it directly
+      console.log('Only one course found, selecting it directly:', coursesOnDate[0])
+      setValidDateParam(dateParam)
+      return;
+    }
+    
+    // Multiple courses on the same date, so we need to check location
+    console.log('Multiple courses found for this date, checking location')
+    
+    if (locationParam) {
+      // Decode the URL-encoded location parameter
+      const decodedLocation = decodeURIComponent(locationParam)
+      console.log('Decoded location:', decodedLocation)
+      
+      // Log each course location for comparison
+      coursesOnDate.forEach(course => {
+        console.log(`Comparing: "${course.location}" with "${decodedLocation}"`, {
+          matches: course.location === decodedLocation,
+          courseLocationLength: course.location.length,
+          decodedLocationLength: decodedLocation.length,
+          courseLocationChars: Array.from(course.location).map(c => c.charCodeAt(0)),
+          decodedLocationChars: Array.from(decodedLocation).map(c => c.charCodeAt(0))
+        })
+      })
+      
+      const matchingCourse = coursesOnDate.find(course => course.location === decodedLocation)
+      
+      if (matchingCourse) {
+        console.log('Matching course found:', matchingCourse)
+        setValidDateParam(dateParam)
+        setValidLocationParam(decodedLocation)
+      } else {
+        console.log('No matching course found for location:', decodedLocation)
+        toast.error(`Pro datum ${dateParam} neexistuje kurz v lokaci "${decodedLocation}". Prosím vyberte správnou lokaci.`)
+      }
+    } else {
+      // Multiple courses on the same date but no location specified
+      console.log('No location specified for a date with multiple courses')
+      toast.error(`Pro datum ${dateParam} existuje více kurzů v různých lokacích. Prosím upřesněte lokaci v URL.`)
     }
   }, [])
   
@@ -36,11 +95,22 @@ export default function RegistrationPageClient() {
       let selectedLocation = ''
       
       if (data.course !== 'unknown') {
-        const selectedDate = courseDates.find(date => date.date === data.course)
-        if (!selectedDate) {
-          throw new Error('Selected date not found')
+        // Parse the course value to get date and location
+        const [courseDate, courseLocation] = data.course.split('|');
+        
+        // If the course value is in the new format (date|location)
+        if (courseLocation) {
+          selectedLocation = courseLocation;
+          // Update data.course to just the date part for backward compatibility
+          data.course = courseDate;
+        } else {
+          // Fallback for backward compatibility
+          const selectedDate = courseDates.find(date => date.date === data.course)
+          if (!selectedDate) {
+            throw new Error('Selected date not found')
+          }
+          selectedLocation = selectedDate.location
         }
-        selectedLocation = selectedDate.location
       }
 
       console.log('Form submission data:', {
@@ -119,6 +189,7 @@ export default function RegistrationPageClient() {
             onSubmit={handleSubmit} 
             onClose={handleClose}
             preselectedDate={validDateParam}
+            preselectedLocation={validLocationParam}
           />
         </div>
       </div>
