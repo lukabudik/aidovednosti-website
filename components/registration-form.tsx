@@ -21,6 +21,7 @@ interface RegistrationFormProps {
   onClose: () => void
   preselectedDate?: string | null
   preselectedLocation?: string | null
+  preselectedPromoCode?: string | null
 }
 
 interface FormData {
@@ -43,7 +44,7 @@ export interface RegistrationFormData {
   gdprConsent: boolean
 }
 
-export default function RegistrationForm({ dates, onSubmit, onClose, preselectedDate, preselectedLocation }: RegistrationFormProps) {
+export default function RegistrationForm({ dates, onSubmit, onClose, preselectedDate, preselectedLocation, preselectedPromoCode }: RegistrationFormProps) {
   const {
     register,
     handleSubmit,
@@ -93,6 +94,40 @@ export default function RegistrationForm({ dates, onSubmit, onClose, preselected
       }
     }
   }, [preselectedDate, preselectedLocation, dates, setValue]);
+  
+  // Set preselected promo code if provided
+  useEffect(() => {
+    if (preselectedPromoCode) {
+      console.log('RegistrationForm - setting promo code:', preselectedPromoCode);
+      setValue('writtenReferral', preselectedPromoCode);
+      
+      // Open the promo code section
+      setTimeout(() => {
+        const promoSection = document.getElementById('promoSection');
+        const promoButton = document.getElementById('promoButton');
+        const giftMessage = document.getElementById('giftMessage');
+        
+        if (promoSection && promoButton) {
+          // Open the promo section
+          promoSection.classList.remove('max-h-0', 'opacity-0');
+          promoSection.classList.add('max-h-40', 'opacity-100');
+          promoButton.classList.add('text-blue-800');
+          
+          // Rotate the plus icon
+          const plusIcon = promoButton.querySelector('svg');
+          if (plusIcon) {
+            plusIcon.classList.add('rotate-45');
+          }
+          
+          // Show the gift message
+          if (giftMessage) {
+            giftMessage.classList.remove('opacity-0', 'max-h-0');
+            giftMessage.classList.add('opacity-100', 'max-h-20');
+          }
+        }
+      }, 100); // Small delay to ensure the DOM is ready
+    }
+  }, [preselectedPromoCode, setValue]);
 
   const onSubmitWrapper = async (data: FormData) => {
     try {

@@ -21,7 +21,7 @@ interface RegistrationFormDate {
 }
 
 interface ModalContextType {
-  openModal: (dates: CourseDate[]) => void
+  openModal: (dates: CourseDate[], promoCode?: string) => void
   closeModal: () => void
 }
 
@@ -30,6 +30,7 @@ const ModalContext = createContext<ModalContextType | undefined>(undefined)
 export function ModalProvider({ children }: { children: React.ReactNode }) {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [modalDates, setModalDates] = useState<RegistrationFormDate[]>([])
+  const [modalPromoCode, setModalPromoCode] = useState<string | null>(null)
 
   // Helper function to convert CourseDate[] to RegistrationFormDate[]
   const convertDates = (dates: CourseDate[]): RegistrationFormDate[] => {
@@ -122,11 +123,12 @@ export function ModalProvider({ children }: { children: React.ReactNode }) {
     }
   }
 
-  const openModal = (dates: CourseDate[]) => {
+  const openModal = (dates: CourseDate[], promoCode?: string) => {
     // The dates passed to openModal are already filtered by the page component
     // (e.g., Hero component in app/(default)/page.tsx filters for beginner courses)
     // So we just need to convert them to the format expected by the RegistrationForm
     setModalDates(convertDates(dates))
+    setModalPromoCode(promoCode || null)
     setIsModalOpen(true)
   }
 
@@ -146,6 +148,7 @@ export function ModalProvider({ children }: { children: React.ReactNode }) {
           dates={modalDates}
           onSubmit={handleSubmit}
           onClose={closeModal}
+          preselectedPromoCode={modalPromoCode}
         />
       </Modal>
     </ModalContext.Provider>

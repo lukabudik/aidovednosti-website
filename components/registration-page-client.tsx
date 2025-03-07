@@ -11,20 +11,28 @@ import { trackRegistration } from '@/utils/facebook-pixel'
 export default function RegistrationPageClient() {
   const [validDateParam, setValidDateParam] = useState<string | null>(null)
   const [validLocationParam, setValidLocationParam] = useState<string | null>(null)
+  const [promoCodeParam, setPromoCodeParam] = useState<string | null>(null)
   
-  // Add a console log whenever validDateParam changes
+  // Add a console log whenever parameters change
   useEffect(() => {
     console.log('validDateParam changed:', validDateParam);
     console.log('validLocationParam changed:', validLocationParam);
-  }, [validDateParam, validLocationParam]);
+    console.log('promoCodeParam changed:', promoCodeParam);
+  }, [validDateParam, validLocationParam, promoCodeParam]);
   
   // Get the date and location parameters from the URL on the client side
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search)
     const dateParam = searchParams.get('date')
     const locationParam = searchParams.get('location')
+    const promoCode = searchParams.get('promo')
     
-    console.log('URL Parameters:', { dateParam, locationParam })
+    console.log('URL Parameters:', { dateParam, locationParam, promoCode })
+    
+    // Set promo code if provided
+    if (promoCode) {
+      setPromoCodeParam(promoCode)
+    }
     
     if (!dateParam) {
       console.log('No date parameter provided')
@@ -190,6 +198,7 @@ export default function RegistrationPageClient() {
             onClose={handleClose}
             preselectedDate={validDateParam}
             preselectedLocation={validLocationParam}
+            preselectedPromoCode={promoCodeParam}
           />
         </div>
       </div>

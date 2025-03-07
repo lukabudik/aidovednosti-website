@@ -11,12 +11,14 @@ import { trackRegistration } from '@/utils/facebook-pixel'
 export default function AdvancedRegistrationPageClient() {
   const [validDateParam, setValidDateParam] = useState<string | null>(null)
   const [validLocationParam, setValidLocationParam] = useState<string | null>(null)
+  const [promoCodeParam, setPromoCodeParam] = useState<string | null>(null)
   
   // Add a console log whenever parameters change
   useEffect(() => {
     console.log('Advanced - validDateParam changed:', validDateParam);
     console.log('Advanced - validLocationParam changed:', validLocationParam);
-  }, [validDateParam, validLocationParam]);
+    console.log('Advanced - promoCodeParam changed:', promoCodeParam);
+  }, [validDateParam, validLocationParam, promoCodeParam]);
   
   // Filter course dates to only show advanced courses
   const advancedCourseDates = courseDates.filter(date => date.level === 'advanced')
@@ -26,6 +28,12 @@ export default function AdvancedRegistrationPageClient() {
     const searchParams = new URLSearchParams(window.location.search)
     const dateParam = searchParams.get('date')
     const locationParam = searchParams.get('location')
+    const promoCode = searchParams.get('promo')
+    
+    // Set promo code if provided
+    if (promoCode) {
+      setPromoCodeParam(promoCode)
+    }
     
     if (!dateParam) {
       return; // No date parameter provided
@@ -159,6 +167,7 @@ export default function AdvancedRegistrationPageClient() {
             onClose={handleClose}
             preselectedDate={validDateParam}
             preselectedLocation={validLocationParam}
+            preselectedPromoCode={promoCodeParam}
           />
         </div>
       </div>
